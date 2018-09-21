@@ -5,11 +5,17 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class RandomMessageGenerator implements MessageGenerator {
 
     @Override
     public CameraMessage generate() {
         return new CameraMessage(1, "1-ABC-123", LocalDateTime.now());
+    }
+
+    @Override
+    public List<CameraMessage> generateList() {
+        return null;
     }
 }

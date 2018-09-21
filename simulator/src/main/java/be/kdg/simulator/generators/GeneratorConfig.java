@@ -10,7 +10,7 @@ public class GeneratorConfig {
     @Bean
     @ConditionalOnProperty(value = "generator", havingValue = "file")
     public MessageGenerator fileGenerator(){
-        return new FileGenerator();
+        return new FileGenerator("messages.csv");
     }
 
     @Bean
