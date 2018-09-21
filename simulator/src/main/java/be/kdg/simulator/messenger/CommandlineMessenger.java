@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 @Component
-@ConditionalOnProperty(name="load",havingValue = "cli")
+@ConditionalOnProperty(name="messenger",havingValue = "cli")
 public class CommandlineMessenger implements Messenger {
 
 
