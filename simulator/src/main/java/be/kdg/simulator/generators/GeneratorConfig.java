@@ -5,11 +5,17 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ConditionalOnProperty(name="load",havingValue = "Config" )
 public class GeneratorConfig {
 
     @Bean
+    @ConditionalOnProperty(value = "generator", havingValue = "file")
     public MessageGenerator fileGenerator(){
         return new FileGenerator();
+    }
+
+    @Bean
+    @ConditionalOnProperty(value = "generator", havingValue = "random")
+    public MessageGenerator randomGenerator(){
+        return new RandomMessageGenerator();
     }
 }
