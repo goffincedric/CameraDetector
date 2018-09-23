@@ -11,6 +11,6 @@ public class QueueMessenger implements Messenger {
 
     @Override
     public void sendMessage() {
-
+        //TODO: Send message via ?mqtt?
     }
 }

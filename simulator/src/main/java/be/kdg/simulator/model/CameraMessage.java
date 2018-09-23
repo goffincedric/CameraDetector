@@ -1,6 +1,7 @@
 package be.kdg.simulator.model;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class CameraMessage {
@@ -59,9 +60,8 @@ public class CameraMessage {
     }
 
     @Override
-    // TODO: datum formateren
     public String toString() {
-        return String.format("Camera Message %d %s %s", id, licenceplate, timestamp);
+        return String.format("Camera Message (camera_id: %d) %s %s", id, licenceplate, timestamp.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")));
 
     }
 }

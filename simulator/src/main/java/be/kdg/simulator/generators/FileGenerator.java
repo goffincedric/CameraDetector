@@ -7,25 +7,16 @@ import org.springframework.stereotype.Component;
 
 import java.io.FileReader;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class FileGenerator implements MessageGenerator {
-    private String csvPath;
+    private List<CameraMessage> messages;
 
     public FileGenerator(String csvPath) {
-        this.csvPath = csvPath;
-    }
-
-    @Override
-    public CameraMessage generate() {
-        return null;
-    }
-
-    @Override
-    public List<CameraMessage> generateList() {
-        List<CameraMessage> messages = new ArrayList<>();
+        messages = new ArrayList<>();
 
         try {
             // Create an object of file reader class with path to CSV file as a parameter.
@@ -41,13 +32,16 @@ public class FileGenerator implements MessageGenerator {
             for (String[] row : allData) {
                 CameraMessage message =new CameraMessage(
                         Integer.parseInt(row[0]),
-                        row[1], LocalDateTime.parse(row[2]));
+                        row[1], LocalDateTime.parse(row[2], DateTimeFormatter.ofPattern("yyyy-M-d H:mm:ss")));
                 messages.add(message);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
 
-        return messages;
+    @Override
+    public CameraMessage generate() {
+        return messages.get(new Random().nextInt(messages.size()));
     }
 }

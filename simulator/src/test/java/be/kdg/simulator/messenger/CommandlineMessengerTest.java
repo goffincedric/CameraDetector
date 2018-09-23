@@ -17,6 +17,6 @@ public class CommandlineMessengerTest {
 
     @Test
     public void sendMessage() {
-    messenger.sendMessage();
+        messenger.sendMessage();
     }
 }

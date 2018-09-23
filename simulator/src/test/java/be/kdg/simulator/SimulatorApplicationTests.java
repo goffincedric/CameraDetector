@@ -6,13 +6,9 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import java.util.List;
-
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.Assert.assertThat;
 
 
 @RunWith(SpringRunner.class)
@@ -23,16 +19,11 @@ public class SimulatorApplicationTests {
     private MessageGenerator messageGenerator;
 
     @Test
+    @ConditionalOnProperty(value = "generator", havingValue = "random")
     public void testMessageGenerator() {
         CameraMessage cameraMessage = messageGenerator.generate();
-        assertThat(cameraMessage.getLicenceplate().equalsIgnoreCase("1-ABC-123"));
-        Assert.assertTrue(cameraMessage.getLicenceplate().equalsIgnoreCase("1-ABC-123"));
-    }
-
-    @Test
-    public void testMessageGeneratorList() {
-        List<CameraMessage> cameraMessage = messageGenerator.generateList();
-        cameraMessage.forEach(System.out::println);
+        System.out.println(cameraMessage);
+        Assert.assertTrue(cameraMessage.getLicenceplate().matches("^[1-9]-[A-Z]{3}-[0-9]{3}$"));
     }
 
 }
