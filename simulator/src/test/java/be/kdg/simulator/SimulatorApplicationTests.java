@@ -22,8 +22,7 @@ public class SimulatorApplicationTests {
     @ConditionalOnProperty(value = "generator", havingValue = "random")
     public void testMessageGenerator() {
         CameraMessage cameraMessage = messageGenerator.generate();
-        System.out.println(cameraMessage);
-        Assert.assertTrue(cameraMessage.getLicenceplate().matches("^[1-9]-[A-Z]{3}-[0-9]{3}$"));
+        Assert.assertTrue(cameraMessage.getLicenceplate().matches("^[1-8]-[A-Z]{3}-[0-9]{3}$"));
     }
 
 }

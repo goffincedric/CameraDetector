@@ -10,7 +10,7 @@ public class SimulatorApplication {
         SpringApplication.run(SimulatorApplication.class, args);
 
 
-        //exit after 5 secs
+        //exit after 3600 secs
         try {
             Thread.sleep(1000 * 60 * 60);
         } catch (InterruptedException e) {

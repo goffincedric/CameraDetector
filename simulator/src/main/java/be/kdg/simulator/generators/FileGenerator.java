@@ -3,24 +3,25 @@ package be.kdg.simulator.generators;
 import be.kdg.simulator.model.CameraMessage;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
-import org.springframework.stereotype.Component;
+import lombok.Getter;
 
 import java.io.FileReader;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class FileGenerator implements MessageGenerator {
-    private List<CameraMessage> messages;
 
-    public FileGenerator(String csvPath) {
+    @Getter
+    private static List<CameraMessage> messages;
+
+    public FileGenerator(String file_path) {
         messages = new ArrayList<>();
 
         try {
             // Create an object of file reader class with path to CSV file as a parameter.
-            FileReader filereader = new FileReader(csvPath);
+            System.out.println(file_path);
+            FileReader filereader = new FileReader(file_path);
 
             // Create csvReader object and skip first line (Header line)
             CSVReader csvReader = new CSVReaderBuilder(filereader)
@@ -32,7 +33,8 @@ public class FileGenerator implements MessageGenerator {
             for (String[] row : allData) {
                 CameraMessage message =new CameraMessage(
                         Integer.parseInt(row[0]),
-                        row[1], LocalDateTime.parse(row[2], DateTimeFormatter.ofPattern("yyyy-M-d H:mm:ss")));
+                        row[1], LocalDateTime.parse(row[2], DateTimeFormatter.ofPattern("yyyy-M-d H:mm:ss")),
+                        Integer.parseInt(row[3]));
                 messages.add(message);
             }
         } catch (Exception e) {
@@ -42,6 +44,6 @@ public class FileGenerator implements MessageGenerator {
 
     @Override
     public CameraMessage generate() {
-        return messages.get(new Random().nextInt(messages.size()));
+        return messages.remove(0);
     }
 }
