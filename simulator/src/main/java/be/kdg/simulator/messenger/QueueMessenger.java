@@ -5,6 +5,7 @@ import be.kdg.simulator.model.CameraMessage;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
+import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,10 @@ public class QueueMessenger implements Messenger {
         CameraMessage message = messageGenerator.generate();
         rabbitTemplate.convertAndSend(queue.getName(), XMLSerializer.convertObjectToXML(message));
         System.out.println("[X] Sent " + message + " to queue: " + queue.getName());
+
+        CameraMessage msg = (CameraMessage) XMLSerializer.convertXMLToObject(new String(rabbitTemplate.receive(queue.getName()).getBody()), CameraMessage.class);
+        System.out.println("[X] Received: " + msg);
+        System.out.println("=================");
         try {
             Thread.sleep(message.getDelay());
         } catch (InterruptedException e) {
@@ -50,5 +55,5 @@ public class QueueMessenger implements Messenger {
         }
     }
 
-    
+
 }

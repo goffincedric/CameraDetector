@@ -1,5 +1,5 @@
 package be.kdg.simulator.model;
-
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -13,6 +13,7 @@ import java.time.format.DateTimeFormatter;
 public class CameraMessage {
     private int id;
     private String licenceplate;
+
     private LocalDateTime timestamp;
     private int delay = 0;
 

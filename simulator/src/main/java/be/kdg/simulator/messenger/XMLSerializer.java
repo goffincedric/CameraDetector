@@ -1,7 +1,17 @@
 package be.kdg.simulator.messenger;
 
 import be.kdg.simulator.model.CameraMessage;
-import com.fasterxml.jackson.xml.XmlMapper;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.dataformat.xml.JacksonXmlModule;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.fasterxml.jackson.datatype.jsr310.JSR310Module;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.context.annotation.Bean;
+import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
 import java.io.IOException;
 
@@ -11,21 +21,25 @@ import java.io.IOException;
  */
 public class XMLSerializer {
     public static String convertObjectToXML(Object object) {
-        XmlMapper xmlMapper = new XmlMapper();
+        XmlMapper mapper = new XmlMapper();
+        mapper.registerModule(new JavaTimeModule());
+        mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         String xml = null;
         try {
-            xml = xmlMapper.writeValueAsString(object);
-        } catch (IOException e) {
+            xml = mapper.writeValueAsString(object);
+        } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
         return xml;
     }
 
     public static Object convertXMLToObject(String string, Class objectClass) {
-        XmlMapper xmlMapper = new XmlMapper();
+        XmlMapper mapper = new XmlMapper();
+        mapper.registerModule(new JavaTimeModule());
+
         Object object = null;
         try {
-            object = xmlMapper.readValue(string, objectClass);
+            object = mapper.readValue(string, objectClass);
         } catch (IOException e) {
             e.printStackTrace();
         }
