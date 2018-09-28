@@ -5,5 +5,4 @@ import be.kdg.simulator.model.CameraMessage;
 public interface Messenger {
 
     void sendMessage();
-    void sendMessageFromFile();
 }

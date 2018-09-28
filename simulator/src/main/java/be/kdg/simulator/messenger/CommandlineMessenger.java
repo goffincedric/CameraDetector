@@ -6,12 +6,14 @@ import be.kdg.simulator.model.CameraMessage;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 
 @Component
+@EnableScheduling
 @ConditionalOnProperty(name="messenger",havingValue = "cli")
 public class CommandlineMessenger implements Messenger {
 
@@ -24,27 +26,13 @@ public class CommandlineMessenger implements Messenger {
     @Override
     @Scheduled(cron = "${messenger.frequency.normal}")
     @Scheduled(cron = "${messenger.frequency.peak}")
-    @ConditionalOnProperty(value = "generator", havingValue = "random")
     public void sendMessage() {
-        System.out.println(messageGenerator.generate());
-    }
-
-    @Override
-    @ConditionalOnProperty(value = "generator", havingValue = "file")
-    public void sendMessageFromFile() {
-        sendMessageFromFile(0);
-    }
-
-    private void sendMessageFromFile(int delay) {
         CameraMessage message = messageGenerator.generate();
         System.out.println(message);
         try {
-            Thread.sleep(delay);
+            Thread.sleep(message.getDelay());
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
-        if (!FileGenerator.getMessages().isEmpty())
-            sendMessageFromFile(message.getDelay());
     }
 }

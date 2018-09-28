@@ -14,7 +14,7 @@ public class CameraMessage {
     private int id;
     private String licenceplate;
     private LocalDateTime timestamp;
-    private int delay;
+    private int delay = 0;
 
     public CameraMessage(int id, String licenceplate, LocalDateTime timestamp) {
         this.id = id;
@@ -24,7 +24,7 @@ public class CameraMessage {
 
     @Override
     public String toString() {
-        return String.format("Camera Message (camera_id: %d) %s %s", id, licenceplate, timestamp.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")));
+        return String.format("Camera Message (camera_id: %d) %s %s (delay: %d)", id, licenceplate, timestamp.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")), delay);
     }
 }
 

@@ -13,14 +13,13 @@ import java.util.*;
 public class FileGenerator implements MessageGenerator {
 
     @Getter
-    private static List<CameraMessage> messages;
+    private List<CameraMessage> messages;
 
     public FileGenerator(String file_path) {
         messages = new ArrayList<>();
 
         try {
             // Create an object of file reader class with path to CSV file as a parameter.
-            System.out.println(file_path);
             FileReader filereader = new FileReader(file_path);
 
             // Create csvReader object and skip first line (Header line)
@@ -44,6 +43,8 @@ public class FileGenerator implements MessageGenerator {
 
     @Override
     public CameraMessage generate() {
+        if (messages.isEmpty())
+            System.exit(0);
         return messages.remove(0);
     }
 }
