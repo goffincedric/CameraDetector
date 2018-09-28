@@ -33,7 +33,7 @@ dependencies {
 
     compile 'com.opencsv:opencsv:4.2'
     compileOnly 'org.projectlombok:lombok:1.18.2'
-//    compile("org.springframework.boot:spring-boot-starter-amqp")
+    compile("org.springframework.boot:spring-boot-starter-amqp")
     compile group: 'com.fasterxml', name: 'jackson-xml-databind', version: '0.6.2' // https://mvnrepository.com/artifact/com.fasterxml/jackson-xml-databind
 
 

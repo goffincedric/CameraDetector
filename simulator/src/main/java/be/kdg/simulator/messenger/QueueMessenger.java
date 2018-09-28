@@ -2,10 +2,12 @@ package be.kdg.simulator.messenger;
 
 import be.kdg.simulator.generators.MessageGenerator;
 import be.kdg.simulator.model.CameraMessage;
-//import com.rabbitmq.client.Channel;
-//import com.rabbitmq.client.Connection;
-//import com.rabbitmq.client.ConnectionFactory;
-import ch.qos.logback.core.util.FixedDelay;
+import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.Connection;
+import com.rabbitmq.client.ConnectionFactory;
+import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -23,46 +25,30 @@ import java.util.concurrent.TimeoutException;
 @ConditionalOnProperty(name="messenger",havingValue = "queue")
 public class QueueMessenger implements Messenger {
 
-//    @Value("${mqtt.url}")
-//    private String uri;
-//    @Value("${mqtt.queue_name}")
-//    private String queue_name;
-
     private final MessageGenerator messageGenerator;
+    private final RabbitTemplate rabbitTemplate;
+    private final Queue queue;
 
-    public QueueMessenger(MessageGenerator messageGenerator) {
+    @Autowired
+    public QueueMessenger(MessageGenerator messageGenerator, RabbitTemplate rabbitTemplate, Queue queue) {
         this.messageGenerator = messageGenerator;
+        this.queue = queue;
+        this.rabbitTemplate = rabbitTemplate;
     }
 
     @Override
-//    @Scheduled(cron = "${messenger.frequency.normal}")
-//    @Scheduled(cron = "${messenger.frequency.peak}")
-    @Scheduled(fixedDelay = 1000)
+    @Scheduled(cron = "${messenger.frequency.normal}")
+    @Scheduled(cron = "${messenger.frequency.peak}")
     public void sendMessage() {
-//        sendMessage(messageGenerator.generate());
+        CameraMessage message = messageGenerator.generate();
+        rabbitTemplate.convertAndSend(queue.getName(), XMLSerializer.convertObjectToXML(message));
+        System.out.println("[X] Sent " + message + " to queue: " + queue.getName());
+        try {
+            Thread.sleep(message.getDelay());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
-    @Scheduled(fixedDelay = 1000)
-    public void sendMessageFromFile() {
-        //TODO
-    }
-
-//    private void sendMessage(CameraMessage message) {
-//        System.out.println(uri);
-//        ConnectionFactory factory = new ConnectionFactory();
-//        try {
-//            factory.setConnectionTimeout(30000);
-//            factory.setUri(uri);
-//            Connection connection = factory.newConnection();
-//            Channel channel = connection.createChannel();
-//            channel.queueDeclare(queue_name, true, false, false, null);
-//            channel.basicPublish("", queue_name, null, XMLSerializer.convertObjectToXML(message).getBytes());
-//            System.out.println(" [x] Sent '" + message + "'");
-//            connection.close();
-//        } catch (IOException | NoSuchAlgorithmException | URISyntaxException | KeyManagementException | TimeoutException e) {
-//            e.printStackTrace();
-//        }
-//    }
-
-
+    
 }
