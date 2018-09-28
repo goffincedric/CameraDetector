@@ -1,5 +1,4 @@
 package be.kdg.simulator.model;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import lombok.*;
 
 import java.time.LocalDateTime;
