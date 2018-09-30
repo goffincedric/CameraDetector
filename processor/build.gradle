@@ -28,4 +28,9 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-actuator')
     runtime('org.springframework.boot:spring-boot-devtools')
     testCompile('org.springframework.boot:spring-boot-starter-test')
+
+    compile 'com.opencsv:opencsv:4.2'
+    compileOnly 'org.projectlombok:lombok:1.18.2'
+    compile("org.springframework.boot:spring-boot-starter-amqp")
+    compile group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-xml', version: '2.9.7' // https://mvnrepository.com/artifact/com.fasterxml.jackson.dataformat/jackson-dataformat-xml
 }

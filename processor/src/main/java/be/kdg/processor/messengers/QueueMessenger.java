@@ -1,4 +1,4 @@
-package be.kdg.simulator.messenger;
+package be.kdg.processor.messengers;
 
 import be.kdg.simulator.generators.MessageGenerator;
 import be.kdg.simulator.model.CameraMessage;

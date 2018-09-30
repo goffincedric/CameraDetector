@@ -1,4 +1,4 @@
-package be.kdg.simulator.messenger;
+package be.kdg.processor.messengers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.SerializationFeature;

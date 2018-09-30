@@ -11,6 +11,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.util.logging.Logger;
 
 @Component
 @EnableScheduling
@@ -18,6 +19,7 @@ import javax.annotation.PostConstruct;
 public class CommandlineMessenger implements Messenger {
 
     private final MessageGenerator messageGenerator;
+    private static final Logger LOGGER = Logger.getLogger(CommandlineMessenger.class.getName());
 
     public CommandlineMessenger(MessageGenerator messageGenerator) {
         this.messageGenerator = messageGenerator;
