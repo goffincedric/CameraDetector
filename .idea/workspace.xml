@@ -2,30 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="efe4dcf4-189a-4c52-9c6f-095fca9e4714" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/processor/src/main/java/be/kdg/processor/CameraServiceConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/processor/src/main/java/be/kdg/processor/consumers/EventConsumer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/processor/src/main/java/be/kdg/processor/misc/JSONUtils.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/processor/src/main/java/be/kdg/processor/model/camera/Camera.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/processor/src/main/java/be/kdg/processor/model/camera/CameraLocation.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/processor/src/main/java/be/kdg/processor/model/camera/CameraMessage.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/processor/src/main/java/be/kdg/processor/model/camera/Segment.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/processor/src/main/java/be/kdg/processor/model/overtreding/EmissieOvertreding.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/processor/src/main/java/be/kdg/processor/model/overtreding/Overtreding.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/processor/src/main/java/be/kdg/processor/model/overtreding/SnelheidsOvertreding.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.name" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.name" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/processor/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/processor/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/processor/src/main/java/be/kdg/processor/ProcessorApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/processor/src/main/java/be/kdg/processor/ProcessorApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/processor/src/main/java/be/kdg/processor/messengers/Messenger.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/processor/src/main/java/be/kdg/processor/messengers/QueueConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/processor/src/main/java/be/kdg/processor/consumers/EventConsumerConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/processor/src/main/java/be/kdg/processor/messengers/QueueMessenger.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/processor/src/main/java/be/kdg/processor/messengers/XMLSerializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/processor/src/main/java/be/kdg/processor/misc/XMLUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/processor/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/processor/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/processor/src/test/java/be/kdg/processor/ProcessorApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/processor/src/test/java/be/kdg/processor/ProcessorApplicationTests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/simulator/src/main/java/be/kdg/simulator/generators/GeneratorConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/simulator/src/main/java/be/kdg/simulator/generators/GeneratorConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/simulator/src/main/java/be/kdg/simulator/messenger/QueueMessenger.java" beforeDir="false" afterPath="$PROJECT_DIR$/simulator/src/main/java/be/kdg/simulator/messenger/QueueMessenger.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/simulator/src/main/java/be/kdg/simulator/messenger/XMLSerializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/simulator/src/main/java/be/kdg/simulator/misc/XMLUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/simulator/src/main/java/be/kdg/simulator/generators/FileGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/simulator/src/main/java/be/kdg/simulator/generators/FileGenerator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/simulator/src/main/java/be/kdg/simulator/generators/RandomMessageGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/simulator/src/main/java/be/kdg/simulator/generators/RandomMessageGenerator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/simulator/src/main/java/be/kdg/simulator/model/CameraMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/simulator/src/main/java/be/kdg/simulator/model/CameraMessage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/simulator/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/simulator/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/simulator/src/main/resources/messages.csv" beforeDir="false" afterPath="$PROJECT_DIR$/simulator/src/main/resources/messages.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/simulator/src/test/java/be/kdg/simulator/SimulatorApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/simulator/src/test/java/be/kdg/simulator/SimulatorApplicationTests.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/simulator/.gradle/" />
@@ -159,31 +141,31 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="csv" value="403" />
+          <entry key="csv" value="415" />
           <entry key="dummy" value="47" />
           <entry key="gradle" value="83" />
-          <entry key="java" value="4994" />
-          <entry key="properties" value="515" />
+          <entry key="java" value="5511" />
+          <entry key="properties" value="555" />
           <entry key="txt" value="8" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="Groovy" value="83" />
-          <entry key="JAVA" value="4994" />
-          <entry key="PLAIN_TEXT" value="458" />
-          <entry key="Properties" value="515" />
+          <entry key="JAVA" value="5511" />
+          <entry key="PLAIN_TEXT" value="470" />
+          <entry key="Properties" value="555" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="class" value="3" />
-          <entry key="csv" value="13" />
+          <entry key="csv" value="14" />
           <entry key="gradle" value="16" />
           <entry key="iml" value="1" />
-          <entry key="java" value="160" />
+          <entry key="java" value="168" />
           <entry key="json" value="1" />
-          <entry key="properties" value="18" />
+          <entry key="properties" value="20" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
@@ -191,21 +173,59 @@
           <entry key="CLASS" value="3" />
           <entry key="Groovy" value="16" />
           <entry key="IDEA_MODULE" value="1" />
-          <entry key="JAVA" value="160" />
+          <entry key="JAVA" value="168" />
           <entry key="JSON" value="1" />
-          <entry key="PLAIN_TEXT" value="13" />
-          <entry key="Properties" value="18" />
+          <entry key="PLAIN_TEXT" value="14" />
+          <entry key="Properties" value="20" />
         </counts>
       </usages-collector>
     </session>
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/processor/src/test/java/be/kdg/processor/ProcessorApplicationTests.java">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/simulator/src/main/java/be/kdg/simulator/generators/FileGenerator.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="28" column="35" selection-start-line="28" selection-start-column="35" selection-end-line="28" selection-end-column="35" />
+            <state relative-caret-position="444">
+              <caret line="43" column="42" selection-start-line="43" selection-start-column="42" selection-end-line="43" selection-end-column="42" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/simulator/src/main/java/be/kdg/simulator/generators/GeneratorConfig.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="272">
+              <caret line="16" column="42" selection-start-line="16" selection-start-column="42" selection-end-line="16" selection-end-column="42" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#518#519#0" expanded="true" />
+                <element signature="e#569#570#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/simulator/src/main/resources/application.properties">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="391">
+              <caret line="23" column="44" selection-start-line="23" selection-start-column="44" selection-end-line="23" selection-end-column="44" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/simulator/src/main/java/be/kdg/simulator/model/CameraMessage.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="170">
+              <caret line="15" column="66" selection-start-line="15" selection-start-column="66" selection-end-line="15" selection-end-column="66" />
+              <folding>
+                <element signature="e#365#388#1" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -220,6 +240,17 @@
         <option value="Class" />
       </list>
     </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>licence</find>
+    </findStrings>
+    <replaceStrings>
+      <replace>license</replace>
+    </replaceStrings>
+    <dirStrings>
+      <dir>D:\School\School 2018-2019\Software architecture\CameraDetector\simulator</dir>
+    </dirStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -628,7 +659,7 @@
     </option>
     <option name="modificationStamps">
       <map>
-        <entry key="$PROJECT_DIR$/processor" value="4612965157222" />
+        <entry key="$PROJECT_DIR$/processor" value="4612967043237" />
         <entry key="$PROJECT_DIR$/processor/.gradle" value="0" />
         <entry key="$PROJECT_DIR$/processor/build.gradle" value="3341759740" />
         <entry key="$PROJECT_DIR$/processor/settings.gradle" value="1559373882" />
@@ -902,16 +933,9 @@
         <option value="$PROJECT_DIR$/simulator/build.gradle" />
         <option value="$PROJECT_DIR$/simulator/src/main/java/be/kdg/simulator/SimulatorApplication.java" />
         <option value="$PROJECT_DIR$/simulator/src/main/java/be/kdg/simulator/messenger/Messenger.java" />
-        <option value="$PROJECT_DIR$/simulator/src/main/resources/messages.csv" />
-        <option value="$PROJECT_DIR$/simulator/src/main/java/be/kdg/simulator/model/CameraMessage.java" />
-        <option value="$PROJECT_DIR$/simulator/src/main/resources/application.properties" />
         <option value="$PROJECT_DIR$/simulator/src/main/java/be/kdg/simulator/messenger/CommandlineMessenger.java" />
         <option value="$PROJECT_DIR$/simulator/src/main/java/be/kdg/simulator/messenger/XMLSerializer.java" />
-        <option value="$PROJECT_DIR$/simulator/src/main/java/be/kdg/simulator/generators/RandomMessageGenerator.java" />
-        <option value="$PROJECT_DIR$/simulator/src/main/java/be/kdg/simulator/generators/FileGenerator.java" />
-        <option value="$PROJECT_DIR$/simulator/src/test/java/be/kdg/simulator/SimulatorApplicationTests.java" />
         <option value="$PROJECT_DIR$/processor/src/main/java/be/kdg/processor/model/CameraMessage.java" />
-        <option value="$PROJECT_DIR$/simulator/src/main/java/be/kdg/simulator/generators/GeneratorConfig.java" />
         <option value="$PROJECT_DIR$/processor/src/main/java/be/kdg/processor/messengers/QueueMessenger.java" />
         <option value="$PROJECT_DIR$/processor/src/main/resources/application.properties" />
         <option value="$PROJECT_DIR$/processor/src/main/java/be/kdg/processor/messengers/EventConsumerConfig.java" />
@@ -932,6 +956,13 @@
         <option value="$PROJECT_DIR$/processor/src/main/java/be/kdg/processor/model/camera/CameraLocation.java" />
         <option value="$PROJECT_DIR$/processor/src/main/java/be/kdg/processor/misc/JSONUtils.java" />
         <option value="$PROJECT_DIR$/processor/src/test/java/be/kdg/processor/ProcessorApplicationTests.java" />
+        <option value="$PROJECT_DIR$/simulator/src/main/resources/messages.csv" />
+        <option value="$PROJECT_DIR$/simulator/src/main/java/be/kdg/simulator/generators/RandomMessageGenerator.java" />
+        <option value="$PROJECT_DIR$/simulator/src/test/java/be/kdg/simulator/SimulatorApplicationTests.java" />
+        <option value="$PROJECT_DIR$/simulator/src/main/java/be/kdg/simulator/generators/GeneratorConfig.java" />
+        <option value="$PROJECT_DIR$/simulator/src/main/java/be/kdg/simulator/generators/FileGenerator.java" />
+        <option value="$PROJECT_DIR$/simulator/src/main/resources/application.properties" />
+        <option value="$PROJECT_DIR$/simulator/src/main/java/be/kdg/simulator/model/CameraMessage.java" />
       </list>
     </option>
   </component>
@@ -965,11 +996,6 @@
             <path>
               <item name="CameraControle" type="b2602c69:ProjectViewProjectNode" />
               <item name="processor" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="libs" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="CameraControle" type="b2602c69:ProjectViewProjectNode" />
-              <item name="processor" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -992,53 +1018,6 @@
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="processor" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="CameraControle" type="b2602c69:ProjectViewProjectNode" />
-              <item name="processor" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="processor" type="462c0819:PsiDirectoryNode" />
-              <item name="consumers" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="CameraControle" type="b2602c69:ProjectViewProjectNode" />
-              <item name="processor" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="processor" type="462c0819:PsiDirectoryNode" />
-              <item name="misc" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="CameraControle" type="b2602c69:ProjectViewProjectNode" />
-              <item name="processor" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="processor" type="462c0819:PsiDirectoryNode" />
-              <item name="model" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="CameraControle" type="b2602c69:ProjectViewProjectNode" />
-              <item name="processor" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="processor" type="462c0819:PsiDirectoryNode" />
-              <item name="model" type="462c0819:PsiDirectoryNode" />
-              <item name="camera" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="CameraControle" type="b2602c69:ProjectViewProjectNode" />
-              <item name="processor" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="processor" type="462c0819:PsiDirectoryNode" />
-              <item name="model" type="462c0819:PsiDirectoryNode" />
-              <item name="overtreding" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="CameraControle" type="b2602c69:ProjectViewProjectNode" />
@@ -1194,7 +1173,7 @@
     <property name="RequestMappingsPanelWidth1" value="75" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1538402114852" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1538404731448" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit4" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit4" value="" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../../Functional Programming/Week 2/ThinkFunctional" />
@@ -1249,7 +1228,23 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.ProcessorApplicationTests.testCameraService">
+  <component name="RunManager" selected="Spring Boot.SimulatorApplication">
+    <configuration name="CommandlineMessengerTest.sendMessage" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="simulator" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="be.kdg.simulator.messenger.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="be.kdg.simulator.messenger" />
+      <option name="MAIN_CLASS_NAME" value="be.kdg.simulator.messenger.CommandlineMessengerTest" />
+      <option name="METHOD_NAME" value="sendMessage" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="ProcessorApplicationTests.testCameraService" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="processor" />
       <extension name="coverage">
@@ -1303,9 +1298,11 @@
       <item itemvalue="Spring Boot.ProcessorApplication" />
       <item itemvalue="JUnit.SimulatorApplicationTests" />
       <item itemvalue="JUnit.ProcessorApplicationTests.testCameraService" />
+      <item itemvalue="JUnit.CommandlineMessengerTest.sendMessage" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.CommandlineMessengerTest.sendMessage" />
         <item itemvalue="JUnit.ProcessorApplicationTests.testCameraService" />
         <item itemvalue="JUnit.SimulatorApplicationTests" />
       </list>
@@ -1367,12 +1364,6 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="ProcessorApplicationTests_testCameraService - 2018.10.01 at 15h 44m 22s.xml">
-      <configuration name="ProcessorApplicationTests.testCameraService" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="ProcessorApplicationTests_testCameraService - 2018.10.01 at 15h 44m 30s.xml">
-      <configuration name="ProcessorApplicationTests.testCameraService" configurationId="JUnit" />
-    </history-entry>
     <history-entry file="ProcessorApplicationTests_testCameraService - 2018.10.01 at 15h 44m 38s.xml">
       <configuration name="ProcessorApplicationTests.testCameraService" configurationId="JUnit" />
     </history-entry>
@@ -1397,9 +1388,15 @@
     <history-entry file="ProcessorApplicationTests_testCameraService - 2018.10.01 at 15h 45m 36s.xml">
       <configuration name="ProcessorApplicationTests.testCameraService" configurationId="JUnit" />
     </history-entry>
+    <history-entry file="CommandlineMessengerTest_sendMessage - 2018.10.01 at 16h 04m 45s.xml">
+      <configuration name="CommandlineMessengerTest.sendMessage" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="CommandlineMessengerTest_sendMessage - 2018.10.01 at 16h 09m 00s.xml">
+      <configuration name="CommandlineMessengerTest.sendMessage" configurationId="JUnit" />
+    </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="70758000" />
+    <option name="totallyTimeSpent" value="73121000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-1928" y="-271" width="1936" height="1056" extended-state="6" />
@@ -1414,7 +1411,7 @@
       <window_info id="Capture Tool" order="6" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32936078" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49946696" visible="true" weight="0.32936078" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49946696" weight="0.32936078" />
       <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.49946696" weight="0.3997833" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -1426,7 +1423,7 @@
       <window_info anchor="bottom" id="Messages" order="11" weight="0.32936078" />
       <window_info anchor="bottom" id="Database Changes" order="12" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="13" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Run Dashboard" order="14" sideWeight="0.49946696" weight="0.32936078" />
+      <window_info active="true" anchor="bottom" id="Run Dashboard" order="14" sideWeight="0.49946696" visible="true" weight="0.32936078" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -1454,10 +1451,10 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/simulator/src/main/java/be/kdg/simulator/messenger/CommandlineMessenger.java</url>
-          <line>31</line>
+          <url>file://$PROJECT_DIR$/simulator/src/main/java/be/kdg/simulator/model/CameraMessage.java</url>
+          <line>42</line>
           <properties />
-          <option name="timeStamp" value="3" />
+          <option name="timeStamp" value="14" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -1512,30 +1509,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/simulator/src/main/resources/messages.csv">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="11" column="30" selection-start-line="11" selection-start-column="30" selection-end-line="11" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/simulator/src/main/java/be/kdg/simulator/model/CameraMessage.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="31" selection-start-column="31" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/simulator/src/main/java/be/kdg/simulator/messenger/CommandlineMessenger.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="32" column="8" selection-start-line="32" selection-start-column="8" selection-end-line="32" selection-end-column="8" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/simulator/src/main/java/be/kdg/simulator/Simulation/Simulator.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="170">
@@ -1550,44 +1523,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/simulator/src/main/java/be/kdg/simulator/generators/GeneratorConfig.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="5" column="60" selection-start-line="5" selection-start-column="60" selection-end-line="5" selection-end-column="60" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/simulator/src/main/java/be/kdg/simulator/generators/RandomMessageGenerator.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="22" column="10" selection-start-line="22" selection-start-column="10" selection-end-line="22" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/simulator/src/main/java/be/kdg/simulator/generators/FileGenerator.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="13" lean-forward="true" selection-start-line="13" selection-end-line="13" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.amqp/spring-rabbit/2.0.6.RELEASE/e65c9ce773e25cfd85b3dd5938300e7e0739f3db/spring-rabbit-2.0.6.RELEASE-sources.jar!/org/springframework/amqp/rabbit/core/RabbitTemplate.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="197">
           <caret line="142" column="13" selection-start-line="142" selection-start-column="13" selection-end-line="142" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/simulator/src/main/resources/application.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret selection-end-line="7" selection-end-column="30" />
         </state>
       </provider>
     </entry>
@@ -1612,20 +1551,8 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/processor/src/main/java/be/kdg/processor/misc/JSONMapper.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="6" column="23" selection-start-line="6" selection-start-column="23" selection-end-line="6" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/simulator/src/main/java/be/kdg/simulator/misc/XMLUtils.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="17" column="60" lean-forward="true" selection-start-line="17" selection-start-column="60" selection-end-line="17" selection-end-column="60" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/processor/src/main/java/be/kdg/processor/misc/JSONMapper.java" />
+    <entry file="file://$PROJECT_DIR$/simulator/src/main/java/be/kdg/simulator/misc/XMLUtils.java" />
     <entry file="file://$PROJECT_DIR$/simulator/src/main/java/be/kdg/simulator/messenger/QueueConfig.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="153">
@@ -1643,44 +1570,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/processor/src/main/java/be/kdg/processor/misc/XMLUtils.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="19" column="24" lean-forward="true" selection-start-line="19" selection-start-column="24" selection-end-line="19" selection-end-column="24" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/processor/src/main/java/be/kdg/processor/model/camera/CameraMessage.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/processor/src/main/java/be/kdg/processor/model/camera/Segment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="19" lean-forward="true" selection-start-line="19" selection-end-line="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/processor/src/main/java/be/kdg/processor/model/overtreding/Overtreding.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="6" column="24" selection-start-line="6" selection-start-column="24" selection-end-line="6" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/simulator/src/test/java/be/kdg/simulator/SimulatorApplicationTests.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="23" column="36" selection-start-line="23" selection-start-column="36" selection-end-line="23" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/processor/src/main/java/be/kdg/processor/misc/XMLUtils.java" />
+    <entry file="file://$PROJECT_DIR$/processor/src/main/java/be/kdg/processor/model/camera/CameraMessage.java" />
+    <entry file="file://$PROJECT_DIR$/processor/src/main/java/be/kdg/processor/model/camera/Segment.java" />
+    <entry file="file://$PROJECT_DIR$/processor/src/main/java/be/kdg/processor/model/overtreding/Overtreding.java" />
     <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-test/5.0.9.RELEASE/e1e6cff03e69e4db489d723c9a1c91afe8e0c637/spring-test-5.0.9.RELEASE-sources.jar!/org/springframework/test/context/junit4/statements/RunAfterTestExecutionCallbacks.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="175">
@@ -1713,25 +1606,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/simulator/src/test/java/be/kdg/simulator/messenger/CommandlineMessengerTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="19" column="32" selection-start-line="19" selection-start-column="32" selection-end-line="19" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/processor/src/main/java/be/kdg/processor/consumers/EventConsumerConfig.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="10" column="34" lean-forward="true" selection-start-line="10" selection-start-column="34" selection-end-line="14" selection-end-column="5" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#305#306#0" expanded="true" />
-            <element signature="e#347#348#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/processor/src/main/java/be/kdg/processor/consumers/EventConsumerConfig.java" />
     <entry file="file://$PROJECT_DIR$/simulator/build.gradle">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="432">
@@ -1753,67 +1628,13 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/processor/src/main/java/be/kdg/processor/model/camera/Camera.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="197">
-          <caret line="14" column="13" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/processor/src/main/java/be/kdg/processor/misc/JSONUtils.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="347">
-          <caret line="25" column="33" selection-start-line="25" selection-start-column="33" selection-end-line="25" selection-end-column="33" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/processor/src/main/java/be/kdg/processor/model/camera/CameraLocation.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="16" column="24" lean-forward="true" selection-start-line="16" selection-start-column="24" selection-end-line="16" selection-end-column="24" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/processor/src/main/java/be/kdg/processor/consumers/EventConsumer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="11" column="28" selection-start-line="11" selection-start-column="28" selection-end-line="11" selection-end-column="28" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/processor/src/main/java/be/kdg/processor/model/overtreding/SnelheidsOvertreding.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="6" column="53" selection-start-line="6" selection-start-column="53" selection-end-line="6" selection-end-column="53" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/processor/src/main/java/be/kdg/processor/model/overtreding/EmissieOvertreding.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="6" column="51" selection-start-line="6" selection-start-column="51" selection-end-line="6" selection-end-column="51" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/processor/src/main/java/be/kdg/processor/CameraServiceConfig.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="11" column="34" selection-start-line="11" selection-start-column="34" selection-end-line="11" selection-end-column="34" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/processor/src/main/java/be/kdg/processor/model/camera/Camera.java" />
+    <entry file="file://$PROJECT_DIR$/processor/src/main/java/be/kdg/processor/misc/JSONUtils.java" />
+    <entry file="file://$PROJECT_DIR$/processor/src/main/java/be/kdg/processor/model/camera/CameraLocation.java" />
+    <entry file="file://$PROJECT_DIR$/processor/src/main/java/be/kdg/processor/consumers/EventConsumer.java" />
+    <entry file="file://$PROJECT_DIR$/processor/src/main/java/be/kdg/processor/model/overtreding/SnelheidsOvertreding.java" />
+    <entry file="file://$PROJECT_DIR$/processor/src/main/java/be/kdg/processor/model/overtreding/EmissieOvertreding.java" />
+    <entry file="file://$PROJECT_DIR$/processor/src/main/java/be/kdg/processor/CameraServiceConfig.java" />
     <entry file="file://$PROJECT_DIR$/processor/build.gradle">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="279">
@@ -1821,10 +1642,94 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/simulator/src/main/resources/messages.csv">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="18" selection-start-column="18" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/simulator/src/main/java/be/kdg/simulator/generators/RandomMessageGenerator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="22" column="17" selection-start-line="22" selection-start-column="17" selection-end-line="22" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/processor/src/test/java/be/kdg/processor/ProcessorApplicationTests.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="28" column="35" selection-start-line="28" selection-start-column="35" selection-end-line="28" selection-end-column="35" />
+        <state relative-caret-position="58">
+          <caret line="19" column="27" selection-start-line="19" selection-start-column="27" selection-end-line="19" selection-end-column="27" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/simulator/src/test/java/be/kdg/simulator/messenger/CommandlineMessengerTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="19" column="32" selection-start-line="19" selection-start-column="32" selection-end-line="19" selection-end-column="32" />
+          <folding>
+            <element signature="e#489#490#0" expanded="true" />
+            <element signature="e#528#529#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/simulator/src/test/java/be/kdg/simulator/SimulatorApplicationTests.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="22" column="37" lean-forward="true" selection-start-line="22" selection-start-column="37" selection-end-line="22" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/simulator/src/main/java/be/kdg/simulator/messenger/CommandlineMessenger.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="336">
+          <caret line="31" column="60" lean-forward="true" selection-start-line="31" selection-start-column="60" selection-end-line="31" selection-end-column="60" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/simulator/src/main/java/be/kdg/simulator/generators/GeneratorConfig.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="16" column="42" selection-start-line="16" selection-start-column="42" selection-end-line="16" selection-end-column="42" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#518#519#0" expanded="true" />
+            <element signature="e#569#570#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/simulator/src/main/java/be/kdg/simulator/generators/FileGenerator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="444">
+          <caret line="43" column="42" selection-start-line="43" selection-start-column="42" selection-end-line="43" selection-end-column="42" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/simulator/src/main/resources/application.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="391">
+          <caret line="23" column="44" selection-start-line="23" selection-start-column="44" selection-end-line="23" selection-end-column="44" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/simulator/src/main/java/be/kdg/simulator/model/CameraMessage.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="15" column="66" selection-start-line="15" selection-start-column="66" selection-end-line="15" selection-end-column="66" />
+          <folding>
+            <element signature="e#365#388#1" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

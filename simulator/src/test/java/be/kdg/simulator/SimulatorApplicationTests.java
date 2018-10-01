@@ -6,6 +6,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -18,10 +19,13 @@ public class SimulatorApplicationTests {
     @Autowired
     private MessageGenerator messageGenerator;
 
+    @Value("${licenseplate.regex}")
+    private String licenseplaceRegex;
+
     @Test
     @ConditionalOnProperty(value = "generator", havingValue = "random")
     public void testMessageGenerator() {
         CameraMessage cameraMessage = messageGenerator.generate();
-        Assert.assertTrue(cameraMessage.getLicenceplate().matches("^[1-8]-[A-Z]{3}-[0-9]{3}$"));
+        Assert.assertTrue(cameraMessage.getLicenseplate().matches(licenseplaceRegex));
     }
 }

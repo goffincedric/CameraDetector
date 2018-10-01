@@ -4,16 +4,15 @@ import be.kdg.simulator.model.CameraMessage;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 import lombok.Getter;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.logging.Logger;
 
 public class FileGenerator implements MessageGenerator {
-
     private static final Logger LOGGER = Logger.getLogger(FileGenerator.class.getName());
 
     @Getter
@@ -34,11 +33,17 @@ public class FileGenerator implements MessageGenerator {
 
             // Create message list from CSV lines
             for (String[] row : allData) {
-                CameraMessage message = new CameraMessage(
-                        Integer.parseInt(row[0]),
-                        row[1], LocalDateTime.parse(row[2], DateTimeFormatter.ofPattern("yyyy-M-d H:mm:ss")),
-                        Integer.parseInt(row[3]));
-                messages.add(message);
+                try {
+                    CameraMessage message = new CameraMessage(
+                            Integer.parseInt(row[0]),
+                            row[1],
+                            LocalDateTime.now(),
+                            Integer.parseInt(row[2]));
+                    messages.add(message);
+                } catch (IllegalArgumentException iae) {
+                    LOGGER.severe(iae.getMessage());
+                }
+
             }
         } catch (FileNotFoundException fnfe) {
             LOGGER.severe("File with path '" + filePath + "' does not exist!");
