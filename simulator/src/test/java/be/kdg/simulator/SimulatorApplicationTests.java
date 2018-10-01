@@ -24,5 +24,4 @@ public class SimulatorApplicationTests {
         CameraMessage cameraMessage = messageGenerator.generate();
         Assert.assertTrue(cameraMessage.getLicenceplate().matches("^[1-8]-[A-Z]{3}-[0-9]{3}$"));
     }
-
 }

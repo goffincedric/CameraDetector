@@ -1,4 +1,4 @@
-package be.kdg.processor.messengers;
+package be.kdg.simulator.misc;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -12,8 +12,8 @@ import java.util.logging.Logger;
  * @author Cédric Goffin
  * 25/09/2018 14:17
  */
-public class XMLSerializer {
-    private static final Logger LOGGER = Logger.getLogger(XMLSerializer.class.getName());
+public class XMLUtils {
+    private static final Logger LOGGER = Logger.getLogger(XMLUtils.class.getName());
 
     public static String convertObjectToXML(Object object) {
         XmlMapper mapper = new XmlMapper();
@@ -26,19 +26,5 @@ public class XMLSerializer {
             e.printStackTrace();
         }
         return xml;
-    }
-
-    public static Object convertXMLToObject(String string, Class objectClass) {
-        XmlMapper mapper = new XmlMapper();
-        mapper.registerModule(new JavaTimeModule());
-
-        Object object = null;
-        try {
-            object = mapper.readValue(string, objectClass);
-        } catch (IOException e) {
-            LOGGER.severe("Message: '" + string + "' is niet van het verwachtte formaat!");
-            e.printStackTrace();
-        }
-        return object;
     }
 }
