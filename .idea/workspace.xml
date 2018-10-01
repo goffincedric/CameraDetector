@@ -3,12 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="efe4dcf4-189a-4c52-9c6f-095fca9e4714" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/simulator/src/main/java/be/kdg/simulator/generators/FileGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/simulator/src/main/java/be/kdg/simulator/generators/FileGenerator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/simulator/src/main/java/be/kdg/simulator/generators/RandomMessageGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/simulator/src/main/java/be/kdg/simulator/generators/RandomMessageGenerator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/simulator/src/main/java/be/kdg/simulator/model/CameraMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/simulator/src/main/java/be/kdg/simulator/model/CameraMessage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/simulator/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/simulator/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/simulator/src/main/resources/messages.csv" beforeDir="false" afterPath="$PROJECT_DIR$/simulator/src/main/resources/messages.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/simulator/src/test/java/be/kdg/simulator/SimulatorApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/simulator/src/test/java/be/kdg/simulator/SimulatorApplicationTests.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/simulator/.gradle/" />
     <ignored path="$PROJECT_DIR$/simulator/build/" />
@@ -183,14 +177,23 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/simulator/src/main/java/be/kdg/simulator/generators/FileGenerator.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="444">
-              <caret line="43" column="42" selection-start-line="43" selection-start-column="42" selection-end-line="43" selection-end-column="42" />
+            <state relative-caret-position="313">
+              <caret line="45" lean-forward="true" selection-start-line="45" selection-end-line="45" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/simulator/src/main/java/be/kdg/simulator/SimulatorApplication.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="272">
+              <caret line="17" column="23" selection-start-line="17" selection-start-column="23" selection-end-line="17" selection-end-column="23" />
             </state>
           </provider>
         </entry>
@@ -218,11 +221,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/simulator/src/main/java/be/kdg/simulator/model/CameraMessage.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="170">
-              <caret line="15" column="66" selection-start-line="15" selection-start-column="66" selection-end-line="15" selection-end-column="66" />
+            <state relative-caret-position="305">
+              <caret line="45" selection-start-line="45" selection-end-line="45" />
               <folding>
                 <element signature="e#365#388#1" expanded="true" />
               </folding>
@@ -1173,7 +1176,7 @@
     <property name="RequestMappingsPanelWidth1" value="75" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1538404883902" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1538405089167" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit4" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit4" value="" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../../Functional Programming/Week 2/ThinkFunctional" />
@@ -1396,7 +1399,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="73121000" />
+    <option name="totallyTimeSpent" value="73335000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-1928" y="-271" width="1936" height="1056" extended-state="6" />
@@ -1516,13 +1519,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/processor/src/main/java/be/kdg/processor/messengers/Messenger.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="17" selection-start-line="2" selection-start-column="17" selection-end-line="2" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/processor/src/main/java/be/kdg/processor/messengers/Messenger.java" />
     <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.amqp/spring-rabbit/2.0.6.RELEASE/e65c9ce773e25cfd85b3dd5938300e7e0739f3db/spring-rabbit-2.0.6.RELEASE-sources.jar!/org/springframework/amqp/rabbit/core/RabbitTemplate.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="197">
@@ -1708,8 +1705,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/simulator/src/main/java/be/kdg/simulator/generators/FileGenerator.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="444">
-          <caret line="43" column="42" selection-start-line="43" selection-start-column="42" selection-end-line="43" selection-end-column="42" />
+        <state relative-caret-position="313">
+          <caret line="45" lean-forward="true" selection-start-line="45" selection-end-line="45" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -1725,8 +1722,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/simulator/src/main/java/be/kdg/simulator/model/CameraMessage.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="15" column="66" selection-start-line="15" selection-start-column="66" selection-end-line="15" selection-end-column="66" />
+        <state relative-caret-position="305">
+          <caret line="45" selection-start-line="45" selection-end-line="45" />
           <folding>
             <element signature="e#365#388#1" expanded="true" />
           </folding>
