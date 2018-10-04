@@ -11,5 +11,12 @@ import lombok.*;
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-public class SpeedingFine implements Fine {
+public class SpeedingFine extends Fine {
+    private int actualSpeed;
+    private int allowedSpeed;
+
+    @Override
+    public String toString() {
+        return "Amount: " + super.getAmount() + "; Speed: " + actualSpeed + "; Speedlimit: " + allowedSpeed;
+    }
 }

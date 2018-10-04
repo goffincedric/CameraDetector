@@ -17,6 +17,7 @@ public class Camera {
     private CameraLocation location;
     private Segment segment;
     private int euroNorm;
+    private CameraType cameraType;
 
     public Camera(int cameraId, CameraLocation location, Segment segment) {
         this.cameraId = cameraId;
@@ -28,5 +29,9 @@ public class Camera {
         this.cameraId = cameraId;
         this.location = location;
         this.euroNorm = euroNorm;
+    }
+
+    public void setCameraType(CameraType cameraType) {
+        this.cameraType = cameraType;
     }
 }

@@ -1,4 +1,4 @@
-package be.kdg.processor.misc;
+package be.kdg.processor.utils;
 
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;

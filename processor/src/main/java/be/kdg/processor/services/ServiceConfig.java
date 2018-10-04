@@ -1,17 +1,24 @@
-package be.kdg.processor;
+package be.kdg.processor.services;
 
 import be.kdg.sa.services.CameraServiceProxy;
+import be.kdg.sa.services.LicensePlateServiceProxy;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
  * @author Cédric Goffin
- * 01/10/2018 15:10
+ * 03/10/2018 15:46
  */
 @Configuration
-public class CameraServiceConfig {
+public class ServiceConfig {
+
     @Bean
     public CameraServiceProxy cameraServiceProxy() {
         return new CameraServiceProxy();
+    }
+
+    @Bean
+    public LicensePlateServiceProxy licensePlateServiceProxy() {
+        return new LicensePlateServiceProxy();
     }
 }

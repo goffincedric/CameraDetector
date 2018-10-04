@@ -11,5 +11,12 @@ import lombok.*;
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-public class EmissionFine implements Fine {
+public class EmissionFine extends Fine {
+    private int actualEmission;
+    private int allowedEmission;
+
+    @Override
+    public String toString() {
+        return "Amount: " + super.getAmount() + "; Emission: " + actualEmission + "; Allowed emission: " + allowedEmission;
+    }
 }
