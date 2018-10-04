@@ -12,7 +12,6 @@ import java.time.format.DateTimeFormatter;
 public class CameraMessage {
     private int id;
     private String licenseplate;
-
     private LocalDateTime timestamp;
     private int delay = 0;
 

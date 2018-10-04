@@ -1,9 +1,7 @@
-package be.kdg.processor.misc;
+package be.kdg.processor.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.rabbitmq.tools.json.JSONUtil;
 
 import java.io.IOException;
 import java.util.logging.Logger;
