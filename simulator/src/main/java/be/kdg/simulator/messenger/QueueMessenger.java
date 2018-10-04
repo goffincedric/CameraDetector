@@ -14,27 +14,20 @@ import org.springframework.stereotype.Component;
 import java.util.logging.Logger;
 
 @Component
-@EnableScheduling
 @ConditionalOnProperty(name="messenger",havingValue = "queue")
 public class QueueMessenger implements Messenger {
-
-    private final MessageGenerator messageGenerator;
     private final RabbitTemplate rabbitTemplate;
     private final Queue queue;
     private static final Logger LOGGER = Logger.getLogger(QueueMessenger.class.getName());
 
     @Autowired
-    public QueueMessenger(MessageGenerator messageGenerator, RabbitTemplate rabbitTemplate, Queue queue) {
-        this.messageGenerator = messageGenerator;
+    public QueueMessenger(RabbitTemplate rabbitTemplate, Queue queue) {
         this.queue = queue;
         this.rabbitTemplate = rabbitTemplate;
     }
 
     @Override
-    @Scheduled(cron = "${messenger.frequency.normal}")
-    @Scheduled(cron = "${messenger.frequency.peak}")
-    public void sendMessage() {
-        CameraMessage message = messageGenerator.generate();
+    public void sendMessage(CameraMessage message) {
         rabbitTemplate.convertAndSend(queue.getName(), XMLUtils.convertObjectToXML(message));
         LOGGER.info(this.getClass().getCanonicalName() + ": Sent '" + message + "' to queue: " + queue.getName());
         try {

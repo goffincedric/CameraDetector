@@ -11,20 +11,20 @@ import java.time.format.DateTimeFormatter;
 @AllArgsConstructor
 public class CameraMessage {
     private int id;
-    private String licenceplate;
+    private String licenseplate;
 
     private LocalDateTime timestamp;
     private int delay = 0;
 
-    public CameraMessage(int id, String licenceplate, LocalDateTime timestamp) {
+    public CameraMessage(int id, String licenseplate, LocalDateTime timestamp) {
         this.id = id;
-        this.licenceplate = licenceplate;
+        this.licenseplate = licenseplate;
         this.timestamp = timestamp;
     }
 
     @Override
     public String toString() {
-        return String.format("Camera Message (camera_id: %d) %s %s (delay: %d)", id, licenceplate, timestamp.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")), delay);
+        return String.format("Camera Message (camera_id: %d) %s %s (delay: %d)", id, licenseplate, timestamp.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")), delay);
     }
 }
 
