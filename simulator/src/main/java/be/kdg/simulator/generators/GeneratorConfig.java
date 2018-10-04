@@ -9,12 +9,12 @@ import org.springframework.context.annotation.Configuration;
 public class GeneratorConfig {
 
     @Value("${file_path}")
-    private String file_path;
+    private String filePath;
 
     @Bean
     @ConditionalOnProperty(value = "generator", havingValue = "file")
     public MessageGenerator fileGenerator(){
-        return new FileGenerator(file_path);
+        return new FileGenerator(filePath);
     }
 
     @Bean

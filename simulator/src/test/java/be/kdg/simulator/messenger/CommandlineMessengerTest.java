@@ -1,5 +1,6 @@
 package be.kdg.simulator.messenger;
 
+import be.kdg.simulator.generators.MessageGenerator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,11 +13,9 @@ import static org.junit.Assert.*;
 @SpringBootTest
 public class CommandlineMessengerTest {
 
-    @Autowired
-    private Messenger messenger;
-
     @Test
-    public void sendMessage() {
-        messenger.sendMessage();
+    @Autowired
+    public void sendMessage(Messenger messenger, MessageGenerator generator) {
+        messenger.sendMessage(generator.generate());
     }
 }

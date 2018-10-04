@@ -13,7 +13,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Licenseplate {
-    private int plateId;
+    private String plateId;
     private String nationalNumber;
     private int euroNumber;
 }
