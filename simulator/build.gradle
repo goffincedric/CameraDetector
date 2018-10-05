@@ -35,5 +35,12 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-amqp")
     compile group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-xml', version: '2.9.7' // https://mvnrepository.com/artifact/com.fasterxml.jackson.dataformat/jackson-dataformat-xml
 
-    compile group: 'org.quartz-scheduler', name: 'quartz', version: '2.3.0' // https://mvnrepository.com/artifact/org.quartz-scheduler/quartz
+//    compile group: 'org.springframework.boot', name: 'spring-boot-starter-quartz', version: '2.0.5.RELEASE' // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-quartz
+    // https://mvnrepository.com/artifact/org.quartz-scheduler/quartz
+    compile group: 'org.quartz-scheduler', name: 'quartz', version: '2.3.0'
+    // https://mvnrepository.com/artifact/org.springframework/spring-context-support
+    compile group: 'org.springframework', name: 'spring-context-support', version: '5.1.0.RELEASE'
+
+
+
 }
