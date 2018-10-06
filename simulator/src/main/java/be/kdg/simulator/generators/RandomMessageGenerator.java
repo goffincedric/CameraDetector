@@ -15,7 +15,7 @@ public class RandomMessageGenerator implements MessageGenerator {
     public CameraMessage generate() {
         Random random = new Random();
         CameraMessage message = new CameraMessage(
-                random.nextInt(1000),
+                random.nextInt(5)+1,
                 String.format("%s-%S-%s", RandomStringUtils.random(1, "12345678"), RandomStringUtils.random(3, true, false), RandomStringUtils.random(3, false, true)),
                 LocalDateTime.now(),
                 0
