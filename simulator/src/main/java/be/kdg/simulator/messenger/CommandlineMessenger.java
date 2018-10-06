@@ -14,10 +14,5 @@ public class CommandlineMessenger implements Messenger {
     @Override
     public void sendMessage(CameraMessage message) {
         System.out.println(message);
-        try {
-            Thread.sleep(message.getDelay());
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 }
