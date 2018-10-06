@@ -45,7 +45,7 @@ public class Processor {
         messageList.clear();
 
         messages.forEach(message -> {
-            Camera camera = informationServiceAdapter.getCamera(message.getId());
+            Camera camera = informationServiceAdapter.getCamera(message.getCameraId());
             if (camera != null) {
                 Licenseplate licenseplate = informationServiceAdapter.getLicensePlate(message.getLicenseplate());
                 List<Fine> fines = new ArrayList<>();
