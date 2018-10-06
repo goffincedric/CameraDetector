@@ -1,9 +1,9 @@
-package be.kdg.processor.finedetection;
+package be.kdg.processor.fine.finedetection;
 
-import be.kdg.processor.model.camera.Camera;
-import be.kdg.processor.model.camera.CameraMessage;
-import be.kdg.processor.model.fine.Fine;
-import be.kdg.processor.model.licenseplate.Licenseplate;
+import be.kdg.processor.camera.Camera;
+import be.kdg.processor.camera.CameraMessage;
+import be.kdg.processor.fine.Fine;
+import be.kdg.processor.licenseplate.Licenseplate;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

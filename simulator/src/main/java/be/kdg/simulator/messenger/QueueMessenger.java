@@ -1,14 +1,11 @@
 package be.kdg.simulator.messenger;
 
-import be.kdg.simulator.generators.MessageGenerator;
-import be.kdg.simulator.misc.XMLUtils;
-import be.kdg.simulator.model.CameraMessage;
+import be.kdg.simulator.utils.XMLUtils;
+import be.kdg.simulator.camera.CameraMessage;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.logging.Logger;

@@ -1,11 +1,11 @@
-package be.kdg.processor;
+package be.kdg.processor.processor;
 
-import be.kdg.processor.finedetection.FineDetector;
-import be.kdg.processor.model.fine.Fine;
-import be.kdg.processor.model.licenseplate.Licenseplate;
+import be.kdg.processor.fine.finedetection.FineDetector;
+import be.kdg.processor.fine.Fine;
+import be.kdg.processor.licenseplate.Licenseplate;
 import be.kdg.processor.services.InformationServiceAdapter;
-import be.kdg.processor.model.camera.Camera;
-import be.kdg.processor.model.camera.CameraMessage;
+import be.kdg.processor.camera.Camera;
+import be.kdg.processor.camera.CameraMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -66,9 +66,7 @@ public class Processor {
                 }
 
                 //TODO: write fine(s) to db
-                fines.forEach(fine -> {
-                    LOGGER.info("Car with license plate " + licenseplate.getPlateId() + " got fined with fine " + fine);
-                });
+                fines.forEach(fine -> LOGGER.info("Car with license plate " + licenseplate.getPlateId() + " got fined with fine " + fine));
             }
         });
     }

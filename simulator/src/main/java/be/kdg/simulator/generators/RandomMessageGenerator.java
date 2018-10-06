@@ -1,8 +1,7 @@
 package be.kdg.simulator.generators;
 
-import be.kdg.simulator.model.CameraMessage;
+import be.kdg.simulator.camera.CameraMessage;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.Random;

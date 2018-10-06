@@ -1,6 +1,6 @@
 package be.kdg.simulator.messenger;
 
-import be.kdg.simulator.model.CameraMessage;
+import be.kdg.simulator.camera.CameraMessage;
 
 public interface Messenger {
 

@@ -1,9 +1,9 @@
 package be.kdg.processor.services;
 
 import be.kdg.processor.utils.JSONUtils;
-import be.kdg.processor.model.camera.Camera;
-import be.kdg.processor.model.camera.CameraType;
-import be.kdg.processor.model.licenseplate.Licenseplate;
+import be.kdg.processor.camera.Camera;
+import be.kdg.processor.camera.CameraType;
+import be.kdg.processor.licenseplate.Licenseplate;
 import be.kdg.sa.services.CameraNotFoundException;
 import be.kdg.sa.services.CameraServiceProxy;
 import be.kdg.sa.services.LicensePlateNotFoundException;
@@ -22,8 +22,8 @@ import java.util.logging.Logger;
 public class InformationService implements InformationServiceAdapter {
     private static final Logger LOGGER = Logger.getLogger(InformationService.class.getName());
 
-    private CameraServiceProxy cameraServiceProxy;
-    private LicensePlateServiceProxy licensePlateServiceProxy;
+    private final CameraServiceProxy cameraServiceProxy;
+    private final LicensePlateServiceProxy licensePlateServiceProxy;
 
     @Autowired
     public InformationService(CameraServiceProxy cameraServiceProxy, LicensePlateServiceProxy licensePlateServiceProxy) {

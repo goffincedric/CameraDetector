@@ -1,4 +1,4 @@
-package be.kdg.processor.model.fine;
+package be.kdg.processor.fine;
 
 import lombok.*;
 
@@ -8,7 +8,7 @@ import lombok.*;
  */
 @Getter
 @Setter(AccessLevel.NONE)
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
 public class EmissionFine extends Fine {
