@@ -30,11 +30,6 @@ public class QueueMessenger implements Messenger {
     public void sendMessage(CameraMessage message) {
         rabbitTemplate.convertAndSend(queue.getName(), XMLUtils.convertObjectToXML(message));
         LOGGER.info(this.getClass().getCanonicalName() + ": Sent '" + message + "' to queue: " + queue.getName());
-        try {
-            Thread.sleep(message.getDelay());
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
 
