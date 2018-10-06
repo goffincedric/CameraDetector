@@ -1,8 +1,8 @@
 package be.kdg.processor.consumers;
 
-import be.kdg.processor.Processor;
+import be.kdg.processor.processor.Processor;
 import be.kdg.processor.utils.XMLUtils;
-import be.kdg.processor.model.camera.CameraMessage;
+import be.kdg.processor.camera.CameraMessage;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

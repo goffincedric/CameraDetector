@@ -1,8 +1,6 @@
 package be.kdg.simulator.generators;
 
-import be.kdg.simulator.model.CameraMessage;
-
-import java.util.List;
+import be.kdg.simulator.camera.CameraMessage;
 
 public interface MessageGenerator {
 

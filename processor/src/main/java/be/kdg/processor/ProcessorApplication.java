@@ -1,6 +1,5 @@
 package be.kdg.processor;
 
-import be.kdg.sa.services.CameraServiceProxy;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

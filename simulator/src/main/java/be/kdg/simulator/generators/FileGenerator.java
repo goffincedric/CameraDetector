@@ -1,11 +1,9 @@
 package be.kdg.simulator.generators;
 
-import be.kdg.simulator.model.CameraMessage;
+import be.kdg.simulator.camera.CameraMessage;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 import lombok.Getter;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;

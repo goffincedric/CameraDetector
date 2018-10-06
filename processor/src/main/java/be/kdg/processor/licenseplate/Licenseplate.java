@@ -1,6 +1,6 @@
-package be.kdg.processor.model.licenseplate;
+package be.kdg.processor.licenseplate;
 
-import be.kdg.processor.model.fine.Fine;
+import be.kdg.processor.fine.Fine;
 import lombok.*;
 
 import java.util.ArrayList;

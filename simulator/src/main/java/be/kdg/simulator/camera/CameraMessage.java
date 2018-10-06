@@ -1,4 +1,4 @@
-package be.kdg.simulator.model;
+package be.kdg.simulator.camera;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.beans.factory.annotation.Value;

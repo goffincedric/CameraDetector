@@ -1,7 +1,7 @@
 package be.kdg.processor.services;
 
-import be.kdg.processor.model.camera.Camera;
-import be.kdg.processor.model.licenseplate.Licenseplate;
+import be.kdg.processor.camera.Camera;
+import be.kdg.processor.licenseplate.Licenseplate;
 
 /**
  * @author Cédric Goffin
