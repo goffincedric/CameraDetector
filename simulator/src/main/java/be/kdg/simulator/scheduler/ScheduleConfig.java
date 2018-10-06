@@ -27,6 +27,8 @@ public class ScheduleConfig {
 
     private static String[] normalSchedule;
     private static String[] peakSchedule;
+    private static int normalFrequencyMillis;
+    private static int peakFrequencyMillis;
 
     @Value("${messenger.schedule.normal}")
     public void setNormalSchedule(String[] normalSchedule) {
@@ -38,6 +40,15 @@ public class ScheduleConfig {
         this.peakSchedule = peakSchedule;
     }
 
+    @Value("${messenger.frequency.normal_millis}")
+    public void setNormalFrequencyMillis(int normalFrequencyMillis) {
+        ScheduleConfig.normalFrequencyMillis = normalFrequencyMillis;
+    }
+
+    @Value("${messenger.frequency.peak_millis}")
+    public void setPeakFrequencyMillis(int peakFrequencyMillis) {
+        ScheduleConfig.peakFrequencyMillis = peakFrequencyMillis;
+    }
 
     @Autowired
     private Simulator simulator;
@@ -52,8 +63,8 @@ public class ScheduleConfig {
         }
 
         // Schedule tasks using different schedules and intervals
-        addSchedule(scheduler, normalSchedule, "normal", 5000);
-        addSchedule(scheduler, peakSchedule, "peak", 200);
+        addSchedule(scheduler, normalSchedule, "normal", normalFrequencyMillis);
+        addSchedule(scheduler, peakSchedule, "peak", peakFrequencyMillis);
 
         return scheduler;
     }
