@@ -1,0 +1,77 @@
+package be.kdg.processor.openalpr;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import java.net.*;
+import java.io.*;
+import java.nio.file.*;
+import java.util.Base64;
+
+/**
+ * @author Cédric Goffin
+ * 08/10/2018 13:27
+ */
+@RunWith(SpringRunner.class)
+@SpringBootTest
+public class ConnectionTest {
+
+    @Test
+    public void testConnection() {
+        try
+        {
+            String secret_key = "sk_b781d5165aaab9ad55fa6097";
+
+            // Read image file to byte array
+            Path path = Paths.get("src/main/resources/images/1.jpg");
+            byte[] data = Files.readAllBytes(path);
+
+            // Encode file bytes to base64
+            byte[] encoded = Base64.getEncoder().encode(data);
+
+            // Setup the HTTPS connection to api.openalpr.com
+            URL url = new URL("https://api.openalpr.com/v2/recognize_bytes?recognize_vehicle=1&country=eu&secret_key=" + secret_key);
+            URLConnection con = url.openConnection();
+            HttpURLConnection http = (HttpURLConnection)con;
+            http.setRequestMethod("POST"); // PUT is another valid option
+            http.setFixedLengthStreamingMode(encoded.length);
+            http.setDoOutput(true);
+
+            // Send our Base64 content over the stream
+            try(OutputStream os = http.getOutputStream()) {
+                os.write(encoded);
+            }
+
+            int status_code = http.getResponseCode();
+            if (status_code == 200)
+            {
+                // Read the response
+                BufferedReader in = new BufferedReader(new InputStreamReader(
+                        http.getInputStream()));
+                String json_content = "";
+                String inputLine;
+                while ((inputLine = in.readLine()) != null)
+                    json_content += inputLine;
+                in.close();
+
+                System.out.println(json_content);
+            }
+            else
+            {
+                System.out.println("Got non-200 response: " + status_code);
+            }
+
+
+        }
+        catch (MalformedURLException e)
+        {
+            System.out.println("Bad URL");
+        }
+        catch (IOException e)
+        {
+            System.out.println("Failed to open connection");
+        }
+    }
+}

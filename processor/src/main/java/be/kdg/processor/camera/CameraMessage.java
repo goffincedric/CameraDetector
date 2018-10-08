@@ -12,6 +12,7 @@ import java.time.format.DateTimeFormatter;
 public class CameraMessage {
     private int id;
     private String licenseplate;
+    private byte[] cameraImage;
     private LocalDateTime timestamp;
     private long delay = 0;
 

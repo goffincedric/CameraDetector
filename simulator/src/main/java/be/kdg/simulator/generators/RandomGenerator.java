@@ -7,8 +7,8 @@ import java.time.LocalDateTime;
 import java.util.Random;
 import java.util.logging.Logger;
 
-public class RandomMessageGenerator implements MessageGenerator {
-    private static final Logger LOGGER = Logger.getLogger(RandomMessageGenerator.class.getName());
+public class RandomGenerator implements MessageGenerator {
+    private static final Logger LOGGER = Logger.getLogger(RandomGenerator.class.getName());
 
     @Override
     public CameraMessage generate() {
