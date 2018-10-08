@@ -1,16 +1,14 @@
 package be.kdg.simulator.generators;
 
 import be.kdg.simulator.camera.CameraMessage;
-import org.apache.commons.lang3.RandomStringUtils;
 
-import javax.swing.filechooser.FileFilter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.Objects;
@@ -23,6 +21,7 @@ import java.util.logging.Logger;
  */
 public class ImageGenerator implements MessageGenerator {
     private static final Logger LOGGER = Logger.getLogger(ImageGenerator.class.getName());
+    private LocalDateTime lastTimestamp = null;
 
     private File[] images;
 
@@ -53,12 +52,20 @@ public class ImageGenerator implements MessageGenerator {
             Path path = Paths.get(image.getPath());
             byte[] data = Files.readAllBytes(path);
 
+            // Check first run & adjust lastTimestamp
+            long delay = 0;
+            if (lastTimestamp != null) {
+                delay = ChronoUnit.MILLIS.between(lastTimestamp, LocalDateTime.now());
+            }
+            lastTimestamp = LocalDateTime.now();
+
+
             // Encode file bytes to base64 and put in new message
             message = new CameraMessage(
                     random.nextInt(5) + 1,
                     Base64.getEncoder().encode(data),
                     LocalDateTime.now(),
-                    0
+                    delay
             );
             LOGGER.info("Randomly generated: " + message);
         } catch (IOException e) {
