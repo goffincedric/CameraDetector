@@ -13,7 +13,7 @@ public class CameraMessage {
     private int id;
     private String licenseplate;
     private LocalDateTime timestamp;
-    private int delay = 0;
+    private long delay = 0;
 
     public CameraMessage(int id, String licenseplate, LocalDateTime timestamp) {
         this.id = id;

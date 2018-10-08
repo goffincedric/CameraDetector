@@ -18,7 +18,7 @@ public class CameraMessage {
     private int id;
     private String licenseplate;
     private LocalDateTime timestamp;
-    private int delay = 0;
+    private long delay = 0;
 
     public CameraMessage(int id, String licenseplate, LocalDateTime timestamp) {
         this.id = id;
@@ -26,13 +26,13 @@ public class CameraMessage {
         this.timestamp = timestamp;
     }
 
-    public CameraMessage(int id, String licenseplate, int delay) {
+    public CameraMessage(int id, String licenseplate, long delay) {
         this.id = id;
         this.setLicenseplate(licenseplate);
         this.delay = delay;
     }
 
-    public CameraMessage(int id, String licenseplate, LocalDateTime timestamp, int delay) {
+    public CameraMessage(int id, String licenseplate, LocalDateTime timestamp, long delay) {
         this.id = id;
         this.setLicenseplate(licenseplate);
         this.timestamp = timestamp;
@@ -43,6 +43,14 @@ public class CameraMessage {
         if (!licenseplate.matches(licenseplateRegex))
             throw new IllegalArgumentException("Invalid License plate");
         this.licenseplate = licenseplate;
+    }
+
+    public void setDelay(long delay) {
+        this.delay = delay;
+    }
+
+    public String[] toStringArray() {
+        return new String[]{String.valueOf(id), licenseplate, String.valueOf(delay)};
     }
 
     @Override
