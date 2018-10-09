@@ -1,13 +1,19 @@
 package be.kdg.processor.openalpr;
 
+import be.kdg.processor.camera.CameraMessage;
+import be.kdg.processor.processor.services.CloudALPRService;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.net.*;
 import java.io.*;
 import java.nio.file.*;
+import java.time.LocalDateTime;
 import java.util.Base64;
 
 /**
@@ -18,60 +24,25 @@ import java.util.Base64;
 @SpringBootTest
 public class ConnectionTest {
 
+    @Autowired
+    private CloudALPRService cloudALPRService;
+
     @Test
-    public void testConnection() {
-        try
-        {
-            String secret_key = "sk_b781d5165aaab9ad55fa6097";
+    public void testConnection() throws IOException {
 
-            // Read image file to byte array
-            Path path = Paths.get("src/main/resources/images/1.jpg");
-            byte[] data = Files.readAllBytes(path);
+        // Read image file to byte array
+        Path path = Paths.get("src/test/resources/images/1.jpg");
+        byte[] image = Files.readAllBytes(path);
 
-            // Encode file bytes to base64
-            byte[] encoded = Base64.getEncoder().encode(data);
+        // Encode file bytes to base64 and put in new message
+        CameraMessage message = new CameraMessage(
+                1,
+                Base64.getEncoder().encode(image),
+                LocalDateTime.now(),
+                0
+        );
 
-            // Setup the HTTPS connection to api.openalpr.com
-            URL url = new URL("https://api.openalpr.com/v2/recognize_bytes?recognize_vehicle=1&country=eu&secret_key=" + secret_key);
-            URLConnection con = url.openConnection();
-            HttpURLConnection http = (HttpURLConnection)con;
-            http.setRequestMethod("POST"); // PUT is another valid option
-            http.setFixedLengthStreamingMode(encoded.length);
-            http.setDoOutput(true);
-
-            // Send our Base64 content over the stream
-            try(OutputStream os = http.getOutputStream()) {
-                os.write(encoded);
-            }
-
-            int status_code = http.getResponseCode();
-            if (status_code == 200)
-            {
-                // Read the response
-                BufferedReader in = new BufferedReader(new InputStreamReader(
-                        http.getInputStream()));
-                String json_content = "";
-                String inputLine;
-                while ((inputLine = in.readLine()) != null)
-                    json_content += inputLine;
-                in.close();
-
-                System.out.println(json_content);
-            }
-            else
-            {
-                System.out.println("Got non-200 response: " + status_code);
-            }
-
-
-        }
-        catch (MalformedURLException e)
-        {
-            System.out.println("Bad URL");
-        }
-        catch (IOException e)
-        {
-            System.out.println("Failed to open connection");
-        }
+        String licenseplate = cloudALPRService.getLicenseplate(message.getCameraImage());
+        Assert.assertEquals("1-EAF-955", licenseplate);
     }
 }
