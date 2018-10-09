@@ -8,12 +8,5 @@ public class ProcessorApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(ProcessorApplication.class, args);
-
-        //exit after 3600 secs
-        try {
-            Thread.sleep(1000 * 60 * 60);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 }

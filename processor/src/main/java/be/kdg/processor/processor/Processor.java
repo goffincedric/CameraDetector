@@ -51,7 +51,7 @@ public class Processor {
         messageList.clear();
 
         messages.forEach(message -> {
-            Camera camera = cameraServiceAdapter.getCamera(message.getId());
+            Camera camera = cameraServiceAdapter.getCamera(message.getCameraId());
             if (camera != null) {
                 Licenseplate licenseplate = null;
 
