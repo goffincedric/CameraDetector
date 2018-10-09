@@ -80,7 +80,7 @@ public class Processor {
                 }
 
                 //TODO: write fine(s) to db
-                fines.forEach(fine -> LOGGER.info("Car with license plate " + licenseplate.getPlateId() + " got fined with fine " + fine));
+                //fines.forEach(fine -> LOGGER.info("Car with license plate " + licenseplate.getPlateId() + " got fined with fine " + fine));
             }
         });
     }
