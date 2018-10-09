@@ -1,4 +1,4 @@
-package be.kdg.processor.services;
+package be.kdg.processor.processor.services;
 
 import be.kdg.sa.services.CameraServiceProxy;
 import be.kdg.sa.services.LicensePlateServiceProxy;

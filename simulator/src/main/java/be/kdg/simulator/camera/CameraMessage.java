@@ -17,6 +17,7 @@ public class CameraMessage {
 
     private int id;
     private String licenseplate;
+    private byte[] cameraImage;
     private LocalDateTime timestamp;
     private long delay = 0;
 
@@ -35,6 +36,13 @@ public class CameraMessage {
     public CameraMessage(int id, String licenseplate, LocalDateTime timestamp, long delay) {
         this.id = id;
         this.setLicenseplate(licenseplate);
+        this.timestamp = timestamp;
+        this.delay = delay;
+    }
+
+    public CameraMessage(int id, byte[] cameraImage, LocalDateTime timestamp, long delay) {
+        this.id = id;
+        this.cameraImage = cameraImage;
         this.timestamp = timestamp;
         this.delay = delay;
     }

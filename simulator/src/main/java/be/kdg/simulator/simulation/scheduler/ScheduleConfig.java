@@ -78,6 +78,23 @@ public class ScheduleConfig {
     }
 
     @Bean
+    @ConditionalOnProperty(value = "generator", havingValue = "image")
+    public Scheduler imageScheduler() {
+        Scheduler scheduler = null;
+
+        try {
+            scheduler = StdSchedulerFactory.getDefaultScheduler();
+
+            // Schedule tasks using different schedules and intervals
+            addSchedule(scheduler, new String[]{"00:00:00;00:00:00"}, "image", 1000);
+        } catch (SchedulerException e) {
+            e.printStackTrace();
+        }
+
+        return scheduler;
+    }
+
+    @Bean
     @ConditionalOnProperty(value = "generator", havingValue = "file")
     public Scheduler fileScheduler() {
         Scheduler scheduler = null;

@@ -1,8 +1,9 @@
 package be.kdg.processor;
 
+import be.kdg.processor.camera.services.CameraServiceAdapter;
 import be.kdg.processor.licenseplate.Licenseplate;
-import be.kdg.processor.services.InformationService;
 import be.kdg.processor.camera.Camera;
+import be.kdg.processor.licenseplate.services.LicenseplateServiceAdapter;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Assert;
 import org.junit.Test;
@@ -20,19 +21,21 @@ public class ProcessorApplicationTests {
     private static final Logger LOGGER = Logger.getLogger(ProcessorApplicationTests.class.getName());
 
     @Autowired
-    InformationService informationService;
+    private CameraServiceAdapter cameraServiceAdapter;
+    @Autowired
+    private LicenseplateServiceAdapter licenseplateServiceAdapter;
 
     @Test
     public void testCameraService() {
         int cameraId = new Random().nextInt(5)+1;
-        Camera camera = informationService.getCamera(cameraId);
+        Camera camera = cameraServiceAdapter.getCamera(cameraId);
         Assert.assertNotNull(camera);
     }
     
     @Test
     public void testLicenseplateService() {
         String licenseplateId = String.format("%s-%S-%s", RandomStringUtils.random(1, "12345678"), RandomStringUtils.random(3, true, false), RandomStringUtils.random(3, false, true));
-        Licenseplate licenseplate = informationService.getLicensePlate(licenseplateId);
+        Licenseplate licenseplate = licenseplateServiceAdapter.getLicensePlate(licenseplateId);
         Assert.assertNotNull(licenseplate);
     }
 

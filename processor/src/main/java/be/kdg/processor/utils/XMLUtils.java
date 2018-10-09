@@ -21,8 +21,7 @@ public class XMLUtils {
         try {
             object = mapper.readValue(string, objectClass);
         } catch (IOException e) {
-            LOGGER.severe("Message: '" + string + "' is niet van het verwachtte formaat!");
-            e.printStackTrace();
+            LOGGER.severe("Message: '" + string + "' could not be deserialized!");
         }
         return object;
     }
