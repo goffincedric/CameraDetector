@@ -1,5 +1,7 @@
 package be.kdg.processor.camera;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -14,19 +16,50 @@ import java.time.format.DateTimeFormatter;
 @Entity
 @Table(name = "tblCameraMessage")
 public class CameraMessage {
+    @JsonIgnore
+    @Value("${licenseplate.regex}")
+    private String licenseplateRegex = "^[1-8]-[A-Z]{3}-[0-9]{3}$";
+
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int messageId;
     private int cameraId;
     private String licenseplate;
+    private byte[] cameraImage;
     private LocalDateTime timestamp;
-    private int delay = 0;
+    private long delay = 0;
 
     public CameraMessage(int cameraId, String licenseplate, LocalDateTime timestamp) {
         this.cameraId = cameraId;
-        this.licenseplate = licenseplate;
+        this.setLicenseplate(licenseplate);
         this.timestamp = timestamp;
+    }
+
+    public CameraMessage(int cameraId, String licenseplate, long delay) {
+        this.cameraId = cameraId;
+        this.setLicenseplate(licenseplate);
+        this.delay = delay;
+    }
+
+    public CameraMessage(int cameraId, String licenseplate, LocalDateTime timestamp, long delay) {
+        this.cameraId = cameraId;
+        this.setLicenseplate(licenseplate);
+        this.timestamp = timestamp;
+        this.delay = delay;
+    }
+
+    public CameraMessage(int cameraId, byte[] cameraImage, LocalDateTime timestamp, long delay) {
+        this.cameraId = cameraId;
+        this.cameraImage = cameraImage;
+        this.timestamp = timestamp;
+        this.delay = delay;
+    }
+
+    public void setLicenseplate(String licenseplate) {
+        if (!licenseplate.matches(licenseplateRegex))
+            throw new IllegalArgumentException("Invalid License plate");
+        this.licenseplate = licenseplate;
     }
 
     @Override

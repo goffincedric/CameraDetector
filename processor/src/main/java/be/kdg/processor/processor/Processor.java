@@ -1,11 +1,13 @@
 package be.kdg.processor.processor;
 
+import be.kdg.processor.camera.services.CameraServiceAdapter;
 import be.kdg.processor.fine.finedetection.FineDetector;
 import be.kdg.processor.fine.Fine;
 import be.kdg.processor.licenseplate.Licenseplate;
-import be.kdg.processor.services.InformationServiceAdapter;
 import be.kdg.processor.camera.Camera;
 import be.kdg.processor.camera.CameraMessage;
+import be.kdg.processor.licenseplate.services.LicenseplateServiceAdapter;
+import be.kdg.processor.processor.services.CloudALPRService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -24,14 +26,18 @@ import java.util.logging.Logger;
 @EnableScheduling
 public class Processor {
     private static final Logger LOGGER = Logger.getLogger(Processor.class.getName());
-    private final InformationServiceAdapter informationServiceAdapter;
+    private final CameraServiceAdapter cameraServiceAdapter;
+    private final LicenseplateServiceAdapter licenseplateServiceAdapter;
+    private final CloudALPRService cloudALPRService;
     private final FineDetector fineDetector;
 
     private List<CameraMessage> messageList;
 
     @Autowired
-    public Processor(InformationServiceAdapter informationServiceAdapter, FineDetector fineDetector) {
-        this.informationServiceAdapter = informationServiceAdapter;
+    public Processor(CameraServiceAdapter cameraServiceAdapter, LicenseplateServiceAdapter licenseplateServiceAdapter, CloudALPRService cloudALPRService, FineDetector fineDetector) {
+        this.cameraServiceAdapter = cameraServiceAdapter;
+        this.licenseplateServiceAdapter = licenseplateServiceAdapter;
+        this.cloudALPRService = cloudALPRService;
         this.fineDetector = fineDetector;
         this.messageList = new ArrayList<>();
     }
@@ -45,9 +51,17 @@ public class Processor {
         messageList.clear();
 
         messages.forEach(message -> {
-            Camera camera = informationServiceAdapter.getCamera(message.getCameraId());
+            Camera camera = cameraServiceAdapter.getCamera(message.getCameraId());
             if (camera != null) {
-                Licenseplate licenseplate = informationServiceAdapter.getLicensePlate(message.getLicenseplate());
+                Licenseplate licenseplate = null;
+
+                if (message.getCameraImage() != null) {
+                    String plate = cloudALPRService.getLicenseplate(message.getCameraImage());
+                    licenseplate = licenseplateServiceAdapter.getLicensePlate(plate);
+                } else if (message.getLicenseplate() != null) {
+                    licenseplate = licenseplateServiceAdapter.getLicensePlate(message.getLicenseplate());
+                }
+
                 List<Fine> fines = new ArrayList<>();
 
                 switch (camera.getCameraType()) {

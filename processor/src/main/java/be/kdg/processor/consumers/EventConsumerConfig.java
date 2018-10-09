@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class EventConsumerConfig {
+
     @Bean
     public EventConsumer eventReceiver() {
         return new EventConsumer();
