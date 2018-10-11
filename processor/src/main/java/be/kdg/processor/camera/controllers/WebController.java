@@ -1,4 +1,4 @@
-package be.kdg.processor.controller;
+package be.kdg.processor.camera.controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
