@@ -1,12 +1,14 @@
 package be.kdg.processor.camera.repository;
 
-import be.kdg.processor.camera.Camera;
-import org.springframework.data.repository.CrudRepository;
+import be.kdg.processor.camera.dom.Camera;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
+import java.util.Optional;
 
-public interface CameraRepository extends CrudRepository<Camera, Long> {
-    Camera findByCameraId(int id);
-    List<Camera> findAllByCameraId(int id);
+public interface CameraRepository extends JpaRepository<Camera, Integer> {
+    Optional<Camera> findByCameraId(int cameraId);
+    boolean existsByCameraId(int cameraId);
 
+    @Override
+    <S extends Camera> S save(S entity);
 }

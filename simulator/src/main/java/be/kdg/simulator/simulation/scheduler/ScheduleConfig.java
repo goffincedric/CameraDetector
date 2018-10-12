@@ -31,6 +31,7 @@ public class ScheduleConfig {
     private String[] peakSchedule;
     private int normalFrequencyMillis;
     private int peakFrequencyMillis;
+    private int concurrentThreads;
     private String timezone;
 
     @Value("${simulation.schedule.normal}")
@@ -41,6 +42,7 @@ public class ScheduleConfig {
     public void setPeakSchedule(String[] peakSchedule) {
         this.peakSchedule = peakSchedule;
     }
+
     @Value("${simulation.frequency.normal_millis}")
     public void setNormalFrequencyMillis(int normalFrequencyMillis) {
         this.normalFrequencyMillis = normalFrequencyMillis;
@@ -49,6 +51,12 @@ public class ScheduleConfig {
     public void setPeakFrequencyMillis(int peakFrequencyMillis) {
         this.peakFrequencyMillis = peakFrequencyMillis;
     }
+
+    @Value("${generator.concurrent_threads}")
+    public void setConcurrentThreads(int concurrentThreads) {
+        this.concurrentThreads = concurrentThreads;
+    }
+
     @Value("${simulation.timezone}")
     public void setTimezone(String timezone) {
         this.timezone = timezone;
@@ -67,9 +75,11 @@ public class ScheduleConfig {
         try {
             scheduler = StdSchedulerFactory.getDefaultScheduler();
 
-            // Schedule tasks using different schedules and intervals
-            addSchedule(scheduler, normalSchedule, "normal", normalFrequencyMillis);
-            addSchedule(scheduler, peakSchedule, "peak", peakFrequencyMillis);
+            for (int i = 0; i < concurrentThreads; i++) {
+                // Schedule tasks using different schedules and intervals
+                addSchedule(scheduler, normalSchedule, "normal_Thread" + i, normalFrequencyMillis);
+                addSchedule(scheduler, peakSchedule, "peak_Thread" + i, peakFrequencyMillis);
+            }
         } catch (SchedulerException e) {
             e.printStackTrace();
         }

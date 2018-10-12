@@ -1,8 +1,7 @@
 package be.kdg.processor.openalpr;
 
-import be.kdg.processor.camera.CameraMessage;
+import be.kdg.processor.camera.dom.CameraMessage;
 import be.kdg.processor.processor.services.CloudALPRService;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.net.*;
 import java.io.*;
 import java.nio.file.*;
 import java.time.LocalDateTime;

@@ -12,10 +12,11 @@ import java.util.logging.Logger;
  */
 public class XMLUtils {
     private static final Logger LOGGER = Logger.getLogger(XMLUtils.class.getName());
+    private static final XmlMapper mapper = new XmlMapper();
+    private static final JavaTimeModule timeModule = new JavaTimeModule();
 
     public static <T> T convertXMLToObject(String string, Class<T> objectClass) {
-        XmlMapper mapper = new XmlMapper();
-        mapper.registerModule(new JavaTimeModule());
+        mapper.registerModule(timeModule);
 
         T object = null;
         try {

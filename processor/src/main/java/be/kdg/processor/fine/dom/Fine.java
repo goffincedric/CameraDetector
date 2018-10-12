@@ -1,6 +1,6 @@
-package be.kdg.processor.fine;
+package be.kdg.processor.fine.dom;
 
-import be.kdg.processor.licenseplate.Licenseplate;
+import be.kdg.processor.licenseplate.dom.Licenseplate;
 import lombok.*;
 
 import java.time.LocalDateTime;

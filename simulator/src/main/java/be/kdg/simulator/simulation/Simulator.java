@@ -34,13 +34,6 @@ public class Simulator {
         // Generate message
         CameraMessage message = messageGenerator.generate();
 
-        // Artificially create delay
-        try {
-            Thread.sleep(message.getDelay());
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
         // Send message
         messenger.sendMessage(message);
 

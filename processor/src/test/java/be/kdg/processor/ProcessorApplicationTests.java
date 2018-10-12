@@ -1,8 +1,8 @@
 package be.kdg.processor;
 
 import be.kdg.processor.camera.services.CameraServiceAdapter;
-import be.kdg.processor.licenseplate.Licenseplate;
-import be.kdg.processor.camera.Camera;
+import be.kdg.processor.licenseplate.dom.Licenseplate;
+import be.kdg.processor.camera.dom.Camera;
 import be.kdg.processor.licenseplate.services.LicenseplateServiceAdapter;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Assert;

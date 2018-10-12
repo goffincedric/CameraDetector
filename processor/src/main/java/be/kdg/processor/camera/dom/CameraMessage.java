@@ -1,4 +1,4 @@
-package be.kdg.processor.camera;
+package be.kdg.processor.camera.dom;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,11 +12,11 @@ import java.time.format.DateTimeFormatter;
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-
 @Entity
 @Table(name = "tblCameraMessage")
 public class CameraMessage {
     @JsonIgnore
+    // TODO: Verwijder hardcoded
     @Value("${licenseplate.regex}")
     private String licenseplateRegex = "^[1-8]-[A-Z]{3}-[0-9]{3}$";
 
@@ -25,10 +25,10 @@ public class CameraMessage {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int messageId;
     private int cameraId;
-    private String licenseplate;
     private byte[] cameraImage;
+    private String licenseplate;
     private LocalDateTime timestamp;
-    private long delay = 0;
+    private long delay = -1;
 
     public CameraMessage(int cameraId, String licenseplate, LocalDateTime timestamp) {
         this.cameraId = cameraId;
@@ -57,9 +57,12 @@ public class CameraMessage {
     }
 
     public void setLicenseplate(String licenseplate) {
-        if (!licenseplate.matches(licenseplateRegex))
-            throw new IllegalArgumentException("Invalid License plate");
-        this.licenseplate = licenseplate;
+        if (licenseplate != null || cameraImage == null) {
+            if (!licenseplate.matches(licenseplateRegex))
+                throw new IllegalArgumentException("Invalid License plate");
+            this.licenseplate = licenseplate;
+        }
+
     }
 
     @Override
