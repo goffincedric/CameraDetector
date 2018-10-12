@@ -11,8 +11,7 @@ import javax.persistence.Table;
  * 01/10/2018 14:24
  */
 
-@Getter
-@Setter(AccessLevel.NONE)
+@Data
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor

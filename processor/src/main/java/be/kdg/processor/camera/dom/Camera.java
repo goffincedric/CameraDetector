@@ -9,8 +9,7 @@ import javax.persistence.*;
  * 01/10/2018 14:03
  */
 
-@Getter
-@Setter(AccessLevel.NONE)
+@Data
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
