@@ -49,24 +49,21 @@ public class CloudALPRService {
                 // Read the response
                 BufferedReader in = new BufferedReader(new InputStreamReader(
                         http.getInputStream()));
-                String json_content = "";
+                StringBuilder json_content = new StringBuilder();
                 String inputLine;
                 while ((inputLine = in.readLine()) != null)
-                    json_content += inputLine;
+                    json_content.append(inputLine);
                 in.close();
 
-                Pattern pattern = Pattern.compile(".*\"plate\": \"([a-zA-Z1-9]*)\".*");
-                Matcher matcher = pattern.matcher(json_content);
+                Pattern pattern = Pattern.compile(".*\"plate\": \"([a-zA-Z1-9]{7})\".*");
+                Matcher matcher = pattern.matcher(json_content.toString());
                 if (matcher.matches())
                     licensePlate = matcher.group(1);
-
-                json_content = json_content.substring(json_content.lastIndexOf("\"plate\": \""), json_content.lastIndexOf("\"plate\": \"") + json_content.split("\"plate\": \"")[1].indexOf("\""));
-                if (json_content.matches("^[1-8][A-Z]{3}[0-9]{3}$")) {
-                    licensePlate = json_content.substring(0, 1) + "-" + json_content.substring(1, 4) + "-" + json_content.substring(4, 7);
-                } else {
+                else {
                     LOGGER.severe("License plate not recognised: " + json_content);
                     return "";
                 }
+                licensePlate = licensePlate.charAt(0) + "-" + licensePlate.substring(1, 4) + "-" + licensePlate.substring(4, 7);
             } else {
                 System.out.println("Got non-200 response: " + status_code);
             }

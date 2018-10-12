@@ -1,6 +1,6 @@
 package be.kdg.processor.licenseplate.services;
 
-import be.kdg.processor.licenseplate.Licenseplate;
+import be.kdg.processor.licenseplate.dom.Licenseplate;
 import be.kdg.processor.utils.JSONUtils;
 import be.kdg.sa.services.LicensePlateNotFoundException;
 import be.kdg.sa.services.LicensePlateServiceProxy;

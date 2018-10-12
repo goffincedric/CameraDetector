@@ -1,7 +1,7 @@
 package be.kdg.processor.camera.services;
 
-import be.kdg.processor.camera.Camera;
-import be.kdg.processor.camera.CameraType;
+import be.kdg.processor.camera.dom.Camera;
+import be.kdg.processor.camera.dom.CameraType;
 import be.kdg.processor.camera.repository.CameraRepository;
 import be.kdg.processor.utils.JSONUtils;
 import be.kdg.sa.services.CameraNotFoundException;
@@ -9,6 +9,7 @@ import be.kdg.sa.services.CameraServiceProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.List;
 import java.util.logging.Logger;
@@ -18,6 +19,7 @@ import java.util.logging.Logger;
  * 09/10/2018 13:38
  */
 @Service
+@Transactional
 public class CameraServiceAdapter {
     private static final Logger LOGGER = Logger.getLogger(CameraServiceAdapter.class.getName());
 

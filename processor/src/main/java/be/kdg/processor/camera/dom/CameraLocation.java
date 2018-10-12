@@ -1,4 +1,4 @@
-package be.kdg.processor.camera;
+package be.kdg.processor.camera.dom;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;

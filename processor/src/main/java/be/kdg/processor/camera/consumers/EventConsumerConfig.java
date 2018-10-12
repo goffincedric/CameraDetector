@@ -1,4 +1,4 @@
-package be.kdg.processor.consumers;
+package be.kdg.processor.camera.consumers;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

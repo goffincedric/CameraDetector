@@ -1,6 +1,6 @@
 package be.kdg.processor.camera.repository;
 
-import be.kdg.processor.camera.Camera;
+import be.kdg.processor.camera.dom.Camera;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
@@ -11,5 +11,4 @@ public interface CameraRepository extends JpaRepository<Camera, Integer> {
 
     @Override
     <S extends Camera> S save(S entity);
-
 }

@@ -92,6 +92,14 @@ public class FileGenerator implements MessageGenerator {
     public CameraMessage generate() {
         if (messages.isEmpty()) System.exit(0);
         CameraMessage message = messages.remove(0);
+
+        // Artificially create delay
+        try {
+            Thread.sleep(message.getDelay());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         LOGGER.info("Generated from file: " + message);
         return message;
     }

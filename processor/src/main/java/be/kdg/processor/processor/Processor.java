@@ -2,10 +2,10 @@ package be.kdg.processor.processor;
 
 import be.kdg.processor.camera.services.CameraServiceAdapter;
 import be.kdg.processor.fine.finedetection.FineDetector;
-import be.kdg.processor.fine.Fine;
-import be.kdg.processor.licenseplate.Licenseplate;
-import be.kdg.processor.camera.Camera;
-import be.kdg.processor.camera.CameraMessage;
+import be.kdg.processor.fine.dom.Fine;
+import be.kdg.processor.licenseplate.dom.Licenseplate;
+import be.kdg.processor.camera.dom.Camera;
+import be.kdg.processor.camera.dom.CameraMessage;
 import be.kdg.processor.licenseplate.services.LicenseplateServiceAdapter;
 import be.kdg.processor.processor.services.CloudALPRService;
 import org.springframework.beans.factory.annotation.Autowired;
