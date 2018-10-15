@@ -2,6 +2,7 @@ package be.kdg.simulator.utils;
 
 import be.kdg.simulator.camera.CameraMessage;
 import com.opencsv.CSVWriter;
+import lombok.experimental.UtilityClass;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.io.File;
@@ -23,14 +24,15 @@ import java.util.logging.Logger;
  * @author Cédric Goffin
  * 08/10/2018 11:13
  */
+@UtilityClass
 public class CSVUtils {
-    private static final Logger LOGGER = Logger.getLogger(CSVUtils.class.getName());
-    private static String fileTemplate = "log_" + LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy_"));
+    private final Logger LOGGER = Logger.getLogger(CSVUtils.class.getName());
+    private String fileTemplate = "log_" + LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy_"));
 
-    private static LocalDateTime lastTimestamp = null;
-    private static String fileName = null;
+    private LocalDateTime lastTimestamp = null;
+    private String fileName = null;
 
-    public static void writeMessage(CameraMessage message, String logger_path) {
+    public void writeMessage(CameraMessage message, String logger_path) {
         if (lastTimestamp == null) {
             if (logger_path == null) throw new IllegalArgumentException("No path to logfile was given!");
 

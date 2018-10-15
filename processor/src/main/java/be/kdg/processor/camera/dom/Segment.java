@@ -2,9 +2,7 @@ package be.kdg.processor.camera.dom;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * @author Cédric Goffin
@@ -12,7 +10,6 @@ import javax.persistence.Table;
  */
 
 @Data
-@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 

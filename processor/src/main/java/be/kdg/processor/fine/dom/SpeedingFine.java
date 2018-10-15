@@ -1,8 +1,10 @@
 package be.kdg.processor.fine.dom;
 
+import be.kdg.processor.licenseplate.dom.Licenseplate;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 /**
  * @author Cédric Goffin
@@ -19,6 +21,12 @@ public class SpeedingFine extends Fine {
     public Fine fine;
     private int actualSpeed;
     private int allowedSpeed;
+
+    public SpeedingFine(double amount, LocalDateTime timestamp, LocalDateTime paymentDeadline, Licenseplate licenseplate, int actualSpeed, int allowedSpeed) {
+        super(amount, timestamp, paymentDeadline, licenseplate);
+        this.actualSpeed = actualSpeed;
+        this.allowedSpeed = allowedSpeed;
+    }
 
     @Override
     public String toString() {

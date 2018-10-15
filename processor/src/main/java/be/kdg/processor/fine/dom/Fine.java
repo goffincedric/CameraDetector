@@ -3,10 +3,7 @@ package be.kdg.processor.fine.dom;
 import be.kdg.processor.licenseplate.dom.Licenseplate;
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 /**
@@ -15,7 +12,6 @@ import java.time.LocalDateTime;
  */
 
 @Data
-@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -26,5 +22,13 @@ public abstract class Fine {
     private double amount;
     private LocalDateTime timestamp;
     private LocalDateTime paymentDeadline;
+    @OneToOne(targetEntity = Licenseplate.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Licenseplate licenseplate;
+
+    public Fine(double amount, LocalDateTime timestamp, LocalDateTime paymentDeadline, Licenseplate licenseplate) {
+        this.amount = amount;
+        this.timestamp = timestamp;
+        this.paymentDeadline = paymentDeadline;
+        this.licenseplate = licenseplate;
+    }
 }

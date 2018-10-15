@@ -11,7 +11,6 @@ import javax.persistence.*;
  */
 
 @Data
-@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 

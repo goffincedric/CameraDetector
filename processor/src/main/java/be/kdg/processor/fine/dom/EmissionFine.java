@@ -1,8 +1,10 @@
 package be.kdg.processor.fine.dom;
 
+import be.kdg.processor.licenseplate.dom.Licenseplate;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 /**
  * @author Cédric Goffin
@@ -19,6 +21,12 @@ public class EmissionFine extends Fine {
     public Fine fine;
     private int actualEmission;
     private int allowedEmission;
+
+    public EmissionFine(double amount, LocalDateTime timestamp, LocalDateTime paymentDeadline, Licenseplate licenseplate, int actualEmission, int allowedEmission) {
+        super(amount, timestamp, paymentDeadline, licenseplate);
+        this.actualEmission = actualEmission;
+        this.allowedEmission = allowedEmission;
+    }
 
     @Override
     public String toString() {

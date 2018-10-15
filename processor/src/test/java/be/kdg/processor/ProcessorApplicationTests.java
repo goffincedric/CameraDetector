@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Optional;
 import java.util.Random;
 import java.util.logging.Logger;
 
@@ -28,15 +29,17 @@ public class ProcessorApplicationTests {
     @Test
     public void testCameraService() {
         int cameraId = new Random().nextInt(5)+1;
-        Camera camera = cameraServiceAdapter.getCamera(cameraId);
-        Assert.assertNotNull(camera);
+        Optional<Camera> optionalCamera = cameraServiceAdapter.getCamera(cameraId);
+        Assert.assertTrue(optionalCamera.isPresent());
+        optionalCamera.ifPresent(camera -> Assert.assertEquals(camera.getCameraId(), cameraId));
     }
     
     @Test
     public void testLicenseplateService() {
         String licenseplateId = String.format("%s-%S-%s", RandomStringUtils.random(1, "12345678"), RandomStringUtils.random(3, true, false), RandomStringUtils.random(3, false, true));
-        Licenseplate licenseplate = licenseplateServiceAdapter.getLicensePlate(licenseplateId);
-        Assert.assertNotNull(licenseplate);
+        Optional<Licenseplate> optionalLicenseplate = licenseplateServiceAdapter.getLicensePlate(licenseplateId);
+        Assert.assertTrue(optionalLicenseplate.isPresent());
+        optionalLicenseplate.ifPresent(licenseplate -> Assert.assertTrue(licenseplate.getPlateId().equalsIgnoreCase(licenseplateId)));
     }
 
 }

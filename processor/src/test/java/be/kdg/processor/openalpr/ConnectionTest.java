@@ -1,7 +1,7 @@
 package be.kdg.processor.openalpr;
 
 import be.kdg.processor.camera.dom.CameraMessage;
-import be.kdg.processor.processor.services.CloudALPRService;
+import be.kdg.processor.licenseplate.misc.CloudALPRService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;

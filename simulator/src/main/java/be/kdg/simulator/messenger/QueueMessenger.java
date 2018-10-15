@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
 import java.util.logging.Logger;
 
 @Component
@@ -25,9 +26,13 @@ public class QueueMessenger implements Messenger {
 
     @Override
     public void sendMessage(CameraMessage message) {
-        rabbitTemplate.convertAndSend(queue.getName(), XMLUtils.convertObjectToXML(message));
-        LOGGER.info(this.getClass().getCanonicalName() + ": Sent '" + message + "' to queue: " + queue.getName());
+        Optional<String> optionalMessageString = XMLUtils.convertObjectToXML(message);
+        if (optionalMessageString.isPresent()) {
+            rabbitTemplate.convertAndSend(queue.getName(), optionalMessageString.get());
+            LOGGER.info("Sent '" + message + "' to queue: " + queue.getName());
+        } else {
+            LOGGER.warning("Could not serialize message '" + message + "'!");
+            LOGGER.warning("'" + message + "' did not get sent!");
+        }
     }
-
-
 }
