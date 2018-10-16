@@ -45,15 +45,16 @@ public class CameraServiceAdapter {
             try {
                 optionalCamera = JSONUtils.convertJSONToObject(cameraServiceProxy.get(cameraId), Camera.class);
                 if (optionalCamera.isPresent()) {
+                    List<Camera> cameras = getAllCameras();
                     Camera camera = optionalCamera.get();
-                    if (camera.getSegment() == null) {
+                    if (camera.getSegment() == null && cameras.stream().noneMatch(c -> c.getSegment() != null && c.getSegment().getConnectedCameraId() == camera.getCameraId())) {
                         camera.setCameraType(CameraType.EMISSION);
                     } else if (camera.getEuroNorm() == 0) {
                         camera.setCameraType(CameraType.SPEED);
                     } else {
                         camera.setCameraType(CameraType.SPEED_EMISSION);
                     }
-                    optionalCamera = Optional.of(camera);
+                    optionalCamera = Optional.of(createCamera(camera));
                 }
             } catch (IOException e) {
                 LOGGER.severe("Unable to deserialize camera with id: " + cameraId);
@@ -82,10 +83,13 @@ public class CameraServiceAdapter {
             }
         } while (next);
 
-        return proxyCameras.stream()
+        return
+                proxyCameras.stream()
                 .map(c -> {
-                    if (repoCameras.contains(c)) return repoCameras.get(repoCameras.indexOf(c));
-                    else return c;
+                    if (repoCameras.contains(c))
+                        return repoCameras.get(repoCameras.indexOf(c));
+                    else
+                        return c;
                 }).collect(Collectors.toList());
     }
 
@@ -99,16 +103,17 @@ public class CameraServiceAdapter {
     }
 
     public Camera createCamera(Camera camera) {
-        if (camera.getSegment() != null) {
-            Optional<Camera> optionalCamera = getCamera(camera.getSegment().getConnectedCameraId());
-            optionalCamera.ifPresent(cam -> {
-                camera.getSegment().setCamera(cam);
-                if (cam.getSegment() != null && cam.getSegment().getConnectedCameraId() == cam.getCameraId()) {
-                    cam.getSegment().setCamera(camera);
-                }
-            });
-        }
-        return cameraRepository.save(camera);
+//        if (camera.getSegment() != null) {
+//            Optional<Camera> optionalCamera = getCamera(camera.getSegment().getConnectedCameraId());
+//            optionalCamera.ifPresent(cam -> {
+//                camera.getSegment().setCamera(cam);
+//                if (cam.getSegment() != null && cam.getSegment().getConnectedCameraId() == cam.getCameraId()) {
+//                    cam.getSegment().setCamera(camera);
+//                }
+//            });
+//        }
+        //TODO: Werkt niet
+        return cameraRepository.saveAndFlush(camera);
     }
 
     public List<CameraMessage> getMessagesFromTypes(List<CameraMessage> messages, List<CameraType> cameraTypes) {

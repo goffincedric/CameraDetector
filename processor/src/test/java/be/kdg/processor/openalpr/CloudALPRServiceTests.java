@@ -20,14 +20,13 @@ import java.util.Base64;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class ConnectionTest {
+public class CloudALPRServiceTests {
 
     @Autowired
     private CloudALPRService cloudALPRService;
 
     @Test
     public void testConnection() throws IOException {
-
         // Read image file to byte array
         Path path = Paths.get("src/test/resources/images/1.jpg");
         byte[] image = Files.readAllBytes(path);

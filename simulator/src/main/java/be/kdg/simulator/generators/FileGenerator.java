@@ -68,7 +68,6 @@ public class FileGenerator implements MessageGenerator {
                                     return new CameraMessage(
                                             Integer.parseInt(row[0]),
                                             row[1],
-                                            LocalDateTime.now(),
                                             Integer.parseInt(row[2]));
                                 } catch (IllegalArgumentException iae) {
                                     LOGGER.severe(iae.getMessage());
@@ -90,8 +89,13 @@ public class FileGenerator implements MessageGenerator {
 
     @Override
     public CameraMessage generate() {
-        if (messages.isEmpty()) System.exit(0);
+        if (messages.isEmpty()) {
+//            messages = getMessagesFromFile("src/main/resources/messages.csv");
+            System.exit(0);
+        }
         CameraMessage message = messages.remove(0);
+        message.setTimestamp(LocalDateTime.now());
+        LOGGER.info("Generated from file: " + message);
 
         // Artificially create delay
         try {
@@ -100,7 +104,6 @@ public class FileGenerator implements MessageGenerator {
             e.printStackTrace();
         }
 
-        LOGGER.info("Generated from file: " + message);
         return message;
     }
 }

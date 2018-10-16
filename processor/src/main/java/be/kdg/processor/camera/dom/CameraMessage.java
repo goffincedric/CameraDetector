@@ -16,7 +16,7 @@ public class CameraMessage {
     @JsonIgnore
     // TODO: Verwijder hardcoded
     @Value("${licenseplate.regex}")
-    private String licenseplateRegex = "^[1-8]-[A-Z]{3}-[0-9]{3}$";
+    private static final String LICENSEPLATEREGEX = "^[1-8]-[A-Z]{3}-[0-9]{3}$";
 
     @Id
     @Column(name = "id")
@@ -56,7 +56,7 @@ public class CameraMessage {
 
     public void setLicenseplate(String licenseplate) {
         if (licenseplate != null || cameraImage == null) {
-            if (!licenseplate.matches(licenseplateRegex))
+            if (!licenseplate.matches(LICENSEPLATEREGEX))
                 throw new IllegalArgumentException("Invalid License plate");
             this.licenseplate = licenseplate;
         }

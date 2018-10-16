@@ -25,7 +25,7 @@ public class JSONUtils {
         try {
             object = Optional.of(mapper.readValue(string, objectClass));
         } catch (IOException e) {
-            LOGGER.severe("Object: '" + string + "' is niet van het verwachtte formaat!");
+            LOGGER.severe("Object: '" + string + "' could not be deserialized!");
             object = Optional.empty();
         }
         return object;

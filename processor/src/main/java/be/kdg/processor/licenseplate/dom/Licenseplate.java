@@ -22,13 +22,24 @@ public class Licenseplate {
     private String plateId;
     private String nationalNumber;
     private int euroNumber;
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<Fine> fines;
+    @OneToMany(targetEntity =  Fine.class,fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    private List<Fine> fines = new ArrayList<>();
 
-    public Licenseplate(String plateId, String nationalNumber, int euroNumber) {
-        this.plateId = plateId;
-        this.nationalNumber = nationalNumber;
-        this.euroNumber = euroNumber;
-        fines = new ArrayList<>();
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Licenseplate that = (Licenseplate) o;
+
+        if (plateId != null ? !plateId.equals(that.plateId) : that.plateId != null) return false;
+        return nationalNumber != null ? nationalNumber.equals(that.nationalNumber) : that.nationalNumber == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = plateId != null ? plateId.hashCode() : 0;
+        result = 31 * result + (nationalNumber != null ? nationalNumber.hashCode() : 0);
+        return result;
     }
 }

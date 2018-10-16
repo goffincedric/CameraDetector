@@ -43,6 +43,21 @@ public class Camera {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Camera camera = (Camera) o;
+
+        return cameraId == camera.cameraId;
+    }
+
+    @Override
+    public int hashCode() {
+        return cameraId;
+    }
+
+    @Override
     public String toString() {
         return "Camera{" +
                 "cameraId=" + cameraId +
