@@ -1,7 +1,7 @@
 package be.kdg.processor.openalpr;
 
 import be.kdg.processor.camera.dom.CameraMessage;
-import be.kdg.processor.processor.services.CloudALPRService;
+import be.kdg.processor.licenseplate.misc.CloudALPRService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,14 +20,13 @@ import java.util.Base64;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class ConnectionTest {
+public class CloudALPRServiceTests {
 
     @Autowired
     private CloudALPRService cloudALPRService;
 
     @Test
     public void testConnection() throws IOException {
-
         // Read image file to byte array
         Path path = Paths.get("src/test/resources/images/1.jpg");
         byte[] image = Files.readAllBytes(path);

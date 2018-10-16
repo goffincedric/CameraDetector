@@ -9,9 +9,7 @@ import javax.persistence.*;
  * 01/10/2018 14:03
  */
 
-@Getter
-@Setter(AccessLevel.NONE)
-@EqualsAndHashCode
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 
@@ -42,6 +40,21 @@ public class Camera {
 
     public void setCameraType(CameraType cameraType) {
         this.cameraType = cameraType;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Camera camera = (Camera) o;
+
+        return cameraId == camera.cameraId;
+    }
+
+    @Override
+    public int hashCode() {
+        return cameraId;
     }
 
     @Override

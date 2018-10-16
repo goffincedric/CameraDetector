@@ -7,6 +7,7 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
 import java.util.logging.Logger;
 
 @Component
@@ -17,9 +18,13 @@ public class EventConsumer {
 
     @RabbitListener(queues = "${mqtt.queue_name}")
     private void receiveMessage(String queueMessage) {
-        CameraMessage message = XMLUtils.convertXMLToObject(queueMessage, CameraMessage.class);
-        LOGGER.info(this.getClass().getCanonicalName() + ": Received '" + message + "'");
-
-        processor.reportMessage(message);
+        Optional<CameraMessage> optionalMessage = XMLUtils.convertXMLToObject(queueMessage, CameraMessage.class);
+        if (optionalMessage.isPresent()) {
+            CameraMessage message = optionalMessage.get();
+            LOGGER.info(this.getClass().getCanonicalName() + ": Received '" + message + "'");
+            processor.reportMessage(message);
+        } else {
+            LOGGER.warning("No message could be found after deserialization!");
+        }
     }
 }

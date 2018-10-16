@@ -1,9 +1,8 @@
-package be.kdg.processor.processor.services;
+package be.kdg.processor.licenseplate.misc;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-import javax.json.JsonObject;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -20,7 +19,7 @@ import java.util.regex.Pattern;
  * @author Cédric Goffin
  * 08/10/2018 15:58
  */
-@Component
+@Service
 public class CloudALPRService {
     private static final Logger LOGGER = Logger.getLogger(CloudALPRService.class.getName());
 

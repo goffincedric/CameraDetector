@@ -1,6 +1,7 @@
 package be.kdg.processor.camera.services;
 
 import be.kdg.processor.camera.dom.Camera;
+import be.kdg.processor.camera.dom.CameraMessage;
 import be.kdg.processor.camera.dom.CameraType;
 import be.kdg.processor.camera.repository.CameraRepository;
 import be.kdg.processor.utils.JSONUtils;
@@ -11,8 +12,11 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 /**
  * @author Cédric Goffin
@@ -32,40 +36,65 @@ public class CameraServiceAdapter {
         this.cameraRepository = cameraRepository;
     }
 
-    public Camera getCamera(int cameraId) {
-        Camera camera = null;
+    public Optional<Camera> getCamera(int cameraId) {
+        Optional<Camera> optionalCamera;
 
         if (cameraRepository.existsByCameraId(cameraId)) {
-            camera = cameraRepository.findByCameraId(cameraId).get();
+            optionalCamera = cameraRepository.findByCameraId(cameraId);
         } else {
             try {
-                camera = JSONUtils.convertJSONToObject(cameraServiceProxy.get(cameraId), Camera.class);
-                if (camera != null) {
-                    if (camera.getSegment() == null) {
+                optionalCamera = JSONUtils.convertJSONToObject(cameraServiceProxy.get(cameraId), Camera.class);
+                if (optionalCamera.isPresent()) {
+                    List<Camera> cameras = getAllCameras();
+                    Camera camera = optionalCamera.get();
+                    if (camera.getSegment() == null && cameras.stream().noneMatch(c -> c.getSegment() != null && c.getSegment().getConnectedCameraId() == camera.getCameraId())) {
                         camera.setCameraType(CameraType.EMISSION);
                     } else if (camera.getEuroNorm() == 0) {
                         camera.setCameraType(CameraType.SPEED);
                     } else {
                         camera.setCameraType(CameraType.SPEED_EMISSION);
                     }
+                    optionalCamera = Optional.of(createCamera(camera));
                 }
             } catch (IOException e) {
                 LOGGER.severe("Unable to deserialize camera with id: " + cameraId);
-                e.printStackTrace();
+                optionalCamera = Optional.empty();
             } catch (CameraNotFoundException cnfe) {
                 LOGGER.severe("Could not find camera with id: " + cameraId);
+                optionalCamera = Optional.empty();
             }
         }
 
-        return camera;
+        return optionalCamera;
     }
 
     public List<Camera> getAllCameras() {
-        return cameraRepository.findAll();
+        List<Camera> repoCameras = cameraRepository.findAll();
+        List<Camera> proxyCameras = new ArrayList<>();
+
+        int counter = 1;
+        boolean next = true;
+        do {
+            try {
+                JSONUtils.convertJSONToObject(cameraServiceProxy.get(counter), Camera.class).ifPresent(proxyCameras::add);
+                counter++;
+            } catch (Exception e) {
+                next = false;
+            }
+        } while (next);
+
+        return
+                proxyCameras.stream()
+                .map(c -> {
+                    if (repoCameras.contains(c))
+                        return repoCameras.get(repoCameras.indexOf(c));
+                    else
+                        return c;
+                }).collect(Collectors.toList());
     }
 
-    public List<Camera> getAllCameras(int id) {
-        return cameraRepository.findAll();
+    public List<Camera> getAllCamerasByEuronorm(int euronorm) {
+        return cameraRepository.findAllByEuroNorm(euronorm);
     }
 
     public Camera updateCamera(Camera camera, int cameraId) {
@@ -74,6 +103,29 @@ public class CameraServiceAdapter {
     }
 
     public Camera createCamera(Camera camera) {
-        return cameraRepository.save(camera);
+//        if (camera.getSegment() != null) {
+//            Optional<Camera> optionalCamera = getCamera(camera.getSegment().getConnectedCameraId());
+//            optionalCamera.ifPresent(cam -> {
+//                camera.getSegment().setCamera(cam);
+//                if (cam.getSegment() != null && cam.getSegment().getConnectedCameraId() == cam.getCameraId()) {
+//                    cam.getSegment().setCamera(camera);
+//                }
+//            });
+//        }
+        //TODO: Werkt niet
+        return cameraRepository.saveAndFlush(camera);
+    }
+
+    public List<CameraMessage> getMessagesFromTypes(List<CameraMessage> messages, List<CameraType> cameraTypes) {
+        return messages.stream()
+                .filter(m -> {
+                    Optional<Camera> optionalCamera = getCamera(m.getCameraId());
+                    if (optionalCamera.isPresent()) {
+                        Camera camera = optionalCamera.get();
+                        return cameraTypes.contains(camera.getCameraType());
+                    }
+                    return false;
+                })
+                .collect(Collectors.toList());
     }
 }

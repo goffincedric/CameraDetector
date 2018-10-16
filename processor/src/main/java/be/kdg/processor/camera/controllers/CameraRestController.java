@@ -44,14 +44,14 @@ public class CameraRestController {
         return result;
     }
        
-    @RequestMapping("/findbylastname")
-    public String fetchDataByLastName(@RequestParam("id") int id){
-        String result = "";
+    @RequestMapping("/findbyeuronorm")
+    public String fetchDataByLastName(@RequestParam("euronorm") int euronorm){
+        StringBuilder result = new StringBuilder();
            
-        for(Camera camera: cameraServiceAdapter.getAllCameras(id)){
-            result += camera.toString() + "</br>";
+        for(Camera camera: cameraServiceAdapter.getAllCamerasByEuronorm(euronorm)){
+            result.append(camera.toString()).append("</br>");
         }
            
-        return result;
+        return result.toString();
     }
 }

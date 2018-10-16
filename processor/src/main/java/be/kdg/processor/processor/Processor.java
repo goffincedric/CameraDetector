@@ -1,20 +1,23 @@
 package be.kdg.processor.processor;
 
 import be.kdg.processor.camera.services.CameraServiceAdapter;
-import be.kdg.processor.fine.finedetection.FineDetector;
+import be.kdg.processor.fine.FineDetector;
 import be.kdg.processor.fine.dom.Fine;
-import be.kdg.processor.licenseplate.dom.Licenseplate;
+import be.kdg.processor.fine.services.FineService;
 import be.kdg.processor.camera.dom.Camera;
 import be.kdg.processor.camera.dom.CameraMessage;
 import be.kdg.processor.licenseplate.services.LicenseplateServiceAdapter;
-import be.kdg.processor.processor.services.CloudALPRService;
+import be.kdg.processor.licenseplate.misc.CloudALPRService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.Semaphore;
 import java.util.logging.Logger;
 
 /**
@@ -26,66 +29,47 @@ import java.util.logging.Logger;
 @EnableScheduling
 public class Processor {
     private static final Logger LOGGER = Logger.getLogger(Processor.class.getName());
-    private final CameraServiceAdapter cameraServiceAdapter;
-    private final LicenseplateServiceAdapter licenseplateServiceAdapter;
-    private final CloudALPRService cloudALPRService;
-    private final FineDetector fineDetector;
+    private final FineService fineService;
 
-    private List<CameraMessage> messageList;
+//    private ConcurrentMap<CameraMessage, Integer> messageMap;
+    private final Map<CameraMessage, Integer> messageMap;
+
+    @Value("${processor.retries}")
+    private int retries;
 
     @Autowired
-    public Processor(CameraServiceAdapter cameraServiceAdapter, LicenseplateServiceAdapter licenseplateServiceAdapter, CloudALPRService cloudALPRService, FineDetector fineDetector) {
-        this.cameraServiceAdapter = cameraServiceAdapter;
-        this.licenseplateServiceAdapter = licenseplateServiceAdapter;
-        this.cloudALPRService = cloudALPRService;
-        this.fineDetector = fineDetector;
-        this.messageList = new ArrayList<>();
+    public Processor(FineService fineService) {
+        this.fineService = fineService;
+        this.messageMap = Collections.synchronizedMap(new HashMap<>());
     }
 
     @Scheduled(fixedRate = 10000)
-    public void CheckMessage() {
-        if (messageList.isEmpty()) return;
+    public void CheckMessages() {
+        Map<CameraMessage, Integer> buffer;
 
-        // Copy & empty buffer list
-        List<CameraMessage> messages = new ArrayList<>(messageList);
-        messageList.clear();
+        // Synchronize messageMap so no new items get added while messages get copied to buffer
+        synchronized (messageMap) {
+            if (messageMap.isEmpty()) return;
 
-        messages.forEach(message -> {
-            Camera camera = cameraServiceAdapter.getCamera(message.getCameraId());
-            if (camera != null) {
-                Licenseplate licenseplate = null;
+            // Copy & empty messageMap
+            buffer = new HashMap<>(messageMap);
+            messageMap.clear();
+        }
 
-                if (message.getCameraImage() != null) {
-                    String plate = cloudALPRService.getLicenseplate(message.getCameraImage());
-                    licenseplate = licenseplateServiceAdapter.getLicensePlate(plate);
-                } else if (message.getLicenseplate() != null) {
-                    licenseplate = licenseplateServiceAdapter.getLicensePlate(message.getLicenseplate());
-                }
+        // Process messages
+        List<CameraMessage> unprocessed = fineService.processFines(new ArrayList<>(buffer.keySet()));
 
-                List<Fine> fines = new ArrayList<>();
-
-                switch (camera.getCameraType()) {
-                    case EMISSION:
-                        Fine emissionFine = fineDetector.checkEmissionFine(message, camera, licenseplate);
-                        if (emissionFine != null) fines.add(emissionFine);
-                        break;
-                    case SPEED:
-                        Fine speedFine = fineDetector.checkSpeedFine(message, camera, licenseplate);
-                        if (speedFine != null) fines.add(speedFine);
-                        break;
-                    case SPEED_EMISSION:
-                        List<Fine> fineList = fineDetector.checkFines(message, camera, licenseplate);
-                        if (fineList != null) fines.addAll(fineList);
-                        break;
-                }
-
-                //TODO: write fine(s) to db
-                //fines.forEach(fine -> LOGGER.info("Car with license plate " + licenseplate.getPlateId() + " got fined with fine " + fine));
+        unprocessed.forEach(m -> {
+            int times = buffer.get(m);
+            if (times <= retries) messageMap.put(m, buffer.get(m)+1);
+            else {
+                LOGGER.warning("Logging message '" + m + "' to file because it failed to process more than " + retries + " times!");
+                //TODO: Log failed messages to file
             }
         });
     }
 
-    public boolean reportMessage(CameraMessage message) {
-        return messageList.add(message);
+    public void reportMessage(CameraMessage message) {
+        messageMap.put(message, 0);
     }
 }
