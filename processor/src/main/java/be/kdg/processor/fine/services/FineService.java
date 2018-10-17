@@ -20,10 +20,6 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static java.util.stream.Collectors.collectingAndThen;
-import static java.util.stream.Collectors.toCollection;
-import static java.util.stream.Collectors.toSet;
-
 /**
  * @author Cédric Goffin
  * 12/10/2018 15:21
@@ -45,9 +41,28 @@ public class FineService {
         this.fineDetector = fineDetector;
     }
 
+    public Optional<Fine> getFine(int id) {
+        return fineRepository.findById(id);
+    }
+
     public List<Fine> getFinesBetween(LocalDateTime from, LocalDateTime to) throws FineException {
         if (from.isAfter(to)) throw new FineException("From date (" + from + ") is after to date (" + to + ")");
         return fineRepository.findAllByTimestampBetween(from, to);
+    }
+
+    public Optional<Fine> acceptFine(int id) {
+        Optional<Fine> optionalFine = getFine(id);
+        if (optionalFine.isPresent()) {
+            Fine fine = optionalFine.get();
+            fine.setAccepted(true);
+            optionalFine = Optional.of(save(fine));
+            return optionalFine;
+        }
+        return Optional.empty();
+    }
+
+    public Fine save(Fine fine) {
+        return fineRepository.save(fine);
     }
 
     public List<Fine> saveFines(List<Fine> fines) {
