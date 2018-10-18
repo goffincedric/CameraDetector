@@ -10,12 +10,10 @@ import be.kdg.processor.fine.exceptions.FineException;
 import be.kdg.processor.fine.repository.FineRepository;
 import be.kdg.processor.licenseplate.dom.Licenseplate;
 import be.kdg.processor.licenseplate.services.LicenseplateServiceAdapter;
-import javafx.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -76,7 +74,7 @@ public class FineService {
         // Filter out emissionmessages
         List<CameraMessage> emissionMessages = cameraServiceAdapter.getMessagesFromTypes(messages, List.of(CameraType.EMISSION, CameraType.SPEED_EMISSION));
 
-        //TODO: init unprocessed messages list with messages that where not speed/emissionmessages
+        // Init unprocessed messages list with messages that where not speed/emissionmessages
         List<CameraMessage> unprocessed = messages.stream().filter(m -> !speedMessages.contains(m) && !emissionMessages.contains(m)).collect(Collectors.toList());
 
         // Process emissionmessages

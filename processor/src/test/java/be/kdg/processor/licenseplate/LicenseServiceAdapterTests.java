@@ -28,6 +28,6 @@ public class LicenseServiceAdapterTests {
         String licenseplateId = String.format("%s-%S-%s", RandomStringUtils.random(1, "12345678"), RandomStringUtils.random(3, true, false), RandomStringUtils.random(3, false, true));
         Optional<Licenseplate> optionalLicenseplate = licenseplateServiceAdapter.getLicensePlate(licenseplateId);
         Assert.assertTrue(optionalLicenseplate.isPresent());
-        optionalLicenseplate.ifPresent(licenseplate -> Assert.assertTrue(licenseplate.getPlateId().equalsIgnoreCase(licenseplateId)));
+        Assert.assertTrue(optionalLicenseplate.get().getPlateId().equalsIgnoreCase(licenseplateId));
     }
 }
