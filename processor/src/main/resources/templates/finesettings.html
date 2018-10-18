@@ -1,0 +1,40 @@
+<html xmlns:th="http://www.w3.org/1999/xhtml"
+      xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <link rel="icon" href="/static/images/favicon.ico">
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" media="screen"/>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" media="screen"/>
+    <!-- Scripts -->
+    <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+    <meta charset="UTF-8">
+    <title>Fine settings</title>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="panel panel-default">
+                <div class="panel-heading"><h5>Fine options</h5></div>
+                <div class="panel-body">
+                    <table class="table">
+                        <tr>
+                            <th>Emission factor</th>
+                            <td th:text="${fineOptionsDTO.emissionFineFactor}">$</td>
+                        </tr>
+                        <tr>
+                            <th>Speeding factor (< 50KM/h)</th>
+                            <td th:text="${fineOptionsDTO.speedFineFactorSlow}">$</td>
+                        </tr>
+                        <tr>
+                            <th>Speeding factor (> 50KM/h)</th>
+                            <td th:text="${fineOptionsDTO.speedFineFactorFast}">$</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
