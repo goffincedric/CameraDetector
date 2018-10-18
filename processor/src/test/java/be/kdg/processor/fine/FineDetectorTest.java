@@ -1,5 +1,6 @@
 package be.kdg.processor.fine;
 
+import be.kdg.processor.camera.dom.Camera;
 import be.kdg.processor.camera.dom.CameraMessage;
 import be.kdg.processor.camera.services.CameraServiceAdapter;
 import be.kdg.processor.fine.dom.EmissionFine;
@@ -15,6 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Map;
 import java.util.Optional;
 
@@ -35,6 +37,10 @@ public class FineDetectorTest {
 
     @Value("${fine.emission.fineFactor}")
     private double emissionFineFactor;
+    @Value("${fine.speed.fineFactor.slow}")
+    private double speedFineFactorSlow;
+    @Value("${fine.speed.fineFactor.fast}")
+    private double speedFineFactorFast;
 
     @Test
     public void checkEmissionFine() {
@@ -57,15 +63,18 @@ public class FineDetectorTest {
                 new CameraMessage(0, 2, null, "4-ABC-123", LocalDateTime.now().withNano(0).plusSeconds(120), 120000)
         );
 
+        Camera camera = cameraServiceAdapter.getCamera(speedpair.getKey().getCameraId()).get();
+
         Optional<Fine> optionalFine = fineDetector.checkSpeedFine(
                 speedpair,
-                cameraServiceAdapter.getCamera(speedpair.getKey().getCameraId()).get(),
+                camera,
                 licenseplateServiceAdapter.getLicensePlate(speedpair.getKey().getLicenseplate()).get()
         );
 
         Assert.assertTrue(optionalFine.isPresent());
         Fine fine = optionalFine.get();
         Assert.assertTrue(fine instanceof SpeedingFine);
-        Assert.assertEquals(fine.getAmount(), 354.0, 0.0);
+        double amount = (Double.valueOf(((camera.getSegment().getDistance() / (ChronoUnit.MILLIS.between(speedpair.getKey().getTimestamp(), speedpair.getValue().getTimestamp())/1000D)) * 3.6D)).intValue() - camera.getSegment().getSpeedLimit()) * ((camera.getSegment().getSpeedLimit() <= 50) ? speedFineFactorSlow : speedFineFactorFast);
+        Assert.assertEquals(fine.getAmount(), amount, 0.0);
     }
 }
