@@ -1,20 +1,52 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
- <head>
- <title>>Welcome Security with Spring Boot!</title>
- </head>
- <body>
-     <div th:if="${param.error}">
-        <h1 style="color:red">Username or Password is wrong. Please check again</h1>
- 
-     </div>
-     <div th:if="${param.logout}">
-         <h1 style="color:blue">Logged out.</h1>
-     </div>
-     <form th:action="@{/login}" method="post">
-         <div><label> User Name : <input type="text" name="username"/> </label></div>
-         <div><label> Password: <input type="password" name="password"/> </label></div>
-         <div><input type="submit" value="Sign In"/>    </div>
-     </form>
- </body>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <!--<link rel="icon" href="/static/images/favicon.ico">-->
+    <!--<link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" media="screen"/>-->
+    <!--<link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" media="screen"/>-->
+    <!--&lt;!&ndash; Scripts &ndash;&gt;-->
+    <!--<script th:src="@{/webjars/jquery/jquery.min.js}"></script>-->
+    <!--<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>-->
+
+    <title>Login</title>
+</head>
+<body>
+<div th:if="${param.error}">
+    <h1 style="color:red">Username or Password is wrong. Please check again</h1>
+</div>
+<div th:if="${param.logout}">
+    <h1>Logged out.</h1>
+</div>
+<form th:action="@{/login}" method="post">
+    <h1>Login</h1>
+    <div><label>User Name: <input type="text" name="username"/></label></div>
+    <div><label>Password: <input type="password" name="password"/></label></div>
+    <div><input type="submit" value="Sign In"/></div>
+</form>
+
+<!--<div class="container">-->
+<!--<div class="row">-->
+<!--<div class="Absolute-Center is-Responsive">-->
+<!--<div id="logo-container"></div>-->
+<!--<div class="col-sm-12 col-md-10 col-md-offset-1">-->
+<!--<form action="" id="loginForm">-->
+<!--<div class="form-group input-group">-->
+<!--<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>-->
+<!--<input class="form-control" type="text" name='username' placeholder="username"/>-->
+<!--</div>-->
+<!--<div class="form-group input-group">-->
+<!--<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>-->
+<!--<input class="form-control" type="password" name='password' placeholder="password"/>-->
+<!--</div>-->
+<!--<div class="form-group">-->
+<!--<button type="button" class="btn btn-def btn-block">Login</button>-->
+<!--</div>-->
+<!--</form>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+
+</body>
 </html>
