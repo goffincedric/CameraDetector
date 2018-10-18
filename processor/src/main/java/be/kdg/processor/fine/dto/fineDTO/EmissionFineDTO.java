@@ -1,4 +1,4 @@
-package be.kdg.processor.fine.dto;
+package be.kdg.processor.fine.dto.fineDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

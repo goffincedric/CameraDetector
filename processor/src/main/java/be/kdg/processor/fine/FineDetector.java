@@ -72,7 +72,6 @@ public class FineDetector {
     }
 
     private Double calcSpeed(double distance, LocalDateTime timestamp1, LocalDateTime timestamp2) {
-        Double secs = ChronoUnit.MILLIS.between(timestamp1, timestamp2)/1000D;
         return ((distance / (ChronoUnit.MILLIS.between(timestamp1, timestamp2)/1000D)) * 3.6D);
     }
 }

@@ -15,4 +15,5 @@ public class WebConfiguration {
     public ModelMapper modelMapper() {
         return new ModelMapper();
     }
+
 }

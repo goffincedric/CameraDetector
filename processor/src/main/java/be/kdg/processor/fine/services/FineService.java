@@ -10,19 +10,13 @@ import be.kdg.processor.fine.exceptions.FineException;
 import be.kdg.processor.fine.repository.FineRepository;
 import be.kdg.processor.licenseplate.dom.Licenseplate;
 import be.kdg.processor.licenseplate.services.LicenseplateServiceAdapter;
-import javafx.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
-
-import static java.util.stream.Collectors.collectingAndThen;
-import static java.util.stream.Collectors.toCollection;
-import static java.util.stream.Collectors.toSet;
 
 /**
  * @author Cédric Goffin
@@ -45,9 +39,28 @@ public class FineService {
         this.fineDetector = fineDetector;
     }
 
+    public Optional<Fine> getFine(int id) {
+        return fineRepository.findById(id);
+    }
+
     public List<Fine> getFinesBetween(LocalDateTime from, LocalDateTime to) throws FineException {
         if (from.isAfter(to)) throw new FineException("From date (" + from + ") is after to date (" + to + ")");
         return fineRepository.findAllByTimestampBetween(from, to);
+    }
+
+    public Optional<Fine> acceptFine(int id) {
+        Optional<Fine> optionalFine = getFine(id);
+        if (optionalFine.isPresent()) {
+            Fine fine = optionalFine.get();
+            fine.setAccepted(true);
+            optionalFine = Optional.of(save(fine));
+            return optionalFine;
+        }
+        return Optional.empty();
+    }
+
+    public Fine save(Fine fine) {
+        return fineRepository.save(fine);
     }
 
     public List<Fine> saveFines(List<Fine> fines) {
@@ -61,7 +74,7 @@ public class FineService {
         // Filter out emissionmessages
         List<CameraMessage> emissionMessages = cameraServiceAdapter.getMessagesFromTypes(messages, List.of(CameraType.EMISSION, CameraType.SPEED_EMISSION));
 
-        //TODO: init unprocessed messages list with messages that where not speed/emissionmessages
+        // Init unprocessed messages list with messages that where not speed/emissionmessages
         List<CameraMessage> unprocessed = messages.stream().filter(m -> !speedMessages.contains(m) && !emissionMessages.contains(m)).collect(Collectors.toList());
 
         // Process emissionmessages

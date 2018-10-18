@@ -26,6 +26,8 @@ public abstract class Fine {
     @ManyToOne(targetEntity = Licenseplate.class, fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     private transient Licenseplate licenseplate;
     private String licenseplateId;
+    private boolean isAccepted = false;
+    private String motivation;
 
     public Fine(double amount, LocalDateTime timestamp, LocalDateTime paymentDeadline, Licenseplate licenseplate) {
         this.amount = amount;

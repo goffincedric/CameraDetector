@@ -1,4 +1,4 @@
-package be.kdg.processor.fine.dto;
+package be.kdg.processor.fine.dto.fineDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,4 +19,5 @@ public abstract class FineDTO {
     private LocalDateTime timestamp;
     private LocalDateTime paymentDeadline;
     private String licenseplateId;
+    private boolean isAccepted;
 }
