@@ -37,11 +37,9 @@ public class CameraServiceAdapter {
     }
 
     public Optional<Camera> getCamera(int cameraId) {
-        Optional<Camera> optionalCamera;
+        Optional<Camera> optionalCamera = cameraRepository.findByCameraId(cameraId);
 
-        if (cameraRepository.existsByCameraId(cameraId)) {
-            optionalCamera = cameraRepository.findByCameraId(cameraId);
-        } else {
+        if (!optionalCamera.isPresent()) {
             try {
                 optionalCamera = JSONUtils.convertJSONToObject(cameraServiceProxy.get(cameraId), Camera.class);
                 if (optionalCamera.isPresent()) {
@@ -85,12 +83,13 @@ public class CameraServiceAdapter {
 
         return
                 proxyCameras.stream()
-                .map(c -> {
-                    if (repoCameras.contains(c))
-                        return repoCameras.get(repoCameras.indexOf(c));
-                    else
-                        return c;
-                }).collect(Collectors.toList());
+                        .map(c -> {
+                            if (repoCameras.contains(c))
+                                return repoCameras.get(repoCameras.indexOf(c));
+                            else
+                                c = createCamera(c);
+                            return c;
+                        }).collect(Collectors.toList());
     }
 
     public List<Camera> getAllCamerasByEuronorm(int euronorm) {
@@ -103,17 +102,7 @@ public class CameraServiceAdapter {
     }
 
     public Camera createCamera(Camera camera) {
-//        if (camera.getSegment() != null) {
-//            Optional<Camera> optionalCamera = getCamera(camera.getSegment().getConnectedCameraId());
-//            optionalCamera.ifPresent(cam -> {
-//                camera.getSegment().setCamera(cam);
-//                if (cam.getSegment() != null && cam.getSegment().getConnectedCameraId() == cam.getCameraId()) {
-//                    cam.getSegment().setCamera(camera);
-//                }
-//            });
-//        }
-        //TODO: Werkt niet
-        return cameraRepository.saveAndFlush(camera);
+        return cameraRepository.save(camera);
     }
 
     public List<CameraMessage> getMessagesFromTypes(List<CameraMessage> messages, List<CameraType> cameraTypes) {

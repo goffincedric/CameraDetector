@@ -1,57 +1,63 @@
 package be.kdg.processor.camera.controllers;
 
+import be.kdg.processor.camera.dto.CameraDTO;
 import be.kdg.processor.camera.dom.Camera;
-import be.kdg.processor.camera.dom.CameraLocation;
-import be.kdg.processor.camera.dom.CameraType;
-import be.kdg.processor.camera.dom.Segment;
 import be.kdg.processor.camera.services.CameraServiceAdapter;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/cameras")
+@RequestMapping("/api/camera")
 public class CameraRestController {
     private final CameraServiceAdapter cameraServiceAdapter;
+    private final ModelMapper modelMapper;
 
     @Autowired
-    public CameraRestController(CameraServiceAdapter cameraServiceAdapter) {
+    public CameraRestController(CameraServiceAdapter cameraServiceAdapter, ModelMapper modelMapper) {
         this.cameraServiceAdapter = cameraServiceAdapter;
+        this.modelMapper = modelMapper;
     }
 
-    @RequestMapping("/init")
-    public String process(){
-        cameraServiceAdapter.createCamera(new Camera(1, new CameraLocation(1D, 1D), new Segment(2, 200, 120), 4, CameraType.SPEED_EMISSION));
-        return "Done";
+    @GetMapping("/findall")
+    public ResponseEntity<List<CameraDTO>> findAll() {
+        List<CameraDTO> cameraDTOS = cameraServiceAdapter.getAllCameras().stream()
+                .map(c -> modelMapper.map(c, CameraDTO.class))
+                .collect(Collectors.toList());
+
+        if (cameraDTOS.isEmpty()) return new ResponseEntity<>(cameraDTOS, HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(
+                cameraDTOS,
+                HttpStatus.OK);
     }
-       
-    @RequestMapping("/findall")
-    public String findAll(){
-        String result = "";
-           
-        for(Camera camera : cameraServiceAdapter.getAllCameras()){
-            result += camera.toString() + "</br>";
+
+    @GetMapping("/findbyid/{id}")
+    public ResponseEntity<CameraDTO> findById(@PathVariable int id) throws Exception {
+        Optional<Camera> optionalCamera = cameraServiceAdapter.getCamera(id);
+        if (optionalCamera.isPresent()) {
+            return new ResponseEntity<>(
+                    modelMapper.map(optionalCamera.get(), CameraDTO.class),
+                    HttpStatus.OK
+            );
         }
-           
-        return result;
+        throw new Exception("Camera with id " + id + " could not be found!");
     }
-       
-    @RequestMapping("/findbyid")
-    public String findById(@RequestParam("id") int id){
-        String result = "";
-        result = cameraServiceAdapter.getCamera(id).toString();
-        return result;
-    }
-       
-    @RequestMapping("/findbyeuronorm")
-    public String fetchDataByLastName(@RequestParam("euronorm") int euronorm){
-        StringBuilder result = new StringBuilder();
-           
-        for(Camera camera: cameraServiceAdapter.getAllCamerasByEuronorm(euronorm)){
-            result.append(camera.toString()).append("</br>");
-        }
-           
-        return result.toString();
+
+    @GetMapping("/findbyeuronorm/{euronorm}")
+    public ResponseEntity<List<CameraDTO>> fetchDataByLastName(@PathVariable int euronorm) {
+        List<CameraDTO> cameraDTOS = cameraServiceAdapter.getAllCamerasByEuronorm(euronorm).stream()
+                .map(c -> modelMapper.map(c, CameraDTO.class))
+                .collect(Collectors.toList());
+
+        if (cameraDTOS.isEmpty()) return new ResponseEntity<>(cameraDTOS, HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(
+                cameraDTOS,
+                HttpStatus.OK);
     }
 }

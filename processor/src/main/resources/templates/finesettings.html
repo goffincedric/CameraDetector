@@ -1,37 +1,31 @@
 <html xmlns:th="http://www.w3.org/1999/xhtml"
       xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <link rel="icon" href="/static/images/favicon.ico">
-    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" media="screen"/>
-    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" media="screen"/>
-    <!-- Scripts -->
-    <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
-    <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+    <link rel="stylesheet" href="/css/style.css">
     <meta charset="UTF-8">
     <title>Fine settings</title>
 </head>
 <body>
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading"><h5>Fine options</h5></div>
-                <div class="panel-body">
-                    <table class="table">
-                        <tr>
-                            <th>Emission factor</th>
-                            <td th:text="${fineOptionsDTO.emissionFineFactor}">$</td>
-                        </tr>
-                        <tr>
-                            <th>Speeding factor (< 50KM/h)</th>
-                            <td th:text="${fineOptionsDTO.speedFineFactorSlow}">$</td>
-                        </tr>
-                        <tr>
-                            <th>Speeding factor (> 50KM/h)</th>
-                            <td th:text="${fineOptionsDTO.speedFineFactorFast}">$</td>
-                        </tr>
-                    </table>
-                </div>
+<div class="page">
+    <div class="container">
+        <div class="left">
+            <div class="title">Fine options</div>
+            <div class="desc">
+                The following factors will be used for calculating the fine amount.
+            </div>
+        </div>
+        <div class="right">
+            <div class="info">
+                <label>Emission factor</label><div class="input" th:text="${fineOptionsDTO.emissionFineFactor}"></div>
+                <label>Speeding factor (< 50KM/h)</label><div class="input" th:text="${fineOptionsDTO.speedFineFactorSlow}"></div>
+                <label>Speeding factor (> 50KM/h)</label><div class="input" th:text="${fineOptionsDTO.speedFineFactorFast}"></div>
+
+
+
+                <a th:href="@{/admin}" class="link" >Go to admin page</a>
+                <form th:action="@{/logout}" method="post">
+                    <input type="submit" value="Sign Out"/>
+                </form>
             </div>
         </div>
     </div>

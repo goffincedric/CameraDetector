@@ -14,7 +14,6 @@ import java.time.format.DateTimeFormatter;
 @Table(name = "tblCameraMessage")
 public class CameraMessage {
     @JsonIgnore
-    // TODO: Verwijder hardcoded
     @Value("${licenseplate.regex}")
     private static final String LICENSEPLATEREGEX = "^[1-8]-[A-Z]{3}-[0-9]{3}$";
 
@@ -66,6 +65,10 @@ public class CameraMessage {
     @Override
     public String toString() {
         return String.format("Camera Message (camera_id: %d) %s %s (delay: %d)", cameraId, licenseplate, timestamp.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")), delay);
+    }
+
+    public String[] toStringArray() {
+        return new String[]{String.valueOf(cameraId), String.valueOf(cameraImage), licenseplate, String.valueOf(timestamp), String.valueOf(delay)};
     }
 }
 

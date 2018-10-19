@@ -2,7 +2,6 @@ package be.kdg.processor.licenseplate.services;
 
 import be.kdg.processor.camera.dom.CameraMessage;
 import be.kdg.processor.licenseplate.dom.Licenseplate;
-import be.kdg.processor.licenseplate.misc.CloudALPRService;
 import be.kdg.processor.licenseplate.repository.LicenseplateRepository;
 import be.kdg.processor.utils.JSONUtils;
 import be.kdg.sa.services.InvalidLicensePlateException;
@@ -36,7 +35,7 @@ public class LicenseplateServiceAdapter {
         this.licenseplateRepository = licenseplateRepository;
     }
 
-    public Optional<Licenseplate> getLicensePlate(String licensePlateId) {
+    public Optional<Licenseplate> getLicensePlate(String licensePlateId) throws Exception {
         Optional<Licenseplate> licenseplate = licenseplateRepository.findById(licensePlateId);
         if (!licenseplate.isPresent()) {
             try {
@@ -47,12 +46,15 @@ public class LicenseplateServiceAdapter {
             } catch (IOException e) {
                 LOGGER.severe("Unable to deserialize licenseplate with id: " + licensePlateId);
                 licenseplate = Optional.empty();
+                throw new Exception("Error while getting license plate with id: " + licensePlateId);
             } catch (LicensePlateNotFoundException lnfe) {
                 LOGGER.severe("Could not find license plate with id: " + licensePlateId);
                 licenseplate = Optional.empty();
+                throw new Exception("Error while getting license plate with id: " + licensePlateId);
             } catch (InvalidLicensePlateException ile) {
                 LOGGER.severe("Invalid license plate: " + licensePlateId);
                 licenseplate = Optional.empty();
+                throw new Exception("Error while getting license plate with id: " + licensePlateId);
             }
         }
 
@@ -61,14 +63,23 @@ public class LicenseplateServiceAdapter {
 
     public Optional<Licenseplate> getLicensePlate(byte[] data) {
         String licenseplate = cloudALPRService.getLicenseplate(data);
-        return getLicensePlate(licenseplate);
+        try {
+            return getLicensePlate(licenseplate);
+        } catch (Exception e) {
+            LOGGER.severe(e.getMessage());
+        }
+        return Optional.empty();
     }
 
     public Optional<Licenseplate> getLicensePlate(CameraMessage cameraMessage) {
-        if (cameraMessage.getLicenseplate() != null) {
-            return getLicensePlate(cameraMessage.getLicenseplate());
-        } else if (cameraMessage.getCameraImage() != null) {
-            return getLicensePlate(cameraMessage.getCameraImage());
+        try {
+            if (cameraMessage.getLicenseplate() != null) {
+                return getLicensePlate(cameraMessage.getLicenseplate());
+            } else if (cameraMessage.getCameraImage() != null) {
+                return getLicensePlate(cameraMessage.getCameraImage());
+            }
+        } catch (Exception e) {
+            LOGGER.severe(e.getMessage());
         }
         return Optional.empty();
     }

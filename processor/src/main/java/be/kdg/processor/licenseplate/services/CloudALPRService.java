@@ -1,4 +1,4 @@
-package be.kdg.processor.licenseplate.misc;
+package be.kdg.processor.licenseplate.services;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -67,9 +67,9 @@ public class CloudALPRService {
                 System.out.println("Got non-200 response: " + status_code);
             }
         } catch (MalformedURLException e) {
-            System.out.println("Bad URL");
+            LOGGER.severe("Bad URL for CloudALPR connection");
         } catch (IOException e) {
-            System.out.println("Failed to open connection");
+            LOGGER.severe("Failed to open connection to CloudALPR");
         }
 
         return licensePlate;

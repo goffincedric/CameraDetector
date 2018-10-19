@@ -1,13 +1,8 @@
 package be.kdg.processor.processor;
 
-import be.kdg.processor.camera.services.CameraServiceAdapter;
-import be.kdg.processor.fine.FineDetector;
-import be.kdg.processor.fine.dom.Fine;
 import be.kdg.processor.fine.services.FineService;
-import be.kdg.processor.camera.dom.Camera;
 import be.kdg.processor.camera.dom.CameraMessage;
-import be.kdg.processor.licenseplate.services.LicenseplateServiceAdapter;
-import be.kdg.processor.licenseplate.misc.CloudALPRService;
+import be.kdg.processor.utils.CSVUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -15,9 +10,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-import java.util.concurrent.Semaphore;
 import java.util.logging.Logger;
 
 /**
@@ -31,11 +23,14 @@ public class Processor {
     private static final Logger LOGGER = Logger.getLogger(Processor.class.getName());
     private final FineService fineService;
 
-//    private ConcurrentMap<CameraMessage, Integer> messageMap;
     private final Map<CameraMessage, Integer> messageMap;
 
     @Value("${processor.retries}")
     private int retries;
+    @Value("${processor.failed.log.enabled}")
+    private boolean logFailed;
+    @Value("${processor.failed.log.path}")
+    private String logPath;
 
     @Autowired
     public Processor(FineService fineService) {
@@ -65,6 +60,7 @@ public class Processor {
             else {
                 LOGGER.warning("Logging message '" + m + "' to file because it failed to process more than " + retries + " times!");
                 //TODO: Log failed messages to file
+                if (logFailed) CSVUtils.writeMessage(m, logPath);
             }
         });
     }

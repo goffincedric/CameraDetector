@@ -24,7 +24,7 @@ public class LicenseServiceAdapterTests {
     private LicenseplateServiceAdapter licenseplateServiceAdapter;
 
     @Test
-    public void testLicenseplateService() {
+    public void testLicenseplateService() throws Exception {
         String licenseplateId = String.format("%s-%S-%s", RandomStringUtils.random(1, "12345678"), RandomStringUtils.random(3, true, false), RandomStringUtils.random(3, false, true));
         Optional<Licenseplate> optionalLicenseplate = licenseplateServiceAdapter.getLicensePlate(licenseplateId);
         Assert.assertTrue(optionalLicenseplate.isPresent());

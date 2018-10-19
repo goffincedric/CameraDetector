@@ -19,11 +19,12 @@ public class Camera {
     @Id
     @Column(name = "id")
     private int cameraId;
-    @OneToOne(targetEntity = CameraLocation.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(targetEntity = CameraLocation.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private CameraLocation location;
-    @OneToOne(targetEntity = Segment.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(targetEntity = Segment.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Segment segment;
     private int euroNorm;
+    @Enumerated(value = EnumType.ORDINAL)
     private CameraType cameraType;
 
     public Camera(int cameraId, CameraLocation location, Segment segment) {

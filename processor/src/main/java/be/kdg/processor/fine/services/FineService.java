@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 /**
@@ -25,6 +26,8 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 public class FineService {
+    private static final Logger LOGGER = Logger.getLogger(FineService.class.getName());
+
     private final CameraServiceAdapter cameraServiceAdapter;
     private final LicenseplateServiceAdapter licenseplateServiceAdapter;
 
@@ -150,7 +153,12 @@ public class FineService {
                     if (optionalCamera.isPresent()) {
                         Camera camera = optionalCamera.get();
 
-                        Optional<Licenseplate> optionalLicenseplate = licenseplateServiceAdapter.getLicensePlate(pair.getKey().getLicenseplate());
+                        Optional<Licenseplate> optionalLicenseplate = Optional.empty();
+                        try {
+                            optionalLicenseplate = licenseplateServiceAdapter.getLicensePlate(pair.getKey().getLicenseplate());
+                        } catch (Exception e) {
+                            LOGGER.severe(e.getMessage());
+                        }
                         if (optionalLicenseplate.isPresent()) {
                             Licenseplate licenseplate = optionalLicenseplate.get();
                             return fineDetector.checkSpeedFine(pair, camera, licenseplate);
