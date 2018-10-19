@@ -189,12 +189,18 @@ public class FineService {
                     Camera camera = optionalCamera.get();
 
                     if (camera.getSegment() != null) {
-                        Optional<CameraMessage> optionalLinkedMessage = unprocessedMessages.stream()
-                                .filter(m ->
-                                        m.getCameraId() == camera.getSegment().getConnectedCameraId() &&
-                                        m.getLicenseplate().equalsIgnoreCase(message.getLicenseplate()) &&
-                                        m.getTimestamp().isAfter(message.getTimestamp()))
-                                .findFirst();
+                        Optional<CameraMessage> optionalLinkedMessage = Optional.empty();
+                        try {
+                             optionalLinkedMessage = unprocessedMessages.stream()
+                                    .filter(m ->
+                                            m.getCameraId() == camera.getSegment().getConnectedCameraId() &&
+                                                    m.getLicenseplate().equalsIgnoreCase(message.getLicenseplate()) &&
+                                                    m.getTimestamp().isAfter(message.getTimestamp()))
+                                    .findFirst();
+                        } catch (Exception e) {
+                            LOGGER.severe("Could not link message " + message);
+                        }
+
                         optionalLinkedMessage.ifPresent(m -> {
                             if (camera.getSegment() != null) {
                                 linkedMessages.put(message, m);

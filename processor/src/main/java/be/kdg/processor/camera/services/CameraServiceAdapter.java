@@ -45,14 +45,7 @@ public class CameraServiceAdapter {
                 if (optionalCamera.isPresent()) {
                     List<Camera> cameras = getAllCameras();
                     Camera camera = optionalCamera.get();
-                    if (camera.getSegment() == null && cameras.stream().noneMatch(c -> c.getSegment() != null && c.getSegment().getConnectedCameraId() == camera.getCameraId())) {
-                        camera.setCameraType(CameraType.EMISSION);
-                    } else if (camera.getEuroNorm() == 0) {
-                        camera.setCameraType(CameraType.SPEED);
-                    } else {
-                        camera.setCameraType(CameraType.SPEED_EMISSION);
-                    }
-                    optionalCamera = Optional.of(createCamera(camera));
+                    optionalCamera = cameras.stream().filter(c -> c.getCameraId() == camera.getCameraId()).findFirst();
                 }
             } catch (IOException e) {
                 LOGGER.severe("Unable to deserialize camera with id: " + cameraId);
@@ -87,8 +80,14 @@ public class CameraServiceAdapter {
                             if (repoCameras.contains(c))
                                 return repoCameras.get(repoCameras.indexOf(c));
                             else
-                                c = createCamera(c);
-                            return c;
+                                if (c.getSegment() == null && proxyCameras.stream().noneMatch(ca -> ca.getSegment() != null && ca.getSegment().getConnectedCameraId() == c.getCameraId())) {
+                                    c.setCameraType(CameraType.EMISSION);
+                                } else if (c.getEuroNorm() == 0) {
+                                    c.setCameraType(CameraType.SPEED);
+                                } else {
+                                    c.setCameraType(CameraType.SPEED_EMISSION);
+                                }
+                                return createCamera(c);
                         }).collect(Collectors.toList());
     }
 
@@ -102,7 +101,7 @@ public class CameraServiceAdapter {
     }
 
     public Camera createCamera(Camera camera) {
-        return cameraRepository.save(camera);
+        return cameraRepository.saveAndFlush(camera);
     }
 
     public List<CameraMessage> getMessagesFromTypes(List<CameraMessage> messages, List<CameraType> cameraTypes) {

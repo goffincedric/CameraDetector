@@ -24,7 +24,6 @@ public class Camera {
     @OneToOne(targetEntity = Segment.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Segment segment;
     private int euroNorm;
-    @Enumerated(value = EnumType.ORDINAL)
     private CameraType cameraType;
 
     public Camera(int cameraId, CameraLocation location, Segment segment) {

@@ -54,13 +54,13 @@ public class CloudALPRService {
                     json_content.append(inputLine);
                 in.close();
 
-                Pattern pattern = Pattern.compile(".*\"plate\": \"([a-zA-Z1-9]{7})\".*");
+                Pattern pattern = Pattern.compile(".*\"plate\": \"([1-9][a-zA-Z]{3}[0-9]{3})\".*");
                 Matcher matcher = pattern.matcher(json_content.toString());
                 if (matcher.matches())
                     licensePlate = matcher.group(1);
                 else {
                     LOGGER.severe("License plate not recognised: " + json_content);
-                    return "";
+                    return null;
                 }
                 licensePlate = licensePlate.charAt(0) + "-" + licensePlate.substring(1, 4) + "-" + licensePlate.substring(4, 7);
             } else {

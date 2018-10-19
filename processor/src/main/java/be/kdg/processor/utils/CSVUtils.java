@@ -23,13 +23,13 @@ public class CSVUtils {
     private String fileTemplate = "failed_log_" + LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy_"));
 
     private String fileName = null;
+    private boolean firstRun = true;
 
     public void writeMessage(CameraMessage message, String logger_path) {
         if (logger_path == null) throw new IllegalArgumentException("No path to logfile was given!");
         File directory = new File(logger_path);
 
         // Check if dir exists
-        boolean firstRun = !directory.exists();
         if (firstRun) {
             if (!directory.exists()) directory.mkdirs();
 
@@ -56,6 +56,7 @@ public class CSVUtils {
                 // Write header
                 String[] fieldNames = {"id", "cameraImage", "licenseplate", "timestamp", "delay"};
                 csvWriter.writeNext(fieldNames);
+                firstRun = false;
             }
 
             csvWriter.writeNext(message.toStringArray());

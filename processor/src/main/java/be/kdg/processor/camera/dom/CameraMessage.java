@@ -6,21 +6,16 @@ import org.springframework.beans.factory.annotation.Value;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = "tblCameraMessage")
 public class CameraMessage {
     @JsonIgnore
     @Value("${licenseplate.regex}")
     private static final String LICENSEPLATEREGEX = "^[1-8]-[A-Z]{3}-[0-9]{3}$";
 
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int messageId;
     private int cameraId;
     private byte[] cameraImage;
     private String licenseplate;
@@ -68,7 +63,7 @@ public class CameraMessage {
     }
 
     public String[] toStringArray() {
-        return new String[]{String.valueOf(cameraId), String.valueOf(cameraImage), licenseplate, String.valueOf(timestamp), String.valueOf(delay)};
+        return new String[]{String.valueOf(cameraId), Arrays.toString(cameraImage), licenseplate, String.valueOf(timestamp), String.valueOf(delay)};
     }
 }
 

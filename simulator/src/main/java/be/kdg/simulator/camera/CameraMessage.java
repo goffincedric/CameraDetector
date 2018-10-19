@@ -15,7 +15,6 @@ public class CameraMessage {
     @Value("${licenseplate.regex}")
     private String licenseplateRegex = "^[1-8]-[A-Z]{3}-[0-9]{3}$";
 
-    private int messageId;
     private int cameraId;
     private String licenseplate;
     private byte[] cameraImage;
