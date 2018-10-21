@@ -16,14 +16,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/", "/home", "/api/**", "/css/**").permitAll()
+                .antMatchers("/", "/home", "/api/**", "/css/**", "/js/**").permitAll()
                 .antMatchers("/admin", "/h2-console/**").hasRole("ADMIN").anyRequest()
                 .authenticated()
                 .and()
-                .formLogin().loginPage("/login").permitAll()
+                .formLogin().loginPage("/login").successForwardUrl("/admin").permitAll()
                 .and()
                 .logout().permitAll();
-        http.exceptionHandling().accessDeniedPage("/403");
         http.csrf().disable();
         http.headers().frameOptions().disable();
     }
@@ -35,9 +34,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .withUser("admin").password("{noop}admin").roles("ADMIN");
     }
-
-//    @Override
-//    public void configure(WebSecurity web) throws Exception {
-//        web.ignoring().antMatchers("/resources/**", "/css/**");
-//    }
 }

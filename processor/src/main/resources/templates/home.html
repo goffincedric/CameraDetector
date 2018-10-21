@@ -1,18 +1,24 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
  <head>
-     <link rel="icon" href="/static/images/favicon.ico">
-     <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" media="screen"/>
-     <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" media="screen"/>
-     <!-- Scripts -->
-     <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
-     <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+     <link rel="stylesheet" href="/css/style.css">
  <title>Home</title>
  </head>
  <body>
-     <h1 style="color: green">Hello! This is Home Page!</h1>
-     <a style="color:blue" th:href="@{/welcome}">Go to welcome Page</a>
-     <br>
-     <a style="color:blue" th:href="@{/fine/settings}">View fine settings</a>
+ <div class="page">
+     <div class="container">
+         <div class="left">
+             <div class="title">Home page</div>
+             <div class="desc">
+                 Log in to go to admin page.
+             </div>
+         </div>
+         <div class="right">
+             <div class="info">
+                 <a th:href="@{/admin}" class="link" >Go to admin page</a>
+             </div>
+         </div>
+     </div>
+ </div>
  </body>
 </html>

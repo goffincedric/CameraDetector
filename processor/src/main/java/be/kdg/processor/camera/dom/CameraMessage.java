@@ -1,27 +1,23 @@
 package be.kdg.processor.camera.dom;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 
-import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Base64;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = "tblCameraMessage")
 public class CameraMessage {
     @JsonIgnore
-    // TODO: Verwijder hardcoded
     @Value("${licenseplate.regex}")
     private static final String LICENSEPLATEREGEX = "^[1-8]-[A-Z]{3}-[0-9]{3}$";
 
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int messageId;
     private int cameraId;
     private byte[] cameraImage;
     private String licenseplate;
@@ -66,6 +62,10 @@ public class CameraMessage {
     @Override
     public String toString() {
         return String.format("Camera Message (camera_id: %d) %s %s (delay: %d)", cameraId, licenseplate, timestamp.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")), delay);
+    }
+
+    public String[] toStringArray() {
+        return new String[]{String.valueOf(cameraId), Base64.getEncoder().encodeToString(cameraImage), licenseplate, String.valueOf(timestamp), String.valueOf(delay)};
     }
 }
 

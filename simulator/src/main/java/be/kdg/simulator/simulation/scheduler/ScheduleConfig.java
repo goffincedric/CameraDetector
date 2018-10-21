@@ -96,7 +96,7 @@ public class ScheduleConfig {
             scheduler = StdSchedulerFactory.getDefaultScheduler();
 
             // Schedule tasks using different schedules and intervals
-            addSchedule(scheduler, new String[]{"00:00:00;00:00:00"}, "image", 1000);
+            addSchedule(scheduler, new String[]{"00:00:00;00:00:00"}, "image", 5000);
         } catch (SchedulerException e) {
             e.printStackTrace();
         }

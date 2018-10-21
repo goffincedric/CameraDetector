@@ -43,8 +43,8 @@ public class FineDetectorTest {
     private double speedFineFactorFast;
 
     @Test
-    public void checkEmissionFine() {
-        CameraMessage cameraMessage = new CameraMessage(0, 3, null, "1-ABC-123", LocalDateTime.now(), 100);
+    public void checkEmissionFine() throws Exception {
+        CameraMessage cameraMessage = new CameraMessage(3, null, "1-ABC-123", LocalDateTime.now(), 100);
         Optional<Fine> optionalFine = fineDetector.checkEmissionFine(
                 cameraMessage,
                 cameraServiceAdapter.getCamera(cameraMessage.getCameraId()).get(),
@@ -57,10 +57,10 @@ public class FineDetectorTest {
     }
 
     @Test
-    public void checkSpeedFine() {
+    public void checkSpeedFine() throws Exception {
         Map.Entry<CameraMessage, CameraMessage> speedpair = Map.entry(
-                new CameraMessage(0, 1, null, "4-ABC-123", LocalDateTime.now().withNano(0), 0),
-                new CameraMessage(0, 2, null, "4-ABC-123", LocalDateTime.now().withNano(0).plusSeconds(120), 120000)
+                new CameraMessage(1, null, "4-ABC-123", LocalDateTime.now().withNano(0), 0),
+                new CameraMessage(2, null, "4-ABC-123", LocalDateTime.now().withNano(0).plusSeconds(120), 120000)
         );
 
         Camera camera = cameraServiceAdapter.getCamera(speedpair.getKey().getCameraId()).get();

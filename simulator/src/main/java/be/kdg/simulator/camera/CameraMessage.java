@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 
 @Data
 @NoArgsConstructor
@@ -15,7 +16,6 @@ public class CameraMessage {
     @Value("${licenseplate.regex}")
     private String licenseplateRegex = "^[1-8]-[A-Z]{3}-[0-9]{3}$";
 
-    private int messageId;
     private int cameraId;
     private String licenseplate;
     private byte[] cameraImage;

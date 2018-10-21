@@ -58,7 +58,6 @@ public class FineDetector {
         // https://www.wegcode.be/boetetarieven
         Double speed = calcSpeed(camera.getSegment().getDistance(), messagePair.getKey().getTimestamp(), messagePair.getValue().getTimestamp());
         if (speed > camera.getSegment().getSpeedLimit()) {
-            //TODO
             return Optional.of(new SpeedingFine(
                     (speed.intValue() - camera.getSegment().getSpeedLimit()) * ((camera.getSegment().getSpeedLimit() <= 50) ? speedFineFactorSlow : speedFineFactorFast),
                     LocalDateTime.now(),

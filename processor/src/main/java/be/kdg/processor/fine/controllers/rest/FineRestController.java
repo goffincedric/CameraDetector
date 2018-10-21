@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
  * 16/10/2018 16:34
  */
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/fine")
 public class FineRestController {
 
     private final ModelMapper modelMapper;
@@ -39,7 +39,7 @@ public class FineRestController {
     }
 
     //http://localhost:8080/api/fine/16-10-2018%2017:00:00/16-10-2018%2018:00:00
-    @GetMapping("/fine/{from}/{to}")
+    @GetMapping("/{from}/{to}")
     public ResponseEntity<List<FineDTO>> getFinesBetween(@PathVariable @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss") LocalDateTime from, @PathVariable @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss") LocalDateTime to) throws FineException {
         List<Fine> fines = fineService.getFinesBetween(from, to);
         return new ResponseEntity<>(fines.stream()
@@ -53,7 +53,7 @@ public class FineRestController {
                 HttpStatus.OK);
     }
 
-    @PutMapping("/fine/acceptFine/{id}")
+    @PutMapping("/acceptFine/{id}")
     public ResponseEntity<FineDTO> acceptFine(@PathVariable int id) throws FineException {
         Optional<Fine> optionalFine = fineService.acceptFine(id);
         if (optionalFine.isPresent()) {
@@ -67,7 +67,7 @@ public class FineRestController {
         throw new FineException("Fine with id " + id + "could not be updated!");
     }
 
-    @PatchMapping("/fine/changeFineAmount/{id}")
+    @PatchMapping("/changeFineAmount/{id}")
     public ResponseEntity<ChangeFineAmountDTO> changeFineAmount(@PathVariable int id, @RequestBody Map<String, Object> patch) throws FineException {
         Optional<Fine> optionalFine = fineService.getFine(id);
         if (optionalFine.isPresent()) {

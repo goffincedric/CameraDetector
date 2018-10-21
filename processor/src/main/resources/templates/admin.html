@@ -2,18 +2,32 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
-    <link rel="icon" href="/static/images/favicon.ico">
-    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" media="screen"/>
-    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" media="screen"/>
-    <!-- Scripts -->
-    <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
-    <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+    <link rel="stylesheet" href="css/style.css">
+
     <title>Admin page</title>
 </head>
 <body>
-<h1 style="color:blue"> Hello! This is Admin Page!</h1>
-<form th:action="@{/logout}" method="post">
-    <input type="submit" value="Sign Out"/>
-</form>
+<div class="page">
+    <div class="container">
+        <div class="left">
+            <div class="title">Admin page</div>
+            <div class="desc">
+                Please choose a page to visit.
+            </div>
+        </div>
+        <div class="right">
+            <div class="info">
+                <a th:href="@{/}" class="link">Go to homepage</a>
+                <a th:href="@{/fine/settings}" class="link">View fine settings</a>
+                <a th:href="@{/h2-console}" class="link">View H2 database</a>
+
+                <form th:action="@{/logout}" method="post">
+                    <input type="submit" value="Sign Out"/>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>

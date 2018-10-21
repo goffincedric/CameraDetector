@@ -6,8 +6,8 @@ import lombok.*;
 import javax.persistence.*;
 
 /**
+ * 
  * @author Cédric Goffin
- * 01/10/2018 14:04
  */
 
 @Data

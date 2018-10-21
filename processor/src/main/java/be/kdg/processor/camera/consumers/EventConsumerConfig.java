@@ -4,8 +4,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
+ * Configuration class for EventConsumer
+ * @see be.kdg.processor.camera.consumers.EventConsumer
  * @author Cédric Goffin
- * 28/09/2018 11:32
  */
 @Configuration
 public class EventConsumerConfig {

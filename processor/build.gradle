@@ -46,6 +46,7 @@ dependencies {
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '2.0.5.RELEASE' // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-security
 
     compile group: 'org.glassfish.jaxb', name: 'jaxb-runtime', version: '2.4.0-b180830.0438' // https://mvnrepository.com/artifact/org.glassfish.jaxb/jaxb-runtime
+    compile 'com.opencsv:opencsv:4.2'
     
     compile('org.webjars:webjars-locator-core:0.35')
     compile('org.webjars:bootstrap:4.1.3')
