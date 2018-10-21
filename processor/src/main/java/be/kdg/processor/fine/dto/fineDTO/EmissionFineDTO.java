@@ -6,8 +6,12 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 /**
+ * A DTO for the Fine class, used to return information about an EmissionFine object.
+ *
  * @author Cédric Goffin
- * 16/10/2018 16:38
+ * @see be.kdg.processor.fine.dom.EmissionFine
+ * @see FineDTO
+ * @see be.kdg.processor.fine.controllers.rest.FineRestController
  */
 @EqualsAndHashCode(callSuper = true)
 @Data

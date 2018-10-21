@@ -1,13 +1,16 @@
 package be.kdg.processor.camera.controllers.rest;
 
-import be.kdg.processor.camera.dto.CameraDTO;
 import be.kdg.processor.camera.dom.Camera;
+import be.kdg.processor.camera.dto.CameraDTO;
 import be.kdg.processor.camera.services.CameraServiceAdapter;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,6 +18,7 @@ import java.util.stream.Collectors;
 
 /**
  * Rest controller for Camera package. Mapped to listen to requests on /api/camera
+ *
  * @author Cedric Goffin
  */
 @RestController
@@ -26,8 +30,8 @@ public class CameraRestController {
     /**
      * CameraRestController constructor. Autowired via Spring.
      *
-     * @param cameraServiceAdapter is the service for the Camera package.
-     * @param modelMapper is a mapper that most methods use to map an object to DTO & vice versa
+     * @param cameraServiceAdapter is the service for the Camera package
+     * @param modelMapper          is a mapper that most methods use to map an object to DTO and vice versa
      */
     @Autowired
     public CameraRestController(CameraServiceAdapter cameraServiceAdapter, ModelMapper modelMapper) {
@@ -37,6 +41,7 @@ public class CameraRestController {
 
     /**
      * Method that handles incoming GET requests from /api/camera/findall.
+     *
      * @return a list of CameraDTO's, wrapped in a ResponseEntity object
      */
     @GetMapping("/findall")
@@ -53,6 +58,7 @@ public class CameraRestController {
 
     /**
      * Method that handles incoming GET requests from /api/camera/findbyid/{id}
+     *
      * @param id a camera id
      * @return a CameraDTO object, wrapped in a ResponseEntity object
      * @throws Exception when a Camera cannot be found or cannot be mapped to a DTO
@@ -71,6 +77,7 @@ public class CameraRestController {
 
     /**
      * Method that handles incoming GET requests from /api/camera/findbyeuronorm/{euronorm}
+     *
      * @param euronorm a camera euronorm
      * @return a list of CameraDTO's, wrapped in a ResponseEntity object
      */

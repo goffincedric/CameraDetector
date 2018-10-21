@@ -9,14 +9,22 @@ import java.util.Optional;
 import java.util.logging.Logger;
 
 /**
+ * Utility class for JSON deserialization.
+ *
  * @author Cédric Goffin
- * 01/10/2018 14:02
  */
-
 @UtilityClass
 public class JSONUtils {
     private final Logger LOGGER = Logger.getLogger(JSONUtils.class.getName());
 
+    /**
+     * Generic method used to convert a JSON string to an object of type T.
+     *
+     * @param string      is a JSON string that needs to be deserialized
+     * @param objectClass is the class the JSON string needs to be serialized to
+     * @param <T>         is the generic type used for deserialization
+     * @return an Optional of type T containing the deserialized object. Can be empty when deserialization failed.
+     */
     public <T> Optional<T> convertJSONToObject(String string, Class<T> objectClass) {
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
@@ -25,7 +33,7 @@ public class JSONUtils {
         try {
             object = Optional.of(mapper.readValue(string, objectClass));
         } catch (IOException e) {
-            LOGGER.severe("Object: '" + string + "' could not be deserialized!");
+            LOGGER.severe(String.format("Object: '%s' could not be deserialized!", string));
             object = Optional.empty();
         }
         return object;

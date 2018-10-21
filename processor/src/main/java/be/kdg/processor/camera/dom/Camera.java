@@ -9,17 +9,16 @@ import javax.persistence.*;
 /**
  * Model class that holds information about a Camera. Gets stored in an H2 in-memory database in a table named 'tblCamera'.
  *
- * @see be.kdg.processor.camera.dom.CameraLocation
- * @see be.kdg.processor.camera.dom.Segment
- * @see be.kdg.processor.camera.dom.CameraType
  * @author Cédric Goffin
  * 01/10/2018 14:03
+ * @see CameraLocation
+ * @see Segment
+ * @see CameraType
  */
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-
 @Entity
 @Table(name = "tblCamera")
 public class Camera {
@@ -34,7 +33,8 @@ public class Camera {
     private CameraType cameraType;
 
     /**
-     * Setter vor the property cameraType
+     * Setter for the property cameraType
+     *
      * @param cameraType is the type of camera
      * @see be.kdg.processor.camera.dom.CameraType
      */

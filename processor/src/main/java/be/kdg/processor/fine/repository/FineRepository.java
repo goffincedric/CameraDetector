@@ -8,8 +8,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 /**
- * @author Cédric Goffin
- * 12/10/2018 14:26
+ * Repository used to persist Fines to an H2 in-memory database.
+ *
+ * @author Cedric Goffin
+ * @see Fine
  */
 @Repository
 public interface FineRepository extends JpaRepository<Fine, Integer> {

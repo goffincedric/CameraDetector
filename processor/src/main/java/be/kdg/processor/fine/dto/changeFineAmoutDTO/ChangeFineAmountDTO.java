@@ -5,11 +5,12 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 /**
+ * A DTO for the Fine class, used to return information about a Fine object whose amount / motivation got changed.
+ *
  * @author Cédric Goffin
- * 17/10/2018 09:48
+ * @see be.kdg.processor.fine.dom.Fine
+ * @see be.kdg.processor.fine.controllers.rest.FineRestController
  */
 @EqualsAndHashCode
 @Data

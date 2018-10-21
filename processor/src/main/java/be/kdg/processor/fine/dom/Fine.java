@@ -1,21 +1,26 @@
 package be.kdg.processor.fine.dom;
 
 import be.kdg.processor.licenseplate.dom.Licenseplate;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
+ * Abstract model class that holds information about a Fine. Gets stored in an H2 in-memory database in a table named 'tblFine'.
+ *
  * @author Cédric Goffin
- * 01/10/2018 14:59
+ * @see EmissionFine
+ * @see SpeedingFine
  */
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Table(name = "tblFine")
 public abstract class Fine {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -29,6 +34,14 @@ public abstract class Fine {
     private boolean isAccepted = false;
     private String motivation;
 
+    /**
+     * Fine constructor used by classes extending from Fine.
+     *
+     * @param amount          is amount of the fine
+     * @param timestamp       is the timestamp the fine was made
+     * @param paymentDeadline is the deadline for when the fine must be paid
+     * @param licenseplate    is the licenseplate of the owner that got fined
+     */
     public Fine(double amount, LocalDateTime timestamp, LocalDateTime paymentDeadline, Licenseplate licenseplate) {
         this.amount = amount;
         this.timestamp = timestamp;

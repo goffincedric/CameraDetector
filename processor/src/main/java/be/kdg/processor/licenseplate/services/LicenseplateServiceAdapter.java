@@ -44,17 +44,14 @@ public class LicenseplateServiceAdapter {
                     licenseplate = Optional.of(saveLicenseplate(licenseplate.get()));
                 }
             } catch (IOException e) {
-                LOGGER.severe("Unable to deserialize licenseplate with id: " + licensePlateId);
-                licenseplate = Optional.empty();
-                throw new Exception("Error while getting license plate with id: " + licensePlateId);
+                LOGGER.severe(String.format("Unable to deserialize licenseplate with id: %s", licensePlateId));
+                throw new Exception(String.format("Error while getting license plate with id: %s", licensePlateId));
             } catch (LicensePlateNotFoundException lnfe) {
-                LOGGER.severe("Could not find license plate with id: " + licensePlateId);
-                licenseplate = Optional.empty();
-                throw new Exception("Error while getting license plate with id: " + licensePlateId);
+                LOGGER.severe("Could not find license plate with id: %s" + licensePlateId);
+                throw new Exception("Error while getting license plate with id: %s" + licensePlateId);
             } catch (InvalidLicensePlateException ile) {
                 LOGGER.severe("Invalid license plate: " + licensePlateId);
-                licenseplate = Optional.empty();
-                throw new Exception("Error while getting license plate with id: " + licensePlateId);
+                throw new Exception(String.format("Error while getting license plate with id: %s", licensePlateId));
             }
         }
 
@@ -62,8 +59,8 @@ public class LicenseplateServiceAdapter {
     }
 
     public Optional<Licenseplate> getLicensePlate(byte[] data) {
-        String licenseplate = cloudALPRService.getLicenseplate(data);
         try {
+            String licenseplate = cloudALPRService.getLicenseplate(data);
             return getLicensePlate(licenseplate);
         } catch (Exception e) {
             LOGGER.severe(e.getMessage());

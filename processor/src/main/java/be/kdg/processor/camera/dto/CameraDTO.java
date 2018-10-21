@@ -8,8 +8,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
+ * A DTO for the Camera class, used to return information about a Camera object.
+ *
  * @author Cédric Goffin
- * 19/10/2018 19:46
+ * @see be.kdg.processor.camera.dom.Camera
+ * @see be.kdg.processor.camera.controllers.rest.CameraRestController
  */
 @Data
 @NoArgsConstructor

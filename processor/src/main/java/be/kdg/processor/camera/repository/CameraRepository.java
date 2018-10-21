@@ -7,10 +7,18 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Repository used to persist Cameras to an H2 in-memory database.
+ *
+ * @author Cedric Goffin
+ * @see Camera
+ */
 @Repository
 public interface CameraRepository extends JpaRepository<Camera, Integer> {
     Optional<Camera> findByCameraId(int cameraId);
+
     boolean existsByCameraId(int cameraId);
+
     List<Camera> findAllByEuroNorm(int euronorm);
 
     @Override

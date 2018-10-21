@@ -20,8 +20,11 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 /**
+ * Service used to manipulate Fine information from the H2 in-memory database.
+ *
  * @author Cédric Goffin
- * 12/10/2018 15:21
+ * @see FineRepository
+ * @see FineDetector
  */
 @Service
 @Transactional
@@ -34,6 +37,14 @@ public class FineService {
     private final FineRepository fineRepository;
     private final FineDetector fineDetector;
 
+    /**
+     * Constructor used by Spring framework to initialize the service as a bean
+     *
+     * @param cameraServiceAdapter       is a the service for the Camera package
+     * @param licenseplateServiceAdapter is the service for the Lincenseplate package
+     * @param fineRepository             is the repository that has access to the H2 in-memory database
+     * @param fineDetector               is a helper class used to calculate fines
+     */
     @Autowired
     public FineService(CameraServiceAdapter cameraServiceAdapter, LicenseplateServiceAdapter licenseplateServiceAdapter, FineRepository fineRepository, FineDetector fineDetector) {
         this.cameraServiceAdapter = cameraServiceAdapter;
@@ -42,15 +53,35 @@ public class FineService {
         this.fineDetector = fineDetector;
     }
 
+    /**
+     * Gets information about a Fine.
+     *
+     * @param id is the fine id
+     * @return an Optional Fine. Is empty when no Fine could be found or when an error occurred.
+     */
     public Optional<Fine> getFine(int id) {
         return fineRepository.findById(id);
     }
 
+    /**
+     * Gets all Fines from the repository that where made between the 'from' and 'to' timestamps.
+     *
+     * @param from is the starting time for fines to be returned
+     * @param to   is the ending to for fines to be returned
+     * @return a list of Fines that where made between the 'from' and 'to' timestamps
+     * @throws FineException when the given timestamps aren't in the right order
+     */
     public List<Fine> getFinesBetween(LocalDateTime from, LocalDateTime to) throws FineException {
         if (from.isAfter(to)) throw new FineException("From date (" + from + ") is after to date (" + to + ")");
         return fineRepository.findAllByTimestampBetween(from, to);
     }
 
+    /**
+     * Updates a Fine from the repository to set its status as accepted.
+     *
+     * @param id is the id of the fine to set as accepted
+     * @return an Optional accepted Fine. Can be empty when no Fine was found for the supplied id.
+     */
     public Optional<Fine> acceptFine(int id) {
         Optional<Fine> optionalFine = getFine(id);
         if (optionalFine.isPresent()) {
@@ -62,15 +93,33 @@ public class FineService {
         return Optional.empty();
     }
 
+    /**
+     * Creates a Fine in the repository
+     *
+     * @param fine is the Fine to persist to the database
+     * @return the persisted Fine from the repository
+     */
     public Fine save(Fine fine) {
         return fineRepository.save(fine);
     }
 
+    /**
+     * Creates multiple Fines in the repository
+     *
+     * @param fines is a list of Fines that will be persisted to the database.
+     * @return a list of Fines from the repository that were persisted to the database
+     */
     public List<Fine> saveFines(List<Fine> fines) {
         fines = fineRepository.saveAll(fines);
         return fines;
     }
 
+    /**
+     * Method that processes CameraMessages and persists any detected fines to the database
+     *
+     * @param messages is a list of CameraMessages that need to be checked for emission/speeding violations
+     * @return all CameraMessages that could not be processed
+     */
     public List<CameraMessage> processFines(List<CameraMessage> messages) {
         // Filter out speedmessages
         List<CameraMessage> speedMessages = cameraServiceAdapter.getMessagesFromTypes(messages, List.of(CameraType.SPEED, CameraType.SPEED_EMISSION));
@@ -105,12 +154,18 @@ public class FineService {
         return unprocessed;
     }
 
+    /**
+     * Method that processes all CameraMessages that are linked to emission cameras and detects any emission-related violations.
+     *
+     * @param emissionMessages is a list of all CameraMessages that are linked to emission cameras
+     * @return a Map Entry with a list of Fines as key and a list of unprocessed CameraMessages as value
+     */
     private Map.Entry<List<Fine>, List<CameraMessage>> processEmissionFines(List<CameraMessage> emissionMessages) {
         // List of unprocessed messages to return
         List<CameraMessage> unprocessed = new ArrayList<>();
 
-        // Process emissionMessages
-        List<Fine> duplicateEmissionFines = emissionMessages.stream()
+        // Process emissionMessages and get only 1 fine per licenseplate per day
+        List<Fine> emissionFines = emissionMessages.stream()
                 .map(m -> {
                     Optional<Camera> optionalCamera = cameraServiceAdapter.getCamera(m.getCameraId());
                     if (optionalCamera.isPresent()) {
@@ -128,17 +183,19 @@ public class FineService {
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .map(f -> (Fine) f)
-                .collect(Collectors.toList());
-
-        // Get only 1 fine per licenseplate per day
-        List<Fine> distinctEmissionFines = duplicateEmissionFines.stream()
                 .distinct()
                 .collect(Collectors.toList());
 
         // Return fines and unprocessed messages
-        return Map.entry(distinctEmissionFines, unprocessed);
+        return Map.entry(emissionFines, unprocessed);
     }
 
+    /**
+     * Method that processes all CameraMessages that are linked to speeding cameras and detects any speeding-related violations.
+     *
+     * @param speedMessages is a list of all CameraMessages that are linked to speed cameras
+     * @return a Map Entry with a list of Fines as key and a list of unprocessed CameraMessages as value
+     */
     private Map.Entry<List<Fine>, List<CameraMessage>> processSpeedingFines(List<CameraMessage> speedMessages) {
         // Link messages
         Map.Entry<Map<CameraMessage, CameraMessage>, List<CameraMessage>> speedPair = linkMessages(speedMessages);
@@ -177,6 +234,13 @@ public class FineService {
         return Map.entry(speedFines, unprocessed);
     }
 
+    /**
+     * Method that links speeding-related CameraMessages to each other.
+     * Two messages are seen as linked when one messages describes when a car with a license plate passed one camera and later passes the second camera linked to the first camera.
+     *
+     * @param messages is a list of speeding-related CameraMessages that need to be linked
+     * @return a Map Entry with a Map of linked messages as its key and a list of unprocessed CameraMessages as its value
+     */
     private Map.Entry<Map<CameraMessage, CameraMessage>, List<CameraMessage>> linkMessages(List<CameraMessage> messages) {
         Map<CameraMessage, CameraMessage> linkedMessages = new HashMap<>();
         messages.sort(Comparator.comparing(CameraMessage::getTimestamp));
@@ -191,14 +255,14 @@ public class FineService {
                     if (camera.getSegment() != null) {
                         Optional<CameraMessage> optionalLinkedMessage = Optional.empty();
                         try {
-                             optionalLinkedMessage = unprocessedMessages.stream()
+                            optionalLinkedMessage = unprocessedMessages.stream()
                                     .filter(m ->
                                             m.getCameraId() == camera.getSegment().getConnectedCameraId() &&
                                                     m.getLicenseplate().equalsIgnoreCase(message.getLicenseplate()) &&
                                                     m.getTimestamp().isAfter(message.getTimestamp()))
                                     .findFirst();
                         } catch (Exception e) {
-                            LOGGER.severe("Could not link message " + message);
+                            LOGGER.severe(String.format("Could not link message %s", message));
                         }
 
                         optionalLinkedMessage.ifPresent(m -> {

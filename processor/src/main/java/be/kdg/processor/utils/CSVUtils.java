@@ -8,14 +8,13 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 import java.util.logging.Logger;
 
 /**
+ * Utility class for CSV file logging.
+ *
  * @author Cédric Goffin
- * 08/10/2018 11:13
  */
 @UtilityClass
 public class CSVUtils {
@@ -25,6 +24,12 @@ public class CSVUtils {
     private String fileName = null;
     private boolean firstRun = true;
 
+    /**
+     * Logs failed messages to a CSV file.
+     *
+     * @param message     is a CameraMessage that failed to process # times (configurable via application.properties)
+     * @param logger_path is the path where the CSV file should be written (configurable via application.properties)
+     */
     public void writeMessage(CameraMessage message, String logger_path) {
         if (logger_path == null) throw new IllegalArgumentException("No path to logfile was given!");
         File directory = new File(logger_path);
@@ -60,7 +65,6 @@ public class CSVUtils {
             }
 
             csvWriter.writeNext(message.toStringArray());
-            LOGGER.info("Logged message: " + message);
         } catch (IOException e) {
             LOGGER.severe("Target CSV file could not be found!");
         }
