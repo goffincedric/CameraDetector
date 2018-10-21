@@ -1,10 +1,17 @@
 package be.kdg.processor.camera.dom;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 /**
+ * Model class that holds information about a Camera. Gets stored in an H2 in-memory database in a table named 'tblCamera'.
+ *
+ * @see be.kdg.processor.camera.dom.CameraLocation
+ * @see be.kdg.processor.camera.dom.Segment
+ * @see be.kdg.processor.camera.dom.CameraType
  * @author Cédric Goffin
  * 01/10/2018 14:03
  */
@@ -26,18 +33,11 @@ public class Camera {
     private int euroNorm;
     private CameraType cameraType;
 
-    public Camera(int cameraId, CameraLocation location, Segment segment) {
-        this.cameraId = cameraId;
-        this.location = location;
-        this.segment = segment;
-    }
-
-    public Camera(int cameraId, CameraLocation location, int euroNorm) {
-        this.cameraId = cameraId;
-        this.location = location;
-        this.euroNorm = euroNorm;
-    }
-
+    /**
+     * Setter vor the property cameraType
+     * @param cameraType is the type of camera
+     * @see be.kdg.processor.camera.dom.CameraType
+     */
     public void setCameraType(CameraType cameraType) {
         this.cameraType = cameraType;
     }

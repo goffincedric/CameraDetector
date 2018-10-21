@@ -1,12 +1,14 @@
 package be.kdg.processor.camera.dom;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 
-import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
+import java.util.Base64;
 
 @Data
 @NoArgsConstructor
@@ -63,7 +65,7 @@ public class CameraMessage {
     }
 
     public String[] toStringArray() {
-        return new String[]{String.valueOf(cameraId), Arrays.toString(cameraImage), licenseplate, String.valueOf(timestamp), String.valueOf(delay)};
+        return new String[]{String.valueOf(cameraId), Base64.getEncoder().encodeToString(cameraImage), licenseplate, String.valueOf(timestamp), String.valueOf(delay)};
     }
 }
 

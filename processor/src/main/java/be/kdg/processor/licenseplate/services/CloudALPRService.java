@@ -1,5 +1,6 @@
 package be.kdg.processor.licenseplate.services;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +12,9 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -25,6 +29,7 @@ public class CloudALPRService {
 
     @Value("${openalpr.secret_key}")
     private String secret_key;
+    private ObjectMapper objectMapper = new ObjectMapper();
 
     public String getLicenseplate(byte[] image) {
         String licensePlate = null;
@@ -54,14 +59,22 @@ public class CloudALPRService {
                     json_content.append(inputLine);
                 in.close();
 
-                Pattern pattern = Pattern.compile(".*\"plate\": \"([1-9][a-zA-Z]{3}[0-9]{3})\".*");
-                Matcher matcher = pattern.matcher(json_content.toString());
-                if (matcher.matches())
-                    licensePlate = matcher.group(1);
-                else {
-                    LOGGER.severe("License plate not recognised: " + json_content);
-                    return null;
+                // Try to parse json as Map
+                try {
+                    Map jsonMap = objectMapper.readValue(json_content.toString(), Map.class);
+                    licensePlate = (String) ((LinkedHashMap) ((ArrayList) jsonMap.get("results")).get(0)).get("plate");
+                } catch (Exception ignored) {
+                    // Last-ditch effort to find license plate via regex
+                    Pattern pattern = Pattern.compile(".*\\{\"plate\": \"([1-9][a-zA-Z]{3}[0-9]{3})\".*");
+                    Matcher matcher = pattern.matcher(json_content.toString());
+                    if (matcher.matches())
+                        licensePlate = matcher.group(1);
+                    else {
+                        LOGGER.severe("License plate not recognised: " + json_content);
+                        return null;
+                    }
                 }
+
                 licensePlate = licensePlate.charAt(0) + "-" + licensePlate.substring(1, 4) + "-" + licensePlate.substring(4, 7);
             } else {
                 System.out.println("Got non-200 response: " + status_code);

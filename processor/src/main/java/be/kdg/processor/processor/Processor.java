@@ -53,6 +53,7 @@ public class Processor {
 
         // Process messages
         List<CameraMessage> unprocessed = fineService.processFines(new ArrayList<>(buffer.keySet()));
+        if (!unprocessed.isEmpty()) LOGGER.warning("Failed to process " + unprocessed + "message" + ((unprocessed.size() == 1)?"":"s"));
 
         unprocessed.forEach(m -> {
             int times = buffer.get(m);
