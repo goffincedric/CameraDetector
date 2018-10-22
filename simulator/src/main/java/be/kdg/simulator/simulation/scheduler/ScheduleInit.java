@@ -9,8 +9,11 @@ import javax.annotation.PostConstruct;
 import java.util.logging.Logger;
 
 /**
+ * Class that will initialize Quartz Scheduler for spring
+ *
  * @author Cédric Goffin
- * 06/10/2018 12:54
+ * @see ScheduleConfig
+ * @see ScheduledJob
  */
 @Component
 public class ScheduleInit {
@@ -18,11 +21,19 @@ public class ScheduleInit {
 
     private final Scheduler scheduler;
 
+    /**
+     * Constructor for ScheduleInit.
+     *
+     * @param scheduler a Spring-enabled Scheduler
+     */
     @Autowired
     public ScheduleInit(Scheduler scheduler) {
         this.scheduler = scheduler;
     }
 
+    /**
+     * Will initialize Scheduler at start of application.
+     */
     @PostConstruct
     public void initSchedule() {
         try {

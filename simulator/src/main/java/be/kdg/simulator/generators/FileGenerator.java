@@ -1,6 +1,7 @@
 package be.kdg.simulator.generators;
 
 import be.kdg.simulator.camera.CameraMessage;
+import be.kdg.simulator.utils.CSVUtils;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 import lombok.Getter;
@@ -11,86 +12,63 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+/**
+ * Generator class that generates CameraMessages from a CSV file or directory containing multiple CSV files (configurable via application.properties).
+ *
+ * @author Cédric Goffin
+ * @see MessageGenerator
+ * @see CameraMessage
+ */
 public class FileGenerator implements MessageGenerator {
     private static final Logger LOGGER = Logger.getLogger(FileGenerator.class.getName());
 
-    @Getter
     private List<CameraMessage> messages;
 
+    /**
+     * Constructor for FileGenerator.
+     *
+     * @param filePath a string containing a url to a directory with deserializable CSV files or one particular deserializable CSV file
+     */
     public FileGenerator(String filePath) {
         messages = new ArrayList<>();
 
         File path = new File(filePath);
         if (Files.isRegularFile(path.toPath())) {
-            messages.addAll(getMessagesFromFile(filePath));
+            messages.addAll(CSVUtils.getMessagesFromFile(filePath));
         } else if (path.isDirectory()) {
             LOGGER.info("Given path is a directory (" + filePath + "). Will attempt to read all csv files in this dir.");
             try {
                 messages.addAll(
                         Files.walk(path.toPath(), 1)
                                 .map(Path::toString)
-                                .filter(p -> FilenameUtils.getExtension(p).toLowerCase().equals("csv"))
-                                .map(this::getMessagesFromFile)
+                                .filter(p -> FilenameUtils.getExtension(p).equalsIgnoreCase("csv"))
+                                .map(CSVUtils::getMessagesFromFile)
                                 .flatMap(List::stream)
                                 .collect(Collectors.toList())
                 );
             } catch (IOException e) {
-                e.printStackTrace();
+                LOGGER.severe("Problem occurred while reading the messages from CSV files!");
             }
         }
     }
 
-    private List<CameraMessage> getMessagesFromFile(String filePath) {
-        List<CameraMessage> messageBuffer = new ArrayList<>();
-
-        try {
-            // Create an object of file reader class with path to CSV file as a parameter.
-            FileReader filereader = new FileReader(filePath);
-
-            // Create csvReader object and skip first line (Header line)
-            CSVReader csvReader = new CSVReaderBuilder(filereader)
-                    .withSkipLines(1)
-                    .build();
-            List<String[]> allData = csvReader.readAll();
-
-            // Create message list from CSV lines
-            messageBuffer.addAll(
-                    allData.stream()
-                            .map(row -> {
-                                try {
-                                    return new CameraMessage(
-                                            Integer.parseInt(row[0]),
-                                            row[1],
-                                            Integer.parseInt(row[2]));
-                                } catch (IllegalArgumentException iae) {
-                                    LOGGER.severe(iae.getMessage());
-                                }
-                                return null;
-                            })
-                            .filter(Objects::nonNull)
-                            .collect(Collectors.toList())
-            );
-        } catch (FileNotFoundException fnfe) {
-            LOGGER.severe("File with path '" + filePath + "' does not exist!");
-            fnfe.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return messageBuffer;
-    }
-
+    /**
+     * Generates a CameraMessage by removing one from the list.
+     *
+     * @return a Cameramessage that was deserialized from a CSV file
+     */
     @Override
-    public CameraMessage generate() {
+    public Optional<CameraMessage> generate() {
         if (messages.isEmpty()) {
-//            messages = getMessagesFromFile("src/main/resources/messages.csv");
             System.exit(0);
         }
         CameraMessage message = messages.remove(0);
@@ -101,9 +79,9 @@ public class FileGenerator implements MessageGenerator {
         try {
             Thread.sleep(message.getDelay());
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            LOGGER.severe("Could not pause thread in " + this.getClass().getSimpleName() + "!");
         }
 
-        return message;
+        return Optional.of(message);
     }
 }

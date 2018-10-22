@@ -7,8 +7,10 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 /**
+ * A DTO for the Fine class, used by DTO classes extending FineDTO to return information about a Fine object.
+ *
  * @author Cédric Goffin
- * 16/10/2018 16:41
+ * @see be.kdg.processor.fine.controllers.rest.FineRestController
  */
 @Data
 @NoArgsConstructor

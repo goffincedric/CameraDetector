@@ -6,8 +6,10 @@ import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 
 /**
+ * A DTO containing the current factors used in the fine amount calculation.
+ *
  * @author Cédric Goffin
- * 18/10/2018 22:42
+ * @see be.kdg.processor.fine.controllers.web.FineWebController
  */
 @Data
 @NoArgsConstructor

@@ -10,7 +10,6 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 /**
  * @author Cédric Goffin
- * 16/10/2018 17:00
  */
 @ControllerAdvice
 public class FineExceptionHandler extends ResponseEntityExceptionHandler {

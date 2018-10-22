@@ -6,16 +6,11 @@ import be.kdg.processor.fine.dom.EmissionFine;
 import be.kdg.processor.fine.dom.Fine;
 import be.kdg.processor.fine.dom.SpeedingFine;
 import be.kdg.processor.licenseplate.dom.Licenseplate;
-import javafx.util.Pair;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.net.FileNameMap;
 import java.time.LocalDateTime;
-import java.time.Period;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -71,6 +66,6 @@ public class FineDetector {
     }
 
     private Double calcSpeed(double distance, LocalDateTime timestamp1, LocalDateTime timestamp2) {
-        return ((distance / (ChronoUnit.MILLIS.between(timestamp1, timestamp2)/1000D)) * 3.6D);
+        return ((distance / (ChronoUnit.MILLIS.between(timestamp1, timestamp2) / 1000D)) * 3.6D);
     }
 }

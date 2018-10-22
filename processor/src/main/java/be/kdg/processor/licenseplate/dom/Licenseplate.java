@@ -1,15 +1,18 @@
 package be.kdg.processor.licenseplate.dom;
 
 import be.kdg.processor.fine.dom.Fine;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Model class that holds information about a LicensePlate. Gets stored in an H2 in-memory database in a table named 'tblLicenseplate'.
+ *
  * @author Cédric Goffin
- * 01/10/2018 16:54
  */
 
 @Data
@@ -22,7 +25,7 @@ public class Licenseplate {
     private String plateId;
     private String nationalNumber;
     private int euroNumber;
-    @OneToMany(targetEntity =  Fine.class,fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @OneToMany(targetEntity = Fine.class, fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     private List<Fine> fines = new ArrayList<>();
 
     @Override

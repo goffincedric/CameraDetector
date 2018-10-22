@@ -2,6 +2,7 @@ package be.kdg.processor.openalpr;
 
 import be.kdg.processor.camera.dom.CameraMessage;
 import be.kdg.processor.licenseplate.services.CloudALPRService;
+import be.kdg.sa.services.LicensePlateNotFoundException;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,7 +28,7 @@ public class CloudALPRServiceTests {
     private CloudALPRService cloudALPRService;
 
     @Test
-    public void testConnection() throws IOException, URISyntaxException {
+    public void testConnection() throws IOException, URISyntaxException, LicensePlateNotFoundException {
         // Read image file to byte array
         ClassLoader classLoader = getClass().getClassLoader();
         Path path = new File(classLoader.getResource("images/1.jpg").toURI().getPath()).toPath();

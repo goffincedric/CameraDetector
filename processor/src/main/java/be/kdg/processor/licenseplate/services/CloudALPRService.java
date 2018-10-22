@@ -1,5 +1,6 @@
 package be.kdg.processor.licenseplate.services;
 
+import be.kdg.sa.services.LicensePlateNotFoundException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -20,8 +21,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
+ * Service used to recognise license plate ids from images. Uses OpenALPR API for image recognition.
+ *
  * @author Cédric Goffin
- * 08/10/2018 15:58
  */
 @Service
 public class CloudALPRService {
@@ -31,7 +33,14 @@ public class CloudALPRService {
     private String secret_key;
     private ObjectMapper objectMapper = new ObjectMapper();
 
-    public String getLicenseplate(byte[] image) {
+    /**
+     * Method that contacts the OpenALPR API to recognise a license plate id from an image.
+     *
+     * @param image is an array of bytes that represents the image to be analysed
+     * @return a license plate id
+     * @throws LicensePlateNotFoundException when no (valid) license plate could be recognised from the supplied image
+     */
+    public String getLicenseplate(byte[] image) throws LicensePlateNotFoundException {
         String licensePlate = null;
 
         try {
@@ -70,14 +79,14 @@ public class CloudALPRService {
                     if (matcher.matches())
                         licensePlate = matcher.group(1);
                     else {
-                        LOGGER.severe("License plate not recognised: " + json_content);
-                        return null;
+                        LOGGER.severe(String.format("License plate not recognised: %s", json_content));
+                        throw new LicensePlateNotFoundException("License plate id could not be recognised from supplied image!");
                     }
                 }
 
                 licensePlate = licensePlate.charAt(0) + "-" + licensePlate.substring(1, 4) + "-" + licensePlate.substring(4, 7);
             } else {
-                System.out.println("Got non-200 response: " + status_code);
+                LOGGER.warning(String.format("Got non-200 response: %d", status_code));
             }
         } catch (MalformedURLException e) {
             LOGGER.severe("Bad URL for CloudALPR connection");

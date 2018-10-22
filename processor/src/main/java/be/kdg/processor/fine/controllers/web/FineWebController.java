@@ -8,19 +8,30 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
+ * A web controller for Fine package. Mapped to listen to requests on /fine.
+ *
  * @author Cédric Goffin
- * 18/10/2018 22:40
  */
 @Controller
 @RequestMapping("/fine")
 public class FineWebController {
     private final FineOptionsDTO fineOptionsDTO;
 
+    /**
+     * FineWebController constructor. Autowired via Spring.
+     *
+     * @param fineOptionsDTO is a DTO containing the current factors used in the fine amount calculation
+     */
     @Autowired
     public FineWebController(FineOptionsDTO fineOptionsDTO) {
         this.fineOptionsDTO = fineOptionsDTO;
     }
 
+    /**
+     * Listens to GET requests made on the /settings url
+     *
+     * @return the model containing the FineOptionsDTO
+     */
     @GetMapping("/settings")
     public ModelAndView getFineFactors() {
         return new ModelAndView("finesettings", "fineOptionsDTO", fineOptionsDTO);

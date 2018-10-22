@@ -9,8 +9,9 @@ import java.util.Optional;
 import java.util.logging.Logger;
 
 /**
+ * Utility class for XML deserialization.
+ *
  * @author Cédric Goffin
- * 25/09/2018 14:17
  */
 @UtilityClass
 public class XMLUtils {
@@ -18,6 +19,14 @@ public class XMLUtils {
     private final XmlMapper mapper = new XmlMapper();
     private final JavaTimeModule timeModule = new JavaTimeModule();
 
+    /**
+     * Generic method used to convert an XML string to an object of type T.
+     *
+     * @param string      is an XML string that needs to be deserialized
+     * @param objectClass is the class the XML string needs to be serialized to
+     * @param <T>         is the generic type used for deserialization
+     * @return an Optional of type T containing the deserialized object. Can be empty when deserialization failed.
+     */
     public <T> Optional<T> convertXMLToObject(String string, Class<T> objectClass) {
         mapper.registerModule(timeModule);
 
@@ -25,7 +34,7 @@ public class XMLUtils {
         try {
             object = Optional.of(mapper.readValue(string, objectClass));
         } catch (IOException e) {
-            LOGGER.severe("Message: '" + string + "' could not be deserialized!");
+            LOGGER.severe(String.format("Message: '%s' could not be deserialized!", string));
             object = Optional.empty();
         }
         return object;

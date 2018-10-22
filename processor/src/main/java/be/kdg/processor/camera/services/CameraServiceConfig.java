@@ -5,11 +5,18 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
+ * Configuration class for CameraServiceProxy
+ *
  * @author Cédric Goffin
- * 14/10/2018 14:51
+ * @see CameraServiceProxy
  */
 @Configuration
 public class CameraServiceConfig {
+    /**
+     * Enables CameraServiceProxy to be used by spring as a bean.
+     *
+     * @return a CameraServiceProxy object
+     */
     @Bean
     public CameraServiceProxy cameraServiceProxy() {
         return new CameraServiceProxy();

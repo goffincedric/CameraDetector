@@ -7,6 +7,9 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.logging.Logger;
 
+/**
+ * Configuration class for generators
+ */
 @Configuration
 public class GeneratorConfig {
     private static final Logger LOGGER = Logger.getLogger(GeneratorConfig.class.getName());
@@ -16,21 +19,36 @@ public class GeneratorConfig {
     @Value("${images_path}")
     private String imagesPath;
 
+    /**
+     * Enables MessageGenerator to be used by spring as a bean.
+     *
+     * @return a MessageGenerator object
+     */
     @Bean
     @ConditionalOnProperty(value = "generator", havingValue = "file")
-    public MessageGenerator fileGenerator(){
+    public MessageGenerator fileGenerator() {
         return new FileGenerator(filePath);
     }
 
+    /**
+     * Enables MessageGenerator to be used by spring as a bean.
+     *
+     * @return a MessageGenerator object
+     */
     @Bean
     @ConditionalOnProperty(value = "generator", havingValue = "random")
-    public MessageGenerator randomGenerator(){
+    public MessageGenerator randomGenerator() {
         return new RandomGenerator();
     }
 
+    /**
+     * Enables MessageGenerator to be used by spring as a bean.
+     *
+     * @return a MessageGenerator object
+     */
     @Bean
     @ConditionalOnProperty(value = "generator", havingValue = "image")
-    public MessageGenerator imageGenerator(){
+    public MessageGenerator imageGenerator() {
         MessageGenerator messageGenerator = null;
         try {
             messageGenerator = new ImageGenerator(imagesPath);

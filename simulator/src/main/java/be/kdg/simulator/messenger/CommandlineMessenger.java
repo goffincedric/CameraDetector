@@ -4,13 +4,22 @@ import be.kdg.simulator.camera.CameraMessage;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
-import java.util.logging.Logger;
-
+/**
+ * Messenger class that send CameraMessages to the console window.
+ *
+ * @author Cédric Goffin
+ * @see Messenger
+ * @see CameraMessage
+ */
 @Component
-@ConditionalOnProperty(name="messenger",havingValue = "cli")
+@ConditionalOnProperty(name = "messenger", havingValue = "cli")
 public class CommandlineMessenger implements Messenger {
-    private static final Logger LOGGER = Logger.getLogger(CommandlineMessenger.class.getName());
 
+    /**
+     * Sends message to console window.
+     *
+     * @param message a CameraMessage to send to console window
+     */
     @Override
     public void sendMessage(CameraMessage message) {
         System.out.println(message);

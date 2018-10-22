@@ -1,8 +1,9 @@
 package be.kdg.processor.camera.dom;
 
 /**
+ * Model Enum that represents all types a camera can be.
+ *
  * @author Cédric Goffin
- * 04/10/2018 14:53
  */
 public enum CameraType {
     EMISSION, SPEED, SPEED_EMISSION

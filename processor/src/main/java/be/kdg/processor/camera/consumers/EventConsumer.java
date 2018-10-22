@@ -13,9 +13,8 @@ import java.util.logging.Logger;
 /**
  * Class that receives CameraMessages from an MQTT queue (RabbitMQ) and reports the received messages to the Processor
  *
- * @see be.kdg.processor.processor.Processor
- * @see be.kdg.processor.camera.dom.CameraMessage
  * @author Cédric Goffin
+ * @see CameraMessage
  */
 @Component
 public class EventConsumer {
@@ -25,6 +24,7 @@ public class EventConsumer {
 
     /**
      * Method that handles the incoming messages from the MQTT queue. Can be configured via application.properties to listen to a different queue.
+     *
      * @param queueMessage is a message from the queue.
      */
     @RabbitListener(queues = "${mqtt.queue_name}")
