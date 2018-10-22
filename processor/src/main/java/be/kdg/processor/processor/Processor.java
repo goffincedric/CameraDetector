@@ -33,7 +33,7 @@ public class Processor {
     private boolean logFailed;
     @Value("${processor.failed.log.path}")
     private String logPath;
-    private boolean isRunning = false;
+    private boolean isRunning = true;
     private int amountLogged;
 
     /**

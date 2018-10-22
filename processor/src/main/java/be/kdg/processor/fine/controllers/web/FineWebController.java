@@ -20,7 +20,7 @@ public class FineWebController {
     /**
      * FineWebController constructor. Autowired via Spring.
      *
-     * @param fineOptionsDTO is a DTO containing the current factors used in the fine amount calculation
+     * @param fineOptionsDTO a DTO containing the current factors used in the fine amount calculation
      */
     @Autowired
     public FineWebController(FineOptionsDTO fineOptionsDTO) {

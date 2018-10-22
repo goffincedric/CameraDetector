@@ -42,9 +42,9 @@ public class ProcessorWebController {
      */
     @GetMapping(value = "/admin")
     public ModelAndView admin() {
-        boolean isRunning = rabbitListenerEndpointRegistry.getListenerContainer("messageQueue").isRunning() && processor.isRunning();
+        boolean isRunning = rabbitListenerEndpointRegistry.isRunning() && processor.isRunning();
 
-        return new ModelAndView("admin", "processor.isRunning", isRunning);
+        return new ModelAndView("admin", "processorstatus", isRunning);
     }
 
     /**
@@ -57,20 +57,23 @@ public class ProcessorWebController {
         return "login";
     }
 
-    //TODO: Document
+    /**
+     * Toggles the status of the processor to stop or start it
+     *
+     * @return a ModelAndView with the current status of the processor
+     */
     @PostMapping(value = {"/toggleProcessor"})
     public ModelAndView toggleProcessor() {
-        boolean isRunning = rabbitListenerEndpointRegistry.getListenerContainer("messageQueue").isRunning() && processor.isRunning();
+        boolean isRunning = rabbitListenerEndpointRegistry.isRunning() && processor.isRunning();
         if (isRunning) {
-            rabbitListenerEndpointRegistry.getListenerContainer("messageQueue").stop();
+            rabbitListenerEndpointRegistry.stop();
             processor.toggleProcessor();
             isRunning = false;
         } else {
-            if (rabbitListenerEndpointRegistry.getListenerContainer("messageQueue").isRunning())
-                rabbitListenerEndpointRegistry.getListenerContainer("messageQueue").start();
-            if (processor.isRunning()) processor.toggleProcessor();
+            if (!rabbitListenerEndpointRegistry.isRunning()) rabbitListenerEndpointRegistry.start();
+            if (!processor.isRunning()) processor.toggleProcessor();
             isRunning = true;
         }
-        return new ModelAndView("admin", "processor.isRunning", isRunning);
+        return new ModelAndView("redirect:/admin", "processorstatus", isRunning);
     }
 }

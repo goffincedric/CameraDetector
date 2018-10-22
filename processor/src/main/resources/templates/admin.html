@@ -1,6 +1,5 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<html xmlns:th="http://www.w3.org/1999/xhtml"
+      xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <link rel="stylesheet" href="css/style.css">
 
@@ -22,9 +21,9 @@
                 <a th:href="@{/h2-console}" class="link">View H2 database</a>
 
                 <form th:action="@{/toggleProcessor}" method="post">
-                    <label>Current status: </label><label th:text="${processor.status}"></label>
-                    <input type="submit" th:if="${!processor.isRunning}" th:value="Start" />
-                    <input type="submit" th:if="${processor.isRunning}" th:value="Stop" />
+                    <label for="status">Current status processor: </label><div id="status" class="input" th:text="${(processorstatus)?'Running':'Stopped'}"></div>
+                    <input type="submit" th:if="${!processorstatus}" th:value="Start" />
+                    <input type="submit" th:if="${processorstatus}" th:value="Stop" />
                 </form>
 
                 <form th:action="@{/logout}" method="post">
