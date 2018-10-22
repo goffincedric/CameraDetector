@@ -56,7 +56,7 @@ public class FileGenerator implements MessageGenerator {
                                 .collect(Collectors.toList())
                 );
             } catch (IOException e) {
-                e.printStackTrace();
+                LOGGER.severe("Problem occurred while reading the messages from CSV files!");
             }
         }
     }

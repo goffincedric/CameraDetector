@@ -4,7 +4,6 @@ import be.kdg.simulator.simulation.Simulator;
 import org.quartz.DisallowConcurrentExecution;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
-import org.quartz.SchedulerException;
 import org.springframework.stereotype.Component;
 
 import java.util.logging.Logger;
@@ -29,6 +28,5 @@ public class ScheduledJob implements Job {
     @Override
     public void execute(JobExecutionContext context) {
         Simulator simulator = (Simulator) context.getMergedJobDataMap().get("simulator");
-        simulator.sendMessage();
     }
 }

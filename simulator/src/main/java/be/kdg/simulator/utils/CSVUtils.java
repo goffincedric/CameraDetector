@@ -68,9 +68,8 @@ public class CSVUtils {
             );
         } catch (FileNotFoundException fnfe) {
             LOGGER.severe("File with path '" + filePath + "' does not exist!");
-            fnfe.printStackTrace();
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.severe("Could not read messages from CSV file!");
         }
 
         return messageBuffer;

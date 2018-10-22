@@ -86,7 +86,7 @@ public class CloudALPRService {
 
                 licensePlate = licensePlate.charAt(0) + "-" + licensePlate.substring(1, 4) + "-" + licensePlate.substring(4, 7);
             } else {
-                System.out.println("Got non-200 response: " + status_code);
+                LOGGER.warning(String.format("Got non-200 response: %d", status_code));
             }
         } catch (MalformedURLException e) {
             LOGGER.severe("Bad URL for CloudALPR connection");
