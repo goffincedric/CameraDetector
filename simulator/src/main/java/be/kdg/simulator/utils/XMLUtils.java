@@ -10,13 +10,20 @@ import java.util.Optional;
 import java.util.logging.Logger;
 
 /**
+ * Utility class for XML serialization.
+ *
  * @author Cédric Goffin
- * 25/09/2018 14:17
  */
 @UtilityClass
 public class XMLUtils {
     private final Logger LOGGER = Logger.getLogger(XMLUtils.class.getName());
 
+    /**
+     * Generic method used to convert an object to an XML string.
+     *
+     * @param object object to serialize to XML string
+     * @return an Optional string containing the serialized object. Can be empty when serialization failed.
+     */
     public Optional<String> convertObjectToXML(Object object) {
         XmlMapper mapper = new XmlMapper();
         mapper.registerModule(new JavaTimeModule());

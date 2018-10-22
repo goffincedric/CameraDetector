@@ -1,12 +1,14 @@
 package be.kdg.processor.camera.controllers.web;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * A web controller that handles general requests.
  *
- * @author Cedric Goffin
+ * @author Cédric Goffin
  */
 @Controller
 public class WebController {
@@ -39,4 +41,10 @@ public class WebController {
     public String login() {
         return "login";
     }
+
+//    //TODO: Document
+//    @GetMapping(value = {"/processor"})
+//    public ModelAndView getProcessor() {
+//        return new ModelAndView("finesettings", "fineOptionsDTO", fineOptionsDTO);
+//    }
 }

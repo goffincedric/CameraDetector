@@ -11,6 +11,8 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Optional;
+
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -25,7 +27,8 @@ public class SimulatorApplicationTests {
     @Test
     @ConditionalOnProperty(value = "generator", havingValue = "random")
     public void testMessageGenerator() {
-        CameraMessage cameraMessage = messageGenerator.generate();
-        Assert.assertTrue(cameraMessage.getLicenseplate().matches(licenseplaceRegex));
+        Optional<CameraMessage> optionalMessage = messageGenerator.generate();
+        Assert.assertTrue(optionalMessage.isPresent());
+        Assert.assertTrue(optionalMessage.get().getLicenseplate().matches(licenseplaceRegex));
     }
 }

@@ -4,16 +4,28 @@ import be.kdg.simulator.simulation.Simulator;
 import org.quartz.DisallowConcurrentExecution;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
+import org.quartz.SchedulerException;
 import org.springframework.stereotype.Component;
 
+import java.util.logging.Logger;
+
 /**
+ * Job that Quartz Scheduler will use to run in its schedulers
+ *
  * @author Cédric Goffin
- * 05/10/2018 14:11
+ * @see ScheduleConfig
+ * @see ScheduleInit
  */
 @Component
 @DisallowConcurrentExecution
 public class ScheduledJob implements Job {
+    private static final Logger LOGGER = Logger.getLogger(ScheduledJob.class.getName());
 
+    /**
+     * Job to execute.
+     *
+     * @param context context that contains information from the scheduler
+     */
     @Override
     public void execute(JobExecutionContext context) {
         Simulator simulator = (Simulator) context.getMergedJobDataMap().get("simulator");

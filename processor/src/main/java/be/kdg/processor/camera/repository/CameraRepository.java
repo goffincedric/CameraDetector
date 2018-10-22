@@ -10,7 +10,7 @@ import java.util.Optional;
 /**
  * Repository used to persist Cameras to an H2 in-memory database.
  *
- * @author Cedric Goffin
+ * @author Cédric Goffin
  * @see Camera
  */
 @Repository

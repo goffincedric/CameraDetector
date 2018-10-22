@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 /**
  * Repository used to persist Fines to an H2 in-memory database.
  *
- * @author Cedric Goffin
+ * @author Cédric Goffin
  * @see Licenseplate
  */
 @Repository
