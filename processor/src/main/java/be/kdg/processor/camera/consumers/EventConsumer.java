@@ -27,7 +27,7 @@ public class EventConsumer {
      *
      * @param queueMessage is a message from the queue.
      */
-    @RabbitListener(queues = "${mqtt.queue_name}")
+    @RabbitListener(id = "messageQueue" ,queues = "${mqtt.queue_name}")
     private void receiveMessage(String queueMessage) {
         Optional<CameraMessage> optionalMessage = XMLUtils.convertXMLToObject(queueMessage, CameraMessage.class);
         if (optionalMessage.isPresent()) {

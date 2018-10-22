@@ -21,6 +21,12 @@
                 <a th:href="@{/fine/settings}" class="link">View fine settings</a>
                 <a th:href="@{/h2-console}" class="link">View H2 database</a>
 
+                <form th:action="@{/toggleProcessor}" method="post">
+                    <label>Current status: </label><label th:text="${processor.status}"></label>
+                    <input type="submit" th:if="${!processor.isRunning}" th:value="Start" />
+                    <input type="submit" th:if="${processor.isRunning}" th:value="Stop" />
+                </form>
+
                 <form th:action="@{/logout}" method="post">
                     <input type="submit" value="Sign Out"/>
                 </form>

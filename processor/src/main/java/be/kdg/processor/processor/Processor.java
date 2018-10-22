@@ -33,7 +33,7 @@ public class Processor {
     private boolean logFailed;
     @Value("${processor.failed.log.path}")
     private String logPath;
-    private boolean isPaused = false;
+    private boolean isRunning = false;
     private int amountLogged;
 
     /**
@@ -53,7 +53,7 @@ public class Processor {
      */
     @Scheduled(fixedDelayString = "${processor.processDelay_millis}")
     public void CheckMessages() {
-        if (isPaused) return;
+        if (!isRunning) return;
 
         Map<CameraMessage, Integer> buffer;
 
@@ -102,17 +102,17 @@ public class Processor {
      *
      * @return the value of isPaused
      */
-    public boolean isPaused() {
-        return isPaused;
+    public boolean isRunning() {
+        return isRunning;
     }
 
     /**
-     * Toggles the isPaused boolean
+     * Toggles the isRunning boolean
      *
      * @return the new value of isPaused
      */
-    public boolean togglePaused() {
-        isPaused = !isPaused;
-        return isPaused;
+    public boolean toggleProcessor() {
+        isRunning = !isRunning;
+        return isRunning;
     }
 }
