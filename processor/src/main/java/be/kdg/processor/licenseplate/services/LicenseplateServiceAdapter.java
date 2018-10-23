@@ -48,7 +48,7 @@ public class LicenseplateServiceAdapter {
                 throw new Exception(String.format("Error while getting license plate with id: %s", licensePlateId));
             } catch (LicensePlateNotFoundException lnfe) {
                 LOGGER.severe("Could not find license plate with id: %s" + licensePlateId);
-                throw new Exception("Error while getting license plate with id: %s" + licensePlateId);
+                throw new Exception(String.format("Error while getting license plate with id: %s", licensePlateId));
             } catch (InvalidLicensePlateException ile) {
                 LOGGER.severe("Invalid license plate: " + licensePlateId);
                 throw new Exception(String.format("Error while getting license plate with id: %s", licensePlateId));

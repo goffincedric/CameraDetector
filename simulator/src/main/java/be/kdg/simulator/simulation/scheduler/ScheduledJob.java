@@ -28,5 +28,6 @@ public class ScheduledJob implements Job {
     @Override
     public void execute(JobExecutionContext context) {
         Simulator simulator = (Simulator) context.getMergedJobDataMap().get("simulator");
+        simulator.sendMessage();
     }
 }

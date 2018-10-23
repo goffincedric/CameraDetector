@@ -16,11 +16,9 @@
         </div>
         <div class="right">
             <div class="info">
-                <label>Emission factor</label><div class="input" th:text="${fineOptionsDTO.emissionFineFactor}"></div>
-                <label>Speeding factor (< 50KM/h)</label><div class="input" th:text="${fineOptionsDTO.speedFineFactorSlow}"></div>
-                <label>Speeding factor (> 50KM/h)</label><div class="input" th:text="${fineOptionsDTO.speedFineFactorFast}"></div>
-
-
+                <label>Emission factor</label><div class="input divider" th:text="${fineOptionsDTO.emissionFineFactor}"></div>
+                <label>Speeding factor (< 50KM/h)</label><div class="input divider" th:text="${fineOptionsDTO.speedFineFactorSlow}"></div>
+                <label>Speeding factor (> 50KM/h)</label><div class="input divider" th:text="${fineOptionsDTO.speedFineFactorFast}"></div>
 
                 <a th:href="@{/admin}" class="link" >Go to admin page</a>
                 <form th:action="@{/logout}" method="post">
