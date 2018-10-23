@@ -1,0 +1,37 @@
+<html xmlns:th="http://www.w3.org/1999/xhtml"
+      xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <link rel="stylesheet" href="/css/style.css">
+    <meta charset="UTF-8">
+    <title>Fine settings</title>
+</head>
+<body>
+<div class="page">
+    <div class="container">
+        <div class="left">
+            <div class="title">Processor options</div>
+            <div class="desc">
+                The following settings will be used for the processor.
+            </div>
+        </div>
+        <div class="right">
+            <div class="info">
+                <form th:action="@{/processor/settings}" method="post" th:object="${processorSettingsDTO}">
+                    <label for="emissionTimeframeDays">Times to retry message processing</label>
+                    <input id="emissionTimeframeDays" class="input divider" th:field="*{retries}">
+                    <label for="emissionFineFactor">Log failed messages?</label>
+                    <input id="emissionFineFactor" type="checkbox" class="input divider" th:field="*{logFailed}">
+                    <label for="speedFineFactorSlow">Path to save logs</label>
+                    <input id="speedFineFactorSlow" class="input divider" th:field="*{logPath}">
+                    <input type="submit" value="Update settings"/>
+                </form>
+                <a th:href="@{/admin}" class="link">Go to admin page</a>
+                <form th:action="@{/logout}" method="post">
+                    <input type="submit" value="Sign Out"/>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

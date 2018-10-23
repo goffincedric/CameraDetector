@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 /**
- * Repository used to persist Fines to an H2 in-memory database.
+ * Repository that gets used to persist Fines to an H2 in-memory database.
  *
  * @author Cédric Goffin
  * @see Fine

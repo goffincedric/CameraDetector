@@ -27,6 +27,11 @@ public class Role {
     @ManyToMany(mappedBy = "roles")
     private List<User> users = new ArrayList<>();
 
+    /**
+     * Constructor for Role.
+     *
+     * @param name a string containing the role name
+     */
     public Role(String name) {
         this.name = name;
     }

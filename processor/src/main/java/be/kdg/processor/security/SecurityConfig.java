@@ -23,11 +23,22 @@ import java.util.List;
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    /**
+     * Enables BCryptPasswordEncoder to be used by spring as a bean.
+     *
+     * @return a BCryptPasswordEncoder object
+     */
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+    /**
+     * Method that configures the security (user/role access) for all urls.
+     *
+     * @param http built-in HttpSecurity class
+     * @throws Exception when a problem occurrred while configuring the http object
+     */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
@@ -42,10 +53,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.headers().frameOptions().disable();
     }
 
+    /**
+     * Sets UserService as custom UserDetailService and initializes the database with a default 'admin' user.
+     *
+     * @param auth        built-in Authentication manager
+     * @param userService service for the user package
+     * @throws Exception     when UserService does not get accepted as custom UserDetailsService
+     * @throws UserException when default 'admin' user cannot be created
+     */
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth, UserService userService) throws Exception, UserException {
         auth.userDetailsService(userService);
 
-        userService.createUser(new User("admin", "admin", List.of(new Role("webadmin"), new Role("dbadmin"))));
+        userService.save(new User("admin", "admin", List.of(new Role("webadmin"), new Role("dbadmin"))));
     }
 }

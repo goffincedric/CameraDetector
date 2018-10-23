@@ -1,13 +1,15 @@
 package be.kdg.processor.licenseplate.services;
 
-import be.kdg.processor.camera.dom.CameraMessage;
 import be.kdg.processor.licenseplate.dom.Licenseplate;
+import be.kdg.processor.licenseplate.exception.LicensePlateException;
 import be.kdg.processor.licenseplate.repository.LicenseplateRepository;
 import be.kdg.processor.utils.JSONUtils;
 import be.kdg.sa.services.InvalidLicensePlateException;
 import be.kdg.sa.services.LicensePlateNotFoundException;
 import be.kdg.sa.services.LicensePlateServiceProxy;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
@@ -16,11 +18,15 @@ import java.util.Optional;
 import java.util.logging.Logger;
 
 /**
+ * Service used to manipulate Camera information from the H2 in-memory database or from an external CameraServiceProxy.
+ *
  * @author Cédric Goffin
- * 09/10/2018 13:36
+ * @see LicensePlateServiceProxy
+ * @see LicenseplateRepository
  */
 @Component
 @Transactional
+@EnableCaching
 public class LicenseplateServiceAdapter {
     private static final Logger LOGGER = Logger.getLogger(LicenseplateServiceAdapter.class.getName());
 
@@ -28,6 +34,13 @@ public class LicenseplateServiceAdapter {
     private final LicensePlateServiceProxy licensePlateServiceProxy;
     private final LicenseplateRepository licenseplateRepository;
 
+    /**
+     * Constructor used by Spring framework to initialize the service as a bean
+     *
+     * @param licensePlateServiceProxy is an external LicensePlateServiceProxy which can be contacted to get information about Licenseplates
+     * @param cloudALPRService         is a service that contacts the OpenALPR API to recognise a license plate id from an image
+     * @param licenseplateRepository   is the repository that has access to the H2 in-memory database
+     */
     @Autowired
     public LicenseplateServiceAdapter(LicensePlateServiceProxy licensePlateServiceProxy, CloudALPRService cloudALPRService, LicenseplateRepository licenseplateRepository) {
         this.licensePlateServiceProxy = licensePlateServiceProxy;
@@ -35,7 +48,15 @@ public class LicenseplateServiceAdapter {
         this.licenseplateRepository = licenseplateRepository;
     }
 
-    public Optional<Licenseplate> getLicensePlate(String licensePlateId) throws Exception {
+    /**
+     * Gets information about a camera.
+     *
+     * @param licensePlateId a string containing the license plate id
+     * @return an Optional Licenseplate. Is empty when no Licenseplate could be found or when an error occurred.
+     * @throws LicensePlateException when a problem occurred during deserialization, when an invalid license plate id was supplied or when no license plate could be find
+     */
+    @Cacheable("licenseplate")
+    public Optional<Licenseplate> getLicensePlate(String licensePlateId) throws LicensePlateException {
         Optional<Licenseplate> licenseplate = licenseplateRepository.findById(licensePlateId);
         if (!licenseplate.isPresent()) {
             try {
@@ -43,44 +64,37 @@ public class LicenseplateServiceAdapter {
                 if (licenseplate.isPresent()) {
                     licenseplate = Optional.of(saveLicenseplate(licenseplate.get()));
                 }
-            } catch (IOException e) {
-                LOGGER.severe(String.format("Unable to deserialize licenseplate with id: %s", licensePlateId));
-                throw new Exception(String.format("Error while getting license plate with id: %s", licensePlateId));
-            } catch (LicensePlateNotFoundException lnfe) {
-                LOGGER.severe("Could not find license plate with id: %s" + licensePlateId);
-                throw new Exception(String.format("Error while getting license plate with id: %s", licensePlateId));
-            } catch (InvalidLicensePlateException ile) {
-                LOGGER.severe("Invalid license plate: " + licensePlateId);
-                throw new Exception(String.format("Error while getting license plate with id: %s", licensePlateId));
+            } catch (IOException | LicensePlateNotFoundException | InvalidLicensePlateException e) {
+                throw new LicensePlateException(e.getMessage(), e);
             }
         }
 
         return licenseplate;
     }
 
-    public Optional<Licenseplate> getLicensePlate(byte[] data) {
+    /**
+     * Gets information about a camera.
+     *
+     * @param data is an array of bytes that represents the image to be analysed
+     * @return an Optional Licenseplate. Is empty when no Licenseplate could be found or when an error occurred.
+     * @throws LicensePlateException when no license plate could be recognised from image
+     */
+    @Cacheable("licenseplate")
+    public Optional<Licenseplate> getLicensePlate(byte[] data) throws LicensePlateException {
         try {
             String licenseplate = cloudALPRService.getLicenseplate(data);
             return getLicensePlate(licenseplate);
         } catch (Exception e) {
-            LOGGER.severe(e.getMessage());
+            throw new LicensePlateException("Problem occurred getting licenseplate from image", e);
         }
-        return Optional.empty();
     }
 
-    public Optional<Licenseplate> getLicensePlate(CameraMessage cameraMessage) {
-        try {
-            if (cameraMessage.getLicenseplate() != null) {
-                return getLicensePlate(cameraMessage.getLicenseplate());
-            } else if (cameraMessage.getCameraImage() != null) {
-                return getLicensePlate(cameraMessage.getCameraImage());
-            }
-        } catch (Exception e) {
-            LOGGER.severe(e.getMessage());
-        }
-        return Optional.empty();
-    }
-
+    /**
+     * Creates a new camera in the repository
+     *
+     * @param licenseplate the Licenseplate to persist to the database
+     * @return the persisted Licenseplate from the repository
+     */
     public Licenseplate saveLicenseplate(Licenseplate licenseplate) {
         return licenseplateRepository.save(licenseplate);
     }

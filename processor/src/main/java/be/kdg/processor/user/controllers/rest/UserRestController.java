@@ -2,6 +2,7 @@ package be.kdg.processor.user.controllers.rest;
 
 import be.kdg.processor.user.dom.Role;
 import be.kdg.processor.user.dom.User;
+import be.kdg.processor.user.dto.SafeUserDTO;
 import be.kdg.processor.user.dto.UserDTO;
 import be.kdg.processor.user.exceptions.UserException;
 import be.kdg.processor.user.services.UserService;
@@ -9,10 +10,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -54,19 +52,73 @@ public class UserRestController {
                     .map(Role::getName).collect(Collectors.toList());
             return new UserDTO(context.getSource().getUsername(), context.getSource().getPassword(), roles);
         });
+        modelMapper.createTypeMap(User.class, SafeUserDTO.class).setConverter(context -> {
+            List<String> roles = context.getSource().getRoles().stream()
+                    .map(Role::getName).collect(Collectors.toList());
+            return new SafeUserDTO(context.getSource().getUsername(), roles);
+        });
     }
 
     /**
-     * Method that handles incoming GET requests from /api/user/register.
+     * Method that handles incoming GET requests from /api/user.
      *
-     * @param userDTO a DTO containing information about a User
-     * @return a DTO containing information about the new registered User
-     * @throws UserException when a user with the same username already exists
+     * @param username a string containing the username
+     * @return a SafeUSerDTO with the information about the user (no password)
+     * @throws UserException when a user with the supplied username could not be found
      */
-    @PostMapping("/register")
-    public ResponseEntity addUser(@Valid @RequestBody UserDTO userDTO) throws UserException {
-        userService.createUser(modelMapper.map(userDTO, User.class));
-        return new ResponseEntity<>(HttpStatus.OK);
+    @GetMapping
+    public ResponseEntity getUser(@RequestParam(value = "username") String username) throws UserException {
+        return new ResponseEntity<>(
+                modelMapper.map(userService.getUser(username).get(), SafeUserDTO.class),
+                HttpStatus.OK
+        );
     }
 
+    /**
+     * Method that handles incoming POST requests from /api/user.
+     *
+     * @param userDTO a DTO containing information about a User
+     * @return a ResponseEntity with the status code
+     * @throws UserException when a user with the same username already exists
+     */
+    @PostMapping
+    public ResponseEntity addUser(@Valid @RequestBody UserDTO userDTO) throws UserException {
+        User user = userService.save(modelMapper.map(userDTO, User.class));
+        return new ResponseEntity<>(
+                modelMapper.map(user, SafeUserDTO.class),
+                HttpStatus.OK
+        );
+    }
+
+    /**
+     * Method that handles incoming PUT requests from /api/user.
+     *
+     * @param userDTO a DTO containing updated information about a User
+     * @return a SafeUSerDTO with the updated information about the user (no password)
+     * @throws UserException when a user with the supplied username could not be found
+     */
+    @PutMapping
+    public ResponseEntity updateUser(@Valid @RequestBody UserDTO userDTO) throws UserException {
+        User user = userService.updateUser(modelMapper.map(userDTO, User.class));
+        return new ResponseEntity<>(
+                modelMapper.map(user, SafeUserDTO.class),
+                HttpStatus.OK
+        );
+    }
+
+    /**
+     * Method that handles incoming DELETE requests from /api/user.
+     *
+     * @param username a string containing the username of the User that needs to be deleted
+     * @return a ResponseEntity with the status code
+     * @throws UserException when a user with the supplied username could not be found
+     */
+    @DeleteMapping
+    public ResponseEntity deleteUser(@RequestParam(value = "username") String username) throws UserException {
+        userService.deleteUser(username);
+        return new ResponseEntity<>(
+                "deleted " + username,
+                HttpStatus.OK
+        );
+    }
 }

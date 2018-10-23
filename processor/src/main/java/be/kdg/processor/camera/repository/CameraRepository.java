@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Repository used to persist Cameras to an H2 in-memory database.
+ * Repository that gets used to persist Cameras to an H2 in-memory database.
  *
  * @author Cédric Goffin
  * @see Camera

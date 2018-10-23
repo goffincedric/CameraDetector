@@ -4,13 +4,17 @@ import be.kdg.processor.camera.dom.Camera;
 import be.kdg.processor.camera.dom.CameraMessage;
 import be.kdg.processor.camera.dom.CameraType;
 import be.kdg.processor.camera.services.CameraServiceAdapter;
-import be.kdg.processor.fine.FineDetector;
 import be.kdg.processor.fine.dom.Fine;
 import be.kdg.processor.fine.exceptions.FineException;
 import be.kdg.processor.fine.repository.FineRepository;
 import be.kdg.processor.licenseplate.dom.Licenseplate;
+import be.kdg.processor.licenseplate.exception.LicensePlateException;
 import be.kdg.processor.licenseplate.services.LicenseplateServiceAdapter;
+import be.kdg.processor.processor.dom.DoubleSetting;
+import be.kdg.processor.processor.dom.IntSetting;
+import be.kdg.processor.processor.services.SettingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -24,7 +28,7 @@ import java.util.stream.Collectors;
  *
  * @author Cédric Goffin
  * @see FineRepository
- * @see FineDetector
+ * @see FineCalculator
  */
 @Service
 @Transactional
@@ -33,24 +37,38 @@ public class FineService {
 
     private final CameraServiceAdapter cameraServiceAdapter;
     private final LicenseplateServiceAdapter licenseplateServiceAdapter;
+    private final SettingService settingService;
 
     private final FineRepository fineRepository;
-    private final FineDetector fineDetector;
+    private final FineCalculator fineCalculator;
+
+    @Value("${fine.emission.timeframe_days}")
+    private int emissionTimeFrameDays;
+    @Value("${fine.emission.fineFactor}")
+    private double emissionFineFactor;
+    @Value("${fine.speed.fineFactor.slow}")
+    private double speedFineFactorSlow;
+    @Value("${fine.speed.fineFactor.fast}")
+    private double speedFineFactorFast;
+    @Value("${fine.paymentDeadlineDays}")
+    private int paymentDeadlineDays;
 
     /**
      * Constructor used by Spring framework to initialize the service as a bean
      *
-     * @param cameraServiceAdapter       is a the service for the Camera package
-     * @param licenseplateServiceAdapter is the service for the Lincenseplate package
-     * @param fineRepository             is the repository that has access to the H2 in-memory database
-     * @param fineDetector               is a helper class used to calculate fines
+     * @param cameraServiceAdapter       the service for the Camera package
+     * @param licenseplateServiceAdapter the service for the Lincenseplate package
+     * @param settingService             the service for the processor package. Manages all processor settings.
+     * @param fineRepository             the repository that has access to the H2 in-memory database
+     * @param fineCalculator             a helper class used to calculate fines
      */
     @Autowired
-    public FineService(CameraServiceAdapter cameraServiceAdapter, LicenseplateServiceAdapter licenseplateServiceAdapter, FineRepository fineRepository, FineDetector fineDetector) {
+    public FineService(CameraServiceAdapter cameraServiceAdapter, LicenseplateServiceAdapter licenseplateServiceAdapter, SettingService settingService, FineRepository fineRepository, FineCalculator fineCalculator) {
         this.cameraServiceAdapter = cameraServiceAdapter;
         this.licenseplateServiceAdapter = licenseplateServiceAdapter;
+        this.settingService = settingService;
         this.fineRepository = fineRepository;
-        this.fineDetector = fineDetector;
+        this.fineCalculator = fineCalculator;
     }
 
     /**
@@ -121,6 +139,18 @@ public class FineService {
      * @return all CameraMessages that could not be processed
      */
     public List<CameraMessage> processFines(List<CameraMessage> messages) {
+        // Get current settings
+        Optional<IntSetting> optionalEmissionTimeFrameDays = settingService.getIntSetting("emissionTimeFrameDays");
+        optionalEmissionTimeFrameDays.ifPresent(s -> emissionTimeFrameDays = s.getIntValue());
+        Optional<DoubleSetting> optionalEmissionFineFactor = settingService.getDoubleSetting("emissionFineFactor");
+        optionalEmissionFineFactor.ifPresent(s -> emissionFineFactor = s.getDoubleValue());
+        Optional<DoubleSetting> optionalSpeedFineFactorSlow = settingService.getDoubleSetting("speedFineFactorSlow");
+        optionalSpeedFineFactorSlow.ifPresent(s -> speedFineFactorSlow = s.getDoubleValue());
+        Optional<DoubleSetting> optionalSpeedFineFactorFast = settingService.getDoubleSetting("speedFineFactorFast");
+        optionalSpeedFineFactorFast.ifPresent(s -> speedFineFactorFast = s.getDoubleValue());
+        Optional<IntSetting> optionalPaymentDeadlineDays = settingService.getIntSetting("paymentDeadlineDays");
+        optionalPaymentDeadlineDays.ifPresent(s -> paymentDeadlineDays = s.getIntValue());
+
         // Filter out speedmessages
         List<CameraMessage> speedMessages = cameraServiceAdapter.getMessagesFromTypes(messages, List.of(CameraType.SPEED, CameraType.SPEED_EMISSION));
         // Filter out emissionmessages
@@ -149,7 +179,7 @@ public class FineService {
         fines.forEach(f -> f.getLicenseplate().getFines().add(f));
 
         // Save all fines
-        fines = saveFines(fines);
+        saveFines(fines);
 
         return unprocessed;
     }
@@ -160,21 +190,35 @@ public class FineService {
      * @param emissionMessages is a list of all CameraMessages that are linked to emission cameras
      * @return a Map Entry with a list of Fines as key and a list of unprocessed CameraMessages as value
      */
-    private Map.Entry<List<Fine>, List<CameraMessage>> processEmissionFines(List<CameraMessage> emissionMessages) {
+    public Map.Entry<List<Fine>, List<CameraMessage>> processEmissionFines(List<CameraMessage> emissionMessages) {
         // List of unprocessed messages to return
         List<CameraMessage> unprocessed = new ArrayList<>();
 
         // Process emissionMessages and get only 1 fine per licenseplate per day
         List<Fine> emissionFines = emissionMessages.stream()
                 .map(m -> {
+                    Optional<Licenseplate> optionalLicenseplate = Optional.empty();
                     Optional<Camera> optionalCamera = cameraServiceAdapter.getCamera(m.getCameraId());
                     if (optionalCamera.isPresent()) {
                         Camera camera = optionalCamera.get();
 
-                        Optional<Licenseplate> optionalLicenseplate = licenseplateServiceAdapter.getLicensePlate(m);
+                        try {
+                            if (m.getLicenseplate() != null) {
+                                optionalLicenseplate = licenseplateServiceAdapter.getLicensePlate(m.getLicenseplate());
+                            } else if (m.getCameraImage() != null) {
+                                optionalLicenseplate = licenseplateServiceAdapter.getLicensePlate(m.getCameraImage());
+                            }
+                        } catch (LicensePlateException e) {
+                            LOGGER.severe(e.getMessage());
+                        }
+
                         if (optionalLicenseplate.isPresent()) {
                             Licenseplate licenseplate = optionalLicenseplate.get();
-                            return fineDetector.checkEmissionFine(m, camera, licenseplate);
+                            if (camera.getEuroNorm() > licenseplate.getEuroNumber()) {
+                                if (licenseplate.getFines().stream().noneMatch(f -> f.getTimestamp().isAfter(m.getTimestamp().minusDays(emissionTimeFrameDays)))) {
+                                    return fineCalculator.calcEmissionFine(camera, licenseplate, emissionFineFactor, paymentDeadlineDays);
+                                }
+                            }
                         }
                     }
                     unprocessed.add(m);
@@ -196,7 +240,7 @@ public class FineService {
      * @param speedMessages is a list of all CameraMessages that are linked to speed cameras
      * @return a Map Entry with a list of Fines as key and a list of unprocessed CameraMessages as value
      */
-    private Map.Entry<List<Fine>, List<CameraMessage>> processSpeedingFines(List<CameraMessage> speedMessages) {
+    public Map.Entry<List<Fine>, List<CameraMessage>> processSpeedingFines(List<CameraMessage> speedMessages) {
         // Link messages
         Map.Entry<Map<CameraMessage, CameraMessage>, List<CameraMessage>> speedPair = linkMessages(speedMessages);
 
@@ -213,12 +257,12 @@ public class FineService {
                         Optional<Licenseplate> optionalLicenseplate = Optional.empty();
                         try {
                             optionalLicenseplate = licenseplateServiceAdapter.getLicensePlate(pair.getKey().getLicenseplate());
-                        } catch (Exception e) {
+                        } catch (LicensePlateException e) {
                             LOGGER.severe(e.getMessage());
                         }
                         if (optionalLicenseplate.isPresent()) {
                             Licenseplate licenseplate = optionalLicenseplate.get();
-                            return fineDetector.checkSpeedFine(pair, camera, licenseplate);
+                            return fineCalculator.calcSpeedFine(pair, camera, licenseplate, speedFineFactorSlow, speedFineFactorFast, paymentDeadlineDays);
                         }
                     }
                     unprocessed.add(pair.getKey());

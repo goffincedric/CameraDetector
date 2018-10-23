@@ -54,9 +54,9 @@ public class FineRestController {
      * @return a list of FineDTOs which contain information about fines that where made between the 'from' and 'to' timestamps
      * @throws FineException when the given timestamps aren't in the right order
      */
-    //http://localhost:8080/api/fine/16-10-2018%2017:00:00/16-10-2018%2018:00:00
-    @GetMapping("/{from}/{to}")
-    public ResponseEntity<List<FineDTO>> getFinesBetween(@PathVariable @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss") LocalDateTime from, @PathVariable @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss") LocalDateTime to) throws FineException {
+    //http://localhost:8080/api/fine/get?from=16-10-2018_00:00:00&to=16-10-2018_00:00:00
+    @GetMapping("/get")
+    public ResponseEntity<List<FineDTO>> getFinesBetween(@RequestParam(value = "from") @DateTimeFormat(pattern = "dd-MM-yyyy_HH:mm:ss") LocalDateTime from, @RequestParam(value = "to") @DateTimeFormat(pattern = "dd-MM-yyyy_HH:mm:ss") LocalDateTime to) throws FineException {
         List<Fine> fines = fineService.getFinesBetween(from, to);
         return new ResponseEntity<>(fines.stream()
                 .map(f -> {

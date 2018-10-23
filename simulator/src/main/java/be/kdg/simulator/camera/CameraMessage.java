@@ -24,7 +24,7 @@ import java.time.format.DateTimeFormatter;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CameraMessage {
     @JsonIgnore
-    @Value("${licenseplate.regex}")
+    @Value("${licenseplate.regexp}")
     private String licenseplateRegex = "^[1-8]-[A-Z]{3}-[0-9]{3}$";
 
     private int cameraId;

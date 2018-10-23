@@ -8,6 +8,8 @@ import be.kdg.processor.utils.JSONUtils;
 import be.kdg.sa.services.CameraNotFoundException;
 import be.kdg.sa.services.CameraServiceProxy;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +29,7 @@ import java.util.stream.Collectors;
  */
 @Service
 @Transactional
+@EnableCaching
 public class CameraServiceAdapter {
     private static final Logger LOGGER = Logger.getLogger(CameraServiceAdapter.class.getName());
 
@@ -51,6 +54,7 @@ public class CameraServiceAdapter {
      * @param cameraId is the camera id
      * @return an Optional Camera. Is empty when no Camera could be found or when an error occurred.
      */
+    @Cacheable("camera")
     public Optional<Camera> getCamera(int cameraId) {
         Optional<Camera> optionalCamera = cameraRepository.findByCameraId(cameraId);
 
@@ -136,7 +140,7 @@ public class CameraServiceAdapter {
      * Creates a new camera in the repository
      *
      * @param camera is the camera to persist to the database
-     * @return the persisted camera from the repository which now contains a camera id
+     * @return the persisted camera from the repository
      */
     public Camera createCamera(Camera camera) {
         return cameraRepository.saveAndFlush(camera);

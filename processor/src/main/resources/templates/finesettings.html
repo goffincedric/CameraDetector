@@ -16,11 +16,20 @@
         </div>
         <div class="right">
             <div class="info">
-                <label>Emission factor</label><div class="input divider" th:text="${fineOptionsDTO.emissionFineFactor}"></div>
-                <label>Speeding factor (< 50KM/h)</label><div class="input divider" th:text="${fineOptionsDTO.speedFineFactorSlow}"></div>
-                <label>Speeding factor (> 50KM/h)</label><div class="input divider" th:text="${fineOptionsDTO.speedFineFactorFast}"></div>
-
-                <a th:href="@{/admin}" class="link" >Go to admin page</a>
+                <form action="/fine/settings" method="post" th:object="${fineSettingsDTO}">
+                    <label for="emissionTimeframeDays">Emission timeframe (in days)</label>
+                    <input id="emissionTimeframeDays" type="number" class="input divider" th:field="*{emissionTimeframeDays}">
+                    <label for="emissionFineFactor">Emission factor</label>
+                    <input id="emissionFineFactor" type="number" step="0.1" class="input divider" th:field="*{emissionFineFactor}">
+                    <label for="speedFineFactorSlow">Speeding factor (< 50KM/h)</label>
+                    <input id="speedFineFactorSlow" type="number" step="0.1" class="input divider" th:field="*{speedFineFactorSlow}">
+                    <label for="speedFineFactorFast">Speeding factor (> 50KM/h)</label>
+                    <input id="speedFineFactorFast" type="number" step="0.1" class="input divider" th:field="*{speedFineFactorFast}">
+                    <label for="paymentDeadlingDays">Payment deadline (in days)</label>
+                    <input id="paymentDeadlingDays" type="number" class="input divider" th:field="*{paymentDeadlingDays}">
+                    <input type="submit" value="Update settings"/>
+                </form>
+                <a th:href="@{/admin}" class="link">Go to admin page</a>
                 <form th:action="@{/logout}" method="post">
                     <input type="submit" value="Sign Out"/>
                 </form>

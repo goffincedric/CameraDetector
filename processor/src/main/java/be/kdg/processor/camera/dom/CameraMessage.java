@@ -23,7 +23,7 @@ import java.util.Base64;
 @AllArgsConstructor
 public class CameraMessage {
     @JsonIgnore
-    @Value("${licenseplate.regex}")
+    @Value("${licenseplate.regexp}")
     private static final String LICENSEPLATEREGEX = "^[1-8]-[A-Z]{3}-[0-9]{3}$";
 
     private int cameraId;
