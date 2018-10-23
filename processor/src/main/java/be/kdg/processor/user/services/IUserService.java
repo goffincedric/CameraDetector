@@ -1,5 +1,6 @@
 package be.kdg.processor.user.services;
 
+import be.kdg.processor.user.dom.Role;
 import be.kdg.processor.user.dom.User;
 import be.kdg.processor.user.exceptions.UserException;
 
@@ -12,4 +13,6 @@ import java.util.Optional;
 public interface IUserService {
     User createUser(User user) throws UserException;
     Optional<User> getUser(String username);
+
+    Optional<Role> getRole(String name);
 }

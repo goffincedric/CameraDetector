@@ -1,5 +1,6 @@
 package be.kdg.processor.user.controllers.rest;
 
+import be.kdg.processor.user.dom.Role;
 import be.kdg.processor.user.dom.User;
 import be.kdg.processor.user.dto.UserDTO;
 import be.kdg.processor.user.exceptions.UserException;
@@ -14,6 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Rest controller for Camera package. Mapped to listen to requests on /api/user
@@ -36,6 +40,20 @@ public class UserRestController {
     public UserRestController(UserService userService, ModelMapper modelMapper) {
         this.userService = userService;
         this.modelMapper = modelMapper;
+
+        modelMapper.createTypeMap(UserDTO.class, User.class).setConverter(context -> {
+            List<Role> roles = context.getSource().getRoles().stream()
+                    .map(rs -> {
+                        Optional<Role> optionalRole = userService.getRole(rs);
+                        return optionalRole.orElseGet(() -> new Role(rs));
+                    }).collect(Collectors.toList());
+            return new User(context.getSource().getUsername(), context.getSource().getPassword(), roles);
+        });
+        modelMapper.createTypeMap(User.class, UserDTO.class).setConverter(context -> {
+            List<String> roles = context.getSource().getRoles().stream()
+                    .map(Role::getName).collect(Collectors.toList());
+            return new UserDTO(context.getSource().getUsername(), context.getSource().getPassword(), roles);
+        });
     }
 
     /**
@@ -46,13 +64,9 @@ public class UserRestController {
      * @throws UserException when a user with the same username already exists
      */
     @PostMapping("/register")
-    public ResponseEntity<UserDTO> addUser(@Valid @RequestBody UserDTO userDTO) throws UserException {
-        User user = modelMapper.map(userDTO, User.class);
-        user = userService.createUser(user);
-        return new ResponseEntity<>(
-                modelMapper.map(user, UserDTO.class),
-                HttpStatus.OK
-        );
+    public ResponseEntity addUser(@Valid @RequestBody UserDTO userDTO) throws UserException {
+        userService.createUser(modelMapper.map(userDTO, User.class));
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }
