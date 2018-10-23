@@ -1,9 +1,8 @@
-package be.kdg.processor.fine.dto.fineOptions;
+package be.kdg.processor.fine.dto.fineSettings;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 
 /**
  * A DTO containing the current factors used in the fine amount calculation.
@@ -14,11 +13,10 @@ import org.springframework.beans.factory.annotation.Value;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class FineOptionsDTO {
-    @Value("${fine.emission.fineFactor}")
+public class FineSettingsDTO {
+    private int emissionTimeframeDays;
     private double emissionFineFactor;
-    @Value("${fine.speed.fineFactor.slow}")
     private double speedFineFactorSlow;
-    @Value("${fine.speed.fineFactor.fast}")
     private double speedFineFactorFast;
+    private int paymentDeadlingDays;
 }

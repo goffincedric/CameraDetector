@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 /**
- * Repository used to persist Roles to an H2 in-memory database.
+ * Repository that gets used to persist Roles to an H2 in-memory database.
  *
  * @author Cédric Goffin
  * @see Role

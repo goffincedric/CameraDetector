@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
  */
 @Service
 @Transactional
-public class UserService implements IUserService, UserDetailsService {
+public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
 
@@ -46,29 +46,17 @@ public class UserService implements IUserService, UserDetailsService {
     }
 
     /**
-     * Method that registers a new user in the repository
-     *
-     * @param user the new user to register
-     * @return the registered user from the repository
-     * @throws UserException when a user with the same username already exists
-     */
-    @Override
-    public User createUser(User user) throws UserException {
-        if (getUser(user.getUsername()).isPresent())
-            throw new UserException(String.format("User with username %s already exists", user.getUsername()));
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        return userRepository.save(user);
-    }
-
-    /**
      * Gets information about a User.
      *
      * @param username a string containing a username
      * @return an Optional User. Is empty when no User could be found or when an error occurred.
      */
-    @Override
-    public Optional<User> getUser(String username) {
-        return userRepository.findByUsername(username);
+    public Optional<User> getUser(String username) throws UserException {
+        Optional<User> optionalUser = userRepository.findByUsername(username);
+        if (optionalUser.isPresent()) {
+            return optionalUser;
+        }
+        throw new UserException("User with username '" + username + "' does not exist!");
     }
 
     /**
@@ -77,9 +65,59 @@ public class UserService implements IUserService, UserDetailsService {
      * @param name a string containing a role name
      * @return an Optional Role. Is empty when no Role could be found or when an error occurred.
      */
-    @Override
     public Optional<Role> getRole(String name) {
         return roleRepository.findByName(name);
+    }
+
+    /**
+     * Method that registers a new user in the repository
+     *
+     * @param user the new user to register
+     * @return the registered user from the repository
+     * @throws UserException when a user with the same username already exists
+     */
+    public User save(User user) throws UserException {
+        if (userRepository.findByUsername(user.getUsername()).isPresent())
+            throw new UserException(String.format("User with username %s already exists", user.getUsername()));
+
+        // User does not exist, create new user
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        return userRepository.save(user);
+    }
+
+    /**
+     * Method that updates a user in the repository
+     *
+     * @param updatedUser user with updated information
+     * @return the updated user from the repository
+     * @throws UserException when no user with the supplied username could be found
+     */
+    public User updateUser(User updatedUser) throws UserException {
+        Optional<User> optionalUser = getUser(updatedUser.getUsername());
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+
+            user.setPassword(bCryptPasswordEncoder.encode(updatedUser.getPassword()));
+            user.setRoles(updatedUser.getRoles());
+
+            return userRepository.save(user);
+        }
+        throw new UserException("User with username '" + updatedUser.getUsername() + "' does not exist!");
+    }
+
+    /**
+     * Method that deletes a user from the repository
+     *
+     * @param username string with username of user that needs to be deleted
+     * @throws UserException when no user with the supplied username could be found
+     */
+    public void deleteUser(String username) throws UserException {
+        Optional<User> optionalUser = getUser(username);
+        if (optionalUser.isPresent()) {
+            userRepository.delete(optionalUser.get());
+        } else {
+            throw new UserException("User with username '" + username + "' does not exist!");
+        }
     }
 
     /**

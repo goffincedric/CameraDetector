@@ -1,10 +1,13 @@
 package be.kdg.processor.processor.controllers.web;
 
 import be.kdg.processor.processor.Processor;
+import be.kdg.processor.processor.dto.ProcessorSettingsDTO;
+import be.kdg.processor.processor.services.SettingService;
 import org.springframework.amqp.rabbit.listener.RabbitListenerEndpointRegistry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -17,11 +20,13 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class ProcessorWebController {
     private final RabbitListenerEndpointRegistry rabbitListenerEndpointRegistry;
+    private final SettingService settingService;
     private final Processor processor;
 
     @Autowired
-    public ProcessorWebController(RabbitListenerEndpointRegistry rabbitListenerEndpointRegistry, Processor processor) {
+    public ProcessorWebController(RabbitListenerEndpointRegistry rabbitListenerEndpointRegistry, SettingService settingService, Processor processor) {
         this.rabbitListenerEndpointRegistry = rabbitListenerEndpointRegistry;
+        this.settingService = settingService;
         this.processor = processor;
     }
 
@@ -75,5 +80,27 @@ public class ProcessorWebController {
             isRunning = true;
         }
         return new ModelAndView("redirect:/admin", "processorstatus", isRunning);
+    }
+
+
+    /**
+     * Listens to GET requests made on the /processor/settings url
+     *
+     * @return the model containing the ProcessorSettingsDTO
+     */
+    @GetMapping("/processor/settings")
+    public ModelAndView getFineFactors() {
+        return new ModelAndView("processorsettings", "processorSettingsDTO", settingService.getProcessorSettingsDTO());
+    }
+
+    /**
+     * Listens to POST requests made on the /processor/settings url
+     *
+     * @return the model containing the ProcessorSettingsDTO
+     */
+    @PostMapping("/processor/settings")
+    public ModelAndView getFineFactors(@ModelAttribute ProcessorSettingsDTO processorSettingsDTO) {
+        processorSettingsDTO = settingService.saveProcessorSettingsDTO(processorSettingsDTO);
+        return new ModelAndView("processorsettings", "processorSettingsDTO", processorSettingsDTO);
     }
 }

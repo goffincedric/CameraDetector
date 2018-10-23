@@ -21,7 +21,7 @@ public class SimulatorApplicationTests {
     @Autowired
     private MessageGenerator messageGenerator;
 
-    @Value("${licenseplate.regex}")
+    @Value("${licenseplate.regexp}")
     private String licenseplaceRegex;
 
     @Test

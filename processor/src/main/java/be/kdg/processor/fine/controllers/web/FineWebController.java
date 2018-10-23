@@ -1,9 +1,12 @@
 package be.kdg.processor.fine.controllers.web;
 
-import be.kdg.processor.fine.dto.fineOptions.FineOptionsDTO;
+import be.kdg.processor.fine.dto.fineSettings.FineSettingsDTO;
+import be.kdg.processor.processor.services.SettingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -15,25 +18,36 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @RequestMapping("/fine")
 public class FineWebController {
-    private final FineOptionsDTO fineOptionsDTO;
+    private final SettingService settingService;
 
     /**
      * FineWebController constructor. Autowired via Spring.
      *
-     * @param fineOptionsDTO a DTO containing the current factors used in the fine amount calculation
+     * @param settingService is the service for the processor package. Can be used to access current processor settings
      */
     @Autowired
-    public FineWebController(FineOptionsDTO fineOptionsDTO) {
-        this.fineOptionsDTO = fineOptionsDTO;
+    public FineWebController(SettingService settingService) {
+        this.settingService = settingService;
     }
 
     /**
-     * Listens to GET requests made on the /settings url
+     * Listens to GET requests made on the /fine/settings url
      *
-     * @return the model containing the FineOptionsDTO
+     * @return the model containing the FineSettingsDTO
      */
     @GetMapping("/settings")
     public ModelAndView getFineFactors() {
-        return new ModelAndView("finesettings", "fineOptionsDTO", fineOptionsDTO);
+        return new ModelAndView("finesettings", "fineSettingsDTO", settingService.getFineSettingsDTO());
+    }
+
+    /**
+     * Listens to POST requests made on the /fine/settings url
+     *
+     * @return the model containing the FineSettingsDTO
+     */
+    @PostMapping("/settings")
+    public ModelAndView getFineFactors(@ModelAttribute FineSettingsDTO fineSettingsDTO) {
+        fineSettingsDTO = settingService.saveFineSettingsDTO(fineSettingsDTO);
+        return new ModelAndView("finesettings", "fineSettingsDTO", fineSettingsDTO);
     }
 }

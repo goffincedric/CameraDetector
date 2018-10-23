@@ -2,21 +2,15 @@ package be.kdg.simulator.generators;
 
 import be.kdg.simulator.camera.CameraMessage;
 import be.kdg.simulator.utils.CSVUtils;
-import com.opencsv.CSVReader;
-import com.opencsv.CSVReaderBuilder;
-import lombok.Getter;
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
