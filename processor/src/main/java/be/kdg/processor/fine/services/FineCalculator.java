@@ -16,7 +16,7 @@ import java.util.Optional;
 /**
  * Helper class that helps the FineService calculate the Fine
  *
- * @author Cédric Goffin
+ * @author C&eacute;dric Goffin
  * @see FineService
  */
 @Component
@@ -49,8 +49,8 @@ public class FineCalculator {
      * @param messagePair         pair of CameraMessages that contain information for the Fine calculation
      * @param camera              camera that contains information for the Fine calculation
      * @param licenseplate        license plate that needs to be fined
-     * @param speedFineFactorSlow Fine factor that is used for the price when the speeding violation happened in a zone with a speed limit <= 50 km/h
-     * @param speedFineFactorFast Fine factor that is used for the price when the speeding violation happened in a zone with a speed limit > 50 km/h
+     * @param speedFineFactorSlow Fine factor that is used for the price when the speeding violation happened in a zone with a speed limit &lt;= 50 km/h
+     * @param speedFineFactorFast Fine factor that is used for the price when the speeding violation happened in a zone with a speed limit &gt; 50 km/h
      * @param paymentDeadlineDays timeframe (of # days) in which the EmissionFine must be paid by the owner
      * @return an Optional SpeedingFine. Optional will be empty when the speed is lower than the speed limit.
      */

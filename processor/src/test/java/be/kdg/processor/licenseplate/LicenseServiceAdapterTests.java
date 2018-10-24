@@ -14,7 +14,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.Optional;
 
 /**
- * @author Cédric Goffin
+ * @author C&eacute;dric Goffin
  * 16/10/2018 16:15
  */
 @RunWith(SpringRunner.class)

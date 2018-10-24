@@ -9,7 +9,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 /**
- * @author Cédric Goffin
+ * @author C&eacute;dric Goffin
  */
 @ControllerAdvice
 public class FineExceptionHandler extends ResponseEntityExceptionHandler {

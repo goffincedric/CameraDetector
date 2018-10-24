@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Repository that gets used to persist Fines to an H2 in-memory database.
  *
- * @author Cédric Goffin
+ * @author C&eacute;dric Goffin
  * @see Fine
  */
 @Repository

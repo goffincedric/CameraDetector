@@ -23,7 +23,7 @@ import java.util.regex.Pattern;
 /**
  * Service used to recognise license plate ids from images. Uses OpenALPR API for image recognition.
  *
- * @author Cédric Goffin
+ * @author C&eacute;dric Goffin
  */
 @Service
 public class CloudALPRService {

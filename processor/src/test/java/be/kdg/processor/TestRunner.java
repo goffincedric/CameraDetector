@@ -4,7 +4,7 @@ import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
 
 /**
- * @author Cédric Goffin
+ * @author C&eacute;dric Goffin
  * 16/10/2018 16:20
  */
 public class TestRunner {

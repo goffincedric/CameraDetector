@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 /**
  * Service used to manipulate Fine information from the H2 in-memory database.
  *
- * @author Cédric Goffin
+ * @author C&eacute;dric Goffin
  * @see FineRepository
  * @see FineCalculator
  */

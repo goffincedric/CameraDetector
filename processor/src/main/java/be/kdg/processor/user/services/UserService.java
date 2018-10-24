@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 /**
  * Service used to manipulate Fine information from the H2 in-memory database.
  *
- * @author Cédric Goffin
+ * @author C&eacute;dric Goffin
  * @see UserRepository
  */
 @Service
@@ -50,6 +50,7 @@ public class UserService implements UserDetailsService {
      *
      * @param username a string containing a username
      * @return an Optional User. Is empty when no User could be found or when an error occurred.
+     * @throws UserException when no User with the supplied username could be found
      */
     public Optional<User> getUser(String username) throws UserException {
         Optional<User> optionalUser = userRepository.findByUsername(username);

@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 /**
  * A DTO for the Fine class, used to return information about a Fine object whose amount / motivation got changed.
  *
- * @author Cédric Goffin
+ * @author C&eacute;dric Goffin
  * @see be.kdg.processor.fine.dom.Fine
  * @see be.kdg.processor.fine.controllers.rest.FineRestController
  */

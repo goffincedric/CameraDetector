@@ -19,7 +19,7 @@ import java.util.logging.Logger;
 /**
  * Class that holds a buffer with all CameraMessages reported by the EventConsumer, along with how many times a certain messages has been tried to be processed.
  *
- * @author Cédric Goffin
+ * @author C&eacute;dric Goffin
  * @see be.kdg.processor.camera.consumers.EventConsumer
  * @see FineService
  */

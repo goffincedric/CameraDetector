@@ -14,7 +14,7 @@ import java.util.Optional;
 /**
  * Service for the processor package. Manages Settings for the Processor and Fine calculation.
  *
- * @author Cédric Goffin
+ * @author C&eacute;dric Goffin
  */
 @Service
 @Transactional

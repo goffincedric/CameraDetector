@@ -13,7 +13,7 @@ import java.util.Optional;
 import java.util.Random;
 
 /**
- * @author Cédric Goffin
+ * @author C&eacute;dric Goffin
  * 16/10/2018 16:14
  */
 @RunWith(SpringRunner.class)

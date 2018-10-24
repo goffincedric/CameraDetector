@@ -15,7 +15,7 @@ import java.util.logging.Logger;
 /**
  * Generator class that generates CameraMessages without license plate id, but with an image stored as a byte array.
  *
- * @author Cédric Goffin
+ * @author C&eacute;dric Goffin
  * @see MessageGenerator
  * @see CameraMessage
  */

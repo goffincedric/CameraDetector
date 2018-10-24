@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 /**
  * Configuration class for EventConsumer
  *
- * @author Cédric Goffin
+ * @author C&eacute;dric Goffin
  * @see EventConsumer
  */
 @Configuration

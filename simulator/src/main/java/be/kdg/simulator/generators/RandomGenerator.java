@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 /**
  * Generator class that randomly generates CameraMessages.
  *
- * @author Cédric Goffin
+ * @author C&eacute;dric Goffin
  * @see MessageGenerator
  * @see CameraMessage
  */

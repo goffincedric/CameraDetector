@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 /**
  * Utility class for XML serialization.
  *
- * @author Cédric Goffin
+ * @author C&eacute;dric Goffin
  */
 @UtilityClass
 public class XMLUtils {

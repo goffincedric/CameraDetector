@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 /**
  * Class that receives CameraMessages from an MQTT queue (RabbitMQ) and reports the received messages to the Processor
  *
- * @author Cédric Goffin
+ * @author C&eacute;dric Goffin
  * @see CameraMessage
  */
 @Component

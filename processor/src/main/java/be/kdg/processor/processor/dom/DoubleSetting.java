@@ -10,7 +10,7 @@ import javax.persistence.*;
 /**
  * Setting class that contains a Double value
  *
- * @author Cédric Goffin
+ * @author C&eacute;dric Goffin
  * @see be.kdg.processor.processor.dom.Setting
  */
 @Data

@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 /**
  * A DTO for the Camera class, used to return information about a Camera object.
  *
- * @author Cédric Goffin
+ * @author C&eacute;dric Goffin
  * @see be.kdg.processor.camera.dom.Camera
  * @see be.kdg.processor.camera.controllers.rest.CameraRestController
  */

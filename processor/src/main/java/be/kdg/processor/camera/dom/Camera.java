@@ -9,7 +9,7 @@ import javax.persistence.*;
 /**
  * Model class that holds information about a Camera. Gets stored in an H2 in-memory database in a table named 'tblCamera'.
  *
- * @author Cédric Goffin
+ * @author C&eacute;dric Goffin
  * 01/10/2018 14:03
  * @see CameraLocation
  * @see Segment

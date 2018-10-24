@@ -14,7 +14,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
- * @author Cédric Goffin
+ * @author C&eacute;dric Goffin
  * 20/10/2018 18:06
  */
 @RunWith(SpringRunner.class)

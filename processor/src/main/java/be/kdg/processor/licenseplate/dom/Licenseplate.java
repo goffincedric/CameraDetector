@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Model class that holds information about a LicensePlate. Gets stored in an H2 in-memory database in a table named 'tblLicenseplate'.
  *
- * @author Cédric Goffin
+ * @author C&eacute;dric Goffin
  */
 
 @Data

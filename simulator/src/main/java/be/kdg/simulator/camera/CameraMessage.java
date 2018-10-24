@@ -12,7 +12,7 @@ import java.time.format.DateTimeFormatter;
 /**
  * Model class that holds information about a camera message. Gets sent to an MQTT queue via QueueMessenger or to console via CommandlineMessenger.
  *
- * @author Cédric Goffin
+ * @author C&eacute;dric Goffin
  * @see be.kdg.simulator.messenger.QueueMessenger
  * @see be.kdg.simulator.messenger.CommandlineMessenger
  * @see be.kdg.simulator.generators.FileGenerator

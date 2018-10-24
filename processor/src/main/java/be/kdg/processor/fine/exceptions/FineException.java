@@ -1,7 +1,7 @@
 package be.kdg.processor.fine.exceptions;
 
 /**
- * @author Cédric Goffin
+ * @author C&eacute;dric Goffin
  */
 public class FineException extends Throwable {
     public FineException(String message) {

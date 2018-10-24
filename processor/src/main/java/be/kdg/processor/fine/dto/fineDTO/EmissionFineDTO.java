@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 /**
  * A DTO for the Fine class, used to return information about an EmissionFine object.
  *
- * @author Cédric Goffin
+ * @author C&eacute;dric Goffin
  * @see be.kdg.processor.fine.dom.EmissionFine
  * @see FineDTO
  * @see be.kdg.processor.fine.controllers.rest.FineRestController

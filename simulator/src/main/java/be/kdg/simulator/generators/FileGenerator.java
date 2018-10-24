@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 /**
  * Generator class that generates CameraMessages from a CSV file or directory containing multiple CSV files (configurable via application.properties).
  *
- * @author Cédric Goffin
+ * @author C&eacute;dric Goffin
  * @see MessageGenerator
  * @see CameraMessage
  */

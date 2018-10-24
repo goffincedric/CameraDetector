@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 /**
  * Job that Quartz Scheduler will use to run in its schedulers
  *
- * @author Cédric Goffin
+ * @author C&eacute;dric Goffin
  * @see ScheduleConfig
  * @see ScheduleInit
  */
