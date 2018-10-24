@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 /**
  * Utility class for CSV file logging.
  *
- * @author Cédric Goffin
+ * @author C&eacute;dric Goffin
  */
 @UtilityClass
 public class CSVUtils {

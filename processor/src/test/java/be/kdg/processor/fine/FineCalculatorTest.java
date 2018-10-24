@@ -24,7 +24,7 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * @author Cédric Goffin
+ * @author C&eacute;dric Goffin
  * 17/10/2018 15:20
  */
 @RunWith(SpringRunner.class)

@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 /**
  * Utility class for CSV file logging and CSV deserialization.
  *
- * @author Cédric Goffin
+ * @author C&eacute;dric Goffin
  */
 @UtilityClass
 public class CSVUtils {

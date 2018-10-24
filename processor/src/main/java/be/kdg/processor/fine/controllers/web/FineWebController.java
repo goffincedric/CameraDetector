@@ -13,7 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 /**
  * A web controller for Fine package. Mapped to listen to requests on /fine.
  *
- * @author Cédric Goffin
+ * @author C&eacute;dric Goffin
  */
 @Controller
 @RequestMapping("/fine")
@@ -43,6 +43,7 @@ public class FineWebController {
     /**
      * Listens to POST requests made on the /fine/settings url
      *
+     * @param fineSettingsDTO a DTO containing the new Fine settings that need to be persisted to the database
      * @return the model containing the FineSettingsDTO
      */
     @PostMapping("/settings")

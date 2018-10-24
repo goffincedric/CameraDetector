@@ -8,7 +8,7 @@ import java.util.Optional;
 /**
  * Repository that gets used to persist Roles to an H2 in-memory database.
  *
- * @author Cédric Goffin
+ * @author C&eacute;dric Goffin
  * @see Role
  */
 public interface RoleRepository extends JpaRepository<Role, Integer> {

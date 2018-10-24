@@ -11,7 +11,7 @@ import javax.persistence.Table;
 /**
  * Model class that holds information about a camera linked to another camera. Only available for cameras that have the SPEED or SPEED_EMISSION CameraType. Gets stored in an H2 in-memory database in a table named 'tblCameraSegment'.
  *
- * @author Cédric Goffin
+ * @author C&eacute;dric Goffin
  */
 
 @Data

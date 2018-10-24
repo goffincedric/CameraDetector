@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Model class that holds information about a role. Gets stored in an H2 in-memory database in a table named 'tblRole'.
  *
- * @author Cédric Goffin
+ * @author C&eacute;dric Goffin
  * @see User
  */
 @Data

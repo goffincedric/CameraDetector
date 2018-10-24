@@ -1,7 +1,7 @@
 package be.kdg.processor.user.exceptions;
 
 /**
- * @author Cédric Goffin
+ * @author C&eacute;dric Goffin
  */
 public class UserException extends Throwable {
     public UserException(String message) {

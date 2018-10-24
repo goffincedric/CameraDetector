@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 /**
  * Abstract model class that holds information about a Fine. Gets stored in an H2 in-memory database in a table named 'tblFine'.
  *
- * @author Cédric Goffin
+ * @author C&eacute;dric Goffin
  * @see EmissionFine
  * @see SpeedingFine
  */

@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 /**
  * Messenger class that send CameraMessages to an MQTT queue (configurable via application.properties)
  *
- * @author Cédric Goffin
+ * @author C&eacute;dric Goffin
  * @see Messenger
  * @see CameraMessage
  * @see QueueConfig

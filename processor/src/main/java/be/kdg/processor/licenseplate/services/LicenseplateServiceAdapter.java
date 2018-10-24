@@ -20,7 +20,7 @@ import java.util.logging.Logger;
 /**
  * Service used to manipulate Camera information from the H2 in-memory database or from an external CameraServiceProxy.
  *
- * @author Cédric Goffin
+ * @author C&eacute;dric Goffin
  * @see LicensePlateServiceProxy
  * @see LicenseplateRepository
  */

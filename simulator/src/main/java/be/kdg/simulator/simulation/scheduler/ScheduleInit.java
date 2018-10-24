@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 /**
  * Class that will initialize Quartz Scheduler for spring
  *
- * @author Cédric Goffin
+ * @author C&eacute;dric Goffin
  * @see ScheduleConfig
  * @see ScheduledJob
  */

@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 /**
  * Rest controller for Camera package. Mapped to listen to requests on /api/user
  *
- * @author Cédric Goffin
+ * @author C&eacute;dric Goffin
  */
 @RestController
 @RequestMapping("/api/user")

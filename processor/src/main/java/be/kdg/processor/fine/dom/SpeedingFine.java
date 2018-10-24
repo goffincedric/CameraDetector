@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 /**
  * Model class that holds information about a SpeedingFine. Gets stored in an H2 in-memory database in a table named 'tblFine'.
  *
- * @author Cédric Goffin
+ * @author C&eacute;dric Goffin
  * @see Fine
  */
 @Data

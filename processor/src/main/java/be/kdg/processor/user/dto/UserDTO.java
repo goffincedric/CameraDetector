@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * A DTO for the User class, used to manipulate information about a user.
  *
- * @author Cédric Goffin
+ * @author C&eacute;dric Goffin
  * @see be.kdg.processor.user.controllers.rest.UserRestController
  */
 @Data

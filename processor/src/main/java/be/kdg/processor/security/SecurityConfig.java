@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * Configuration class that sets the default security for all web and rest controllers
  *
- * @author Cédric Goffin
+ * @author C&eacute;dric Goffin
  * @see WebSecurityConfigurerAdapter
  */
 @Configuration

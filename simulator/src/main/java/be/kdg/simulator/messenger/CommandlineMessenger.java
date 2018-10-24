@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 /**
  * Messenger class that send CameraMessages to the console window.
  *
- * @author Cédric Goffin
+ * @author C&eacute;dric Goffin
  * @see Messenger
  * @see CameraMessage
  */

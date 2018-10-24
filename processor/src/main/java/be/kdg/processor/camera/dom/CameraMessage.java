@@ -14,7 +14,7 @@ import java.util.Base64;
 /**
  * Model class that holds information about a camera message. Gets received via a MQTT queue and processed by the Processor class.
  *
- * @author Cédric Goffin
+ * @author C&eacute;dric Goffin
  * @see be.kdg.processor.camera.consumers.EventConsumer
  * @see be.kdg.processor.processor.Processor
  */

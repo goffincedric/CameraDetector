@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 /**
  * Utility class for XML deserialization.
  *
- * @author Cédric Goffin
+ * @author C&eacute;dric Goffin
  */
 @UtilityClass
 public class XMLUtils {

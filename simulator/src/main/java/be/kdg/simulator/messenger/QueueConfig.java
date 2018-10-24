@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 /**
  * Configuration class for QueueMessenger.
  *
- * @author Cédric Goffin
+ * @author C&eacute;dric Goffin
  * @see QueueMessenger
  */
 @Configuration

@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Model class that holds information about a user. Gets stored in an H2 in-memory database in a table named 'tblUser'.
  *
- * @author Cédric Goffin
+ * @author C&eacute;dric Goffin
  * @see Role
  */
 @Data

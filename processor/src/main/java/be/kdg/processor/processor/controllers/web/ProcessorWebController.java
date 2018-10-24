@@ -15,7 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 /**
  * A web controller that handles general requests.
  *
- * @author Cédric Goffin
+ * @author C&eacute;dric Goffin
  */
 @Controller
 public class ProcessorWebController {
@@ -96,6 +96,7 @@ public class ProcessorWebController {
     /**
      * Listens to POST requests made on the /processor/settings url
      *
+     * @param processorSettingsDTO a DTO containing the new Processor settings that need to be persisted to the database
      * @return the model containing the ProcessorSettingsDTO
      */
     @PostMapping("/processor/settings")

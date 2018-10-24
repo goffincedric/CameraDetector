@@ -24,7 +24,7 @@ import static org.quartz.TriggerBuilder.newTrigger;
 /**
  * Configuration class for Quartz Scheduler.
  *
- * @author Cédric Goffin
+ * @author C&eacute;dric Goffin
  * @see ScheduledJob
  * @see ScheduleInit
  */

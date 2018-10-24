@@ -13,7 +13,7 @@ import java.util.Optional;
 /**
  * Class that holds the configured messenger and generator to simulate a camera network.
  *
- * @author Cédric Goffin
+ * @author C&eacute;dric Goffin
  */
 @Component
 public class Simulator {

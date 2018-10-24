@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Configuration class for processor package
  *
- * @author Cédric Goffin
+ * @author C&eacute;dric Goffin
  */
 @Configuration
 public class ProcessorConfiguration {

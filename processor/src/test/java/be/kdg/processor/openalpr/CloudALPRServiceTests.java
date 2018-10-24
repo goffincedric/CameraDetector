@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 import java.util.Base64;
 
 /**
- * @author Cédric Goffin
+ * @author C&eacute;dric Goffin
  * 08/10/2018 13:27
  */
 @RunWith(SpringRunner.class)

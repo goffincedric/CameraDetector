@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author Cédric Goffin
+ * @author C&eacute;dric Goffin
  * 16/10/2018 16:28
  */
 @RunWith(SpringRunner.class)

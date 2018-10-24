@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 /**
  * Rest controller for Fine package. Mapped to listen to requests on /api/fine
  *
- * @author Cédric Goffin
+ * @author C&eacute;dric Goffin
  */
 @RestController
 @RequestMapping("/api/fine")

@@ -9,7 +9,7 @@ import javax.persistence.*;
 /**
  * Model class that holds information about the current processor settings. Will take initial settings from application.properties.
  *
- * @author Cédric Goffin
+ * @author C&eacute;dric Goffin
  * @see BoolSetting
  * @see DoubleSetting
  * @see IntSetting

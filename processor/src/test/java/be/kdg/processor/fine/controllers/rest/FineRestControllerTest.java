@@ -26,7 +26,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 /**
- * @author Cédric Goffin
+ * @author C&eacute;dric Goffin
  * 17/10/2018 11:55
  */
 @RunWith(SpringRunner.class)
