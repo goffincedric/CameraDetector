@@ -28,7 +28,7 @@ public class CloudALPRServiceTests {
     private CloudALPRService cloudALPRService;
 
     @Test
-    public void testConnection() throws IOException, URISyntaxException, LicensePlateNotFoundException {
+    public void testConnection() throws Exception {
         // Read image file to byte array
         ClassLoader classLoader = getClass().getClassLoader();
         Path path = new File(classLoader.getResource("images/1.jpg").toURI().getPath()).toPath();

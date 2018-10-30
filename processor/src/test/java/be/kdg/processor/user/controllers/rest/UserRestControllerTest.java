@@ -49,7 +49,7 @@ public class UserRestControllerTest {
         mockMvc.perform(get("/api/user?username=testUser"))
                 .andExpect(result -> {
                     SafeUserDTO safeUserDTO = objectMapper.readValue(result.getResponse().getContentAsString(), SafeUserDTO.class);
-                    Assert.assertEquals("admin", safeUserDTO.getUsername());
+                    Assert.assertEquals("testUser", safeUserDTO.getUsername());
                 })
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andDo(print());

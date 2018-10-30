@@ -1,13 +1,10 @@
 package be.kdg.processor.fine;
 
 import be.kdg.processor.camera.dom.CameraMessage;
-import be.kdg.processor.camera.services.CameraServiceAdapter;
 import be.kdg.processor.fine.dom.EmissionFine;
 import be.kdg.processor.fine.dom.Fine;
 import be.kdg.processor.fine.dom.SpeedingFine;
-import be.kdg.processor.fine.services.FineCalculator;
-import be.kdg.processor.fine.services.FineService;
-import be.kdg.processor.licenseplate.services.LicenseplateServiceAdapter;
+import be.kdg.processor.fine.services.FineDetectionService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,16 +26,9 @@ import java.util.Map;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Transactional
-public class FineServiceTests {
+public class FineDetectionServiceTests {
     @Autowired
-    private FineService fineService;
-
-    @Autowired
-    private CameraServiceAdapter cameraServiceAdapter;
-    @Autowired
-    private LicenseplateServiceAdapter licenseplateServiceAdapter;
-    @Autowired
-    private FineCalculator fineCalculator;
+    private FineDetectionService fineDetectionService;
 
     @Value("${fine.emission.timeframe_days}")
     private int emissionTimeFrameDays;
@@ -58,7 +48,7 @@ public class FineServiceTests {
             add(new CameraMessage(2, null, "4-ABC-123", LocalDateTime.now().withNano(0).plusSeconds(120), 120000));
         }};
 
-        Map.Entry<List<Fine>, List<CameraMessage>> fineResult = fineService.processSpeedingFines(messages);
+        Map.Entry<List<Fine>, List<CameraMessage>> fineResult = fineDetectionService.processSpeedingFines(messages);
 
         Assert.assertEquals(1, fineResult.getKey().size());
         Assert.assertEquals(0, fineResult.getValue().size());
@@ -72,7 +62,7 @@ public class FineServiceTests {
             add(new CameraMessage(3, null, "1-ABC-123", LocalDateTime.now(), 100));
         }};
 
-        Map.Entry<List<Fine>, List<CameraMessage>> fineResult = fineService.processEmissionFines(messages);
+        Map.Entry<List<Fine>, List<CameraMessage>> fineResult = fineDetectionService.processEmissionFines(messages);
 
         Assert.assertEquals(1, fineResult.getKey().size());
         Assert.assertEquals(0, fineResult.getValue().size());

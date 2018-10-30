@@ -25,14 +25,24 @@ public class WebControllerTest {
     private MockMvc mockMvc;
 
     @Test
-    public void testLogin() throws Exception {
+    public void testSuccessLogin() throws Exception {
         RequestBuilder requestBuilder = post("/login")
                 .param("username", "admin")
                 .param("password", "admin");
         mockMvc.perform(requestBuilder)
                 .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(forwardedUrl("/admin"))
-                .andExpect(cookie().exists("JSESSIONID"));
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/admin"));
+    }
+
+    @Test
+    public void testBadLogin() throws Exception {
+        RequestBuilder requestBuilder = post("/login")
+                .param("username", "admin")
+                .param("password", "notAnAdmin");
+        mockMvc.perform(requestBuilder)
+                .andDo(print())
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/login?error"));
     }
 }

@@ -20,7 +20,7 @@ import java.util.Optional;
  * @see FineService
  */
 @Component
-public class FineCalculator {
+public class FineCalculationService {
     /**
      * Method that calculates and creates the EmissionFine for the FineService.
      *

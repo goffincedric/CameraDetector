@@ -6,7 +6,7 @@ import be.kdg.processor.camera.services.CameraServiceAdapter;
 import be.kdg.processor.fine.dom.EmissionFine;
 import be.kdg.processor.fine.dom.Fine;
 import be.kdg.processor.fine.dom.SpeedingFine;
-import be.kdg.processor.fine.services.FineCalculator;
+import be.kdg.processor.fine.services.FineCalculationService;
 import be.kdg.processor.licenseplate.exception.LicensePlateException;
 import be.kdg.processor.licenseplate.services.LicenseplateServiceAdapter;
 import org.junit.Assert;
@@ -30,14 +30,14 @@ import java.util.Optional;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Transactional
-public class FineCalculatorTest {
+public class FineCalculationServiceTest {
 
     @Autowired
     private CameraServiceAdapter cameraServiceAdapter;
     @Autowired
     private LicenseplateServiceAdapter licenseplateServiceAdapter;
     @Autowired
-    private FineCalculator fineCalculator;
+    private FineCalculationService fineCalculationService;
 
     @Value("${fine.emission.timeframe_days}")
     private int emissionTimeFrameDays;
@@ -53,7 +53,7 @@ public class FineCalculatorTest {
     @Test
     public void checkEmissionFine() throws LicensePlateException {
         CameraMessage cameraMessage = new CameraMessage(3, null, "1-ABC-123", LocalDateTime.now(), 100);
-        Optional<Fine> optionalFine = fineCalculator.calcEmissionFine(
+        Optional<Fine> optionalFine = fineCalculationService.calcEmissionFine(
                 cameraServiceAdapter.getCamera(cameraMessage.getCameraId()).get(),
                 licenseplateServiceAdapter.getLicensePlate(cameraMessage.getLicenseplate()).get(),
                 emissionFineFactor,
@@ -74,7 +74,7 @@ public class FineCalculatorTest {
 
         Camera camera = cameraServiceAdapter.getCamera(speedpair.getKey().getCameraId()).get();
 
-        Optional<Fine> optionalFine = fineCalculator.calcSpeedFine(
+        Optional<Fine> optionalFine = fineCalculationService.calcSpeedFine(
                 speedpair,
                 camera,
                 licenseplateServiceAdapter.getLicensePlate(speedpair.getKey().getLicenseplate()).get(),

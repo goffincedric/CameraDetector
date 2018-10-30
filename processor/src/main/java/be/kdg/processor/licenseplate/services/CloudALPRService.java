@@ -40,7 +40,7 @@ public class CloudALPRService {
      * @return a license plate id
      * @throws LicensePlateNotFoundException when no (valid) license plate could be recognised from the supplied image
      */
-    public String getLicenseplate(byte[] image) throws LicensePlateNotFoundException {
+    public String getLicenseplate(byte[] image) throws Exception {
         String licensePlate = null;
 
         try {
@@ -89,9 +89,9 @@ public class CloudALPRService {
                 LOGGER.warning(String.format("Got non-200 response: %d", status_code));
             }
         } catch (MalformedURLException e) {
-            LOGGER.severe("Bad URL for CloudALPR connection");
+            throw new Exception("Bad URL for CloudALPR connection", e);
         } catch (IOException e) {
-            LOGGER.severe("Failed to open connection to CloudALPR");
+            throw new Exception("Failed to open connection to CloudALPR", e);
         }
 
         return licensePlate;

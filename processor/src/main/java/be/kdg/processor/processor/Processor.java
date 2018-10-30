@@ -1,6 +1,8 @@
 package be.kdg.processor.processor;
 
 import be.kdg.processor.camera.dom.CameraMessage;
+import be.kdg.processor.fine.dom.Fine;
+import be.kdg.processor.fine.services.FineDetectionService;
 import be.kdg.processor.fine.services.FineService;
 import be.kdg.processor.processor.dom.BoolSetting;
 import be.kdg.processor.processor.dom.IntSetting;
@@ -28,6 +30,7 @@ import java.util.logging.Logger;
 public class Processor {
     private static final Logger LOGGER = Logger.getLogger(Processor.class.getName());
     private final FineService fineService;
+    private final FineDetectionService fineDetectionService;
     private final SettingService settingService;
 
     private final Map<CameraMessage, Integer> messageMap;
@@ -44,12 +47,14 @@ public class Processor {
     /**
      * Constructor used by Spring framework to initialize this class as a bean
      *
-     * @param fineService    the service for the Fine package
-     * @param settingService the service for the processor package. Manages all processor settings.
+     * @param fineService          the service for the Fine package
+     * @param fineDetectionService the service that detects which messages should get fined
+     * @param settingService       the service for the processor package. Manages all processor settings.
      */
     @Autowired
-    public Processor(FineService fineService, SettingService settingService) {
+    public Processor(FineService fineService, FineDetectionService fineDetectionService, SettingService settingService) {
         this.fineService = fineService;
+        this.fineDetectionService = fineDetectionService;
         this.settingService = settingService;
         this.messageMap = Collections.synchronizedMap(new HashMap<>());
     }
@@ -84,12 +89,17 @@ public class Processor {
         }
 
         // Process messages
-        List<CameraMessage> unprocessed = fineService.processFines(new ArrayList<>(buffer.keySet()));
-        if (!unprocessed.isEmpty())
-            LOGGER.warning(String.format("Failed to process %d message%s", unprocessed.size(), ((unprocessed.size() == 1) ? "" : "s")));
+        Map.Entry<List<Fine>, List<CameraMessage>> processingResult = fineDetectionService.processMessages(new ArrayList<>(buffer.keySet()));
+
+        // Save fine result
+        fineService.saveFines(processingResult.getKey());
+
+        // Log failed messages or put them back in buffer
+        if (!processingResult.getValue().isEmpty())
+            LOGGER.warning(String.format("Failed to process %d message%s", processingResult.getValue().size(), ((processingResult.getValue().size() == 1) ? "" : "s")));
 
         amountLogged = 0;
-        unprocessed.forEach(m -> {
+        processingResult.getValue().forEach(m -> {
             int times = buffer.get(m);
             if (times < retries) messageMap.put(m, buffer.get(m) + 1);
             else {

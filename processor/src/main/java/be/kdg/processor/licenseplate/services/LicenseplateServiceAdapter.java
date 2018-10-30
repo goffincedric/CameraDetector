@@ -57,19 +57,19 @@ public class LicenseplateServiceAdapter {
      */
     @Cacheable("licenseplate")
     public Optional<Licenseplate> getLicensePlate(String licensePlateId) throws LicensePlateException {
-        Optional<Licenseplate> licenseplate = licenseplateRepository.findById(licensePlateId);
-        if (!licenseplate.isPresent()) {
+        Optional<Licenseplate> optionalLicenseplate = licenseplateRepository.findById(licensePlateId);
+        if (!optionalLicenseplate.isPresent()) {
             try {
-                licenseplate = JSONUtils.convertJSONToObject(licensePlateServiceProxy.get(licensePlateId), Licenseplate.class);
-                if (licenseplate.isPresent()) {
-                    licenseplate = Optional.of(saveLicenseplate(licenseplate.get()));
+                optionalLicenseplate = JSONUtils.convertJSONToObject(licensePlateServiceProxy.get(licensePlateId), Licenseplate.class);
+                if (optionalLicenseplate.isPresent()) {
+                    optionalLicenseplate = Optional.of(saveLicenseplate(optionalLicenseplate.get()));
                 }
             } catch (IOException | LicensePlateNotFoundException | InvalidLicensePlateException e) {
                 throw new LicensePlateException(e.getMessage(), e);
             }
         }
 
-        return licenseplate;
+        return optionalLicenseplate;
     }
 
     /**
@@ -80,13 +80,9 @@ public class LicenseplateServiceAdapter {
      * @throws LicensePlateException when no license plate could be recognised from image
      */
     @Cacheable("licenseplate")
-    public Optional<Licenseplate> getLicensePlate(byte[] data) throws LicensePlateException {
-        try {
-            String licenseplate = cloudALPRService.getLicenseplate(data);
-            return getLicensePlate(licenseplate);
-        } catch (Exception e) {
-            throw new LicensePlateException("Problem occurred getting licenseplate from image", e);
-        }
+    public Optional<Licenseplate> getLicensePlate(byte[] data) throws LicensePlateException, Exception {
+        String licenseplate = cloudALPRService.getLicenseplate(data);
+        return getLicensePlate(licenseplate);
     }
 
     /**
