@@ -81,7 +81,7 @@ public class FineDetectionService {
      * Method that processes CameraMessages and persists any detected fines to the database
      *
      * @param messages is a list of CameraMessages that need to be checked for emission/speeding violations
-     * @return all CameraMessages that could not be processed
+     * @return List of fines and all CameraMessages that could not be processed
      */
     public Map.Entry<List<Fine>, List<CameraMessage>> processMessages(List<CameraMessage> messages) {
         // Update detection
