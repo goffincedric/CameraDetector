@@ -1,4 +1,4 @@
-package be.kdg.simulator.generators;
+package be.kdg.simulator.generator;
 
 import be.kdg.simulator.camera.CameraMessage;
 import org.apache.commons.lang3.RandomStringUtils;

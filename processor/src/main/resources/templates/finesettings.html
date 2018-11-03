@@ -12,6 +12,9 @@
             <div class="title">Fine options</div>
             <div class="desc">
                 The following factors will be used for calculating the fine amount.
+                <div th:if="${param.saved}">
+                    <h5>Fine settings have been saved.</h5>
+                </div>
             </div>
         </div>
         <div class="right">

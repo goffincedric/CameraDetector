@@ -1,4 +1,4 @@
-package be.kdg.processor.fine;
+package be.kdg.processor.fine.services;
 
 import be.kdg.processor.camera.dom.Camera;
 import be.kdg.processor.camera.dom.CameraMessage;
@@ -6,9 +6,9 @@ import be.kdg.processor.camera.services.CameraServiceAdapter;
 import be.kdg.processor.fine.dom.EmissionFine;
 import be.kdg.processor.fine.dom.Fine;
 import be.kdg.processor.fine.dom.SpeedingFine;
-import be.kdg.processor.fine.services.FineCalculationService;
 import be.kdg.processor.licenseplate.exception.LicensePlateException;
 import be.kdg.processor.licenseplate.services.LicenseplateServiceAdapter;
+import be.kdg.sa.services.CameraNotFoundException;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -51,7 +51,7 @@ public class FineCalculationServiceTest {
     private int paymentDeadlineDays;
 
     @Test
-    public void checkEmissionFine() throws LicensePlateException {
+    public void checkEmissionFine() throws LicensePlateException, CameraNotFoundException {
         CameraMessage cameraMessage = new CameraMessage(3, null, "1-ABC-123", LocalDateTime.now(), 100);
         Optional<Fine> optionalFine = fineCalculationService.calcEmissionFine(
                 cameraServiceAdapter.getCamera(cameraMessage.getCameraId()).get(),
@@ -66,7 +66,7 @@ public class FineCalculationServiceTest {
     }
 
     @Test
-    public void checkSpeedFine() throws LicensePlateException {
+    public void checkSpeedFine() throws LicensePlateException, CameraNotFoundException {
         Map.Entry<CameraMessage, CameraMessage> speedpair = Map.entry(
                 new CameraMessage(1, null, "4-ABC-123", LocalDateTime.now().withNano(0), 0),
                 new CameraMessage(2, null, "4-ABC-123", LocalDateTime.now().withNano(0).plusSeconds(120), 120000)

@@ -1,4 +1,4 @@
-package be.kdg.simulator.generators;
+package be.kdg.simulator.generator;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;

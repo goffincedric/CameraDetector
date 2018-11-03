@@ -30,7 +30,7 @@ public class FineCalculationService {
      * @param paymentDeadlineDays timeframe (of # days) in which the EmissionFine must be paid by the owner
      * @return an Optional EmissionFine
      */
-    public Optional<Fine> calcEmissionFine(Camera camera, Licenseplate licenseplate, double emissionFineFactor, int paymentDeadlineDays) {
+    Optional<Fine> calcEmissionFine(Camera camera, Licenseplate licenseplate, double emissionFineFactor, int paymentDeadlineDays) {
         return Optional.of(
                 new EmissionFine(
                         emissionFineFactor,
@@ -54,7 +54,7 @@ public class FineCalculationService {
      * @param paymentDeadlineDays timeframe (of # days) in which the EmissionFine must be paid by the owner
      * @return an Optional SpeedingFine. Optional will be empty when the speed is lower than the speed limit.
      */
-    public Optional<Fine> calcSpeedFine(Map.Entry<CameraMessage, CameraMessage> messagePair, Camera camera, Licenseplate licenseplate, double speedFineFactorSlow, double speedFineFactorFast, int paymentDeadlineDays) {
+    Optional<Fine> calcSpeedFine(Map.Entry<CameraMessage, CameraMessage> messagePair, Camera camera, Licenseplate licenseplate, double speedFineFactorSlow, double speedFineFactorFast, int paymentDeadlineDays) {
         // Puntje B (zone 30/50 kan je zien a.d.h.v. allowed speed van camera)
         // https://www.wegcode.be/boetetarieven
         Double speed = calcSpeed(camera.getSegment().getDistance(), messagePair.getKey().getTimestamp(), messagePair.getValue().getTimestamp());

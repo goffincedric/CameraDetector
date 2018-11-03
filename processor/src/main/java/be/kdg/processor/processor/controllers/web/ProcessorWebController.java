@@ -1,8 +1,10 @@
 package be.kdg.processor.processor.controllers.web;
 
 import be.kdg.processor.processor.Processor;
+import be.kdg.processor.processor.dom.ProcessorSettings;
 import be.kdg.processor.processor.dto.ProcessorSettingsDTO;
 import be.kdg.processor.processor.services.SettingService;
+import org.modelmapper.ModelMapper;
 import org.springframework.amqp.rabbit.listener.RabbitListenerEndpointRegistry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,12 +24,14 @@ public class ProcessorWebController {
     private final RabbitListenerEndpointRegistry rabbitListenerEndpointRegistry;
     private final SettingService settingService;
     private final Processor processor;
+    private final ModelMapper modelMapper;
 
     @Autowired
-    public ProcessorWebController(RabbitListenerEndpointRegistry rabbitListenerEndpointRegistry, SettingService settingService, Processor processor) {
+    public ProcessorWebController(RabbitListenerEndpointRegistry rabbitListenerEndpointRegistry, SettingService settingService, Processor processor, ModelMapper modelMapper) {
         this.rabbitListenerEndpointRegistry = rabbitListenerEndpointRegistry;
         this.settingService = settingService;
         this.processor = processor;
+        this.modelMapper = modelMapper;
     }
 
     /**
@@ -89,8 +93,9 @@ public class ProcessorWebController {
      * @return the model containing the ProcessorSettingsDTO
      */
     @GetMapping("/processor/settings")
-    public ModelAndView getFineFactors() {
-        return new ModelAndView("processorsettings", "processorSettingsDTO", settingService.getProcessorSettingsDTO());
+    public ModelAndView getProcessorSettings() {
+        ProcessorSettingsDTO processorSettingsDTO = modelMapper.map(settingService.getProcessorSettings(), ProcessorSettingsDTO.class);
+        return new ModelAndView("processorsettings", "processorSettingsDTO", processorSettingsDTO);
     }
 
     /**
@@ -100,8 +105,10 @@ public class ProcessorWebController {
      * @return the model containing the ProcessorSettingsDTO
      */
     @PostMapping("/processor/settings")
-    public ModelAndView getFineFactors(@ModelAttribute ProcessorSettingsDTO processorSettingsDTO) {
-        processorSettingsDTO = settingService.saveProcessorSettingsDTO(processorSettingsDTO);
-        return new ModelAndView("processorsettings", "processorSettingsDTO", processorSettingsDTO);
+    public ModelAndView postProcessorSettings(@ModelAttribute ProcessorSettingsDTO processorSettingsDTO) {
+        ProcessorSettings processorSettings = modelMapper.map(processorSettingsDTO, ProcessorSettings.class);
+        processorSettings = settingService.saveProcessorSettings(processorSettings);
+        processorSettingsDTO = modelMapper.map(processorSettings, ProcessorSettingsDTO.class);
+        return new ModelAndView("redirect:/processor/settings?saved", "processorSettingsDTO", processorSettingsDTO);
     }
 }

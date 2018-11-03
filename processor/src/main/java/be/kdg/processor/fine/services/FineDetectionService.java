@@ -11,6 +11,7 @@ import be.kdg.processor.licenseplate.services.LicenseplateServiceAdapter;
 import be.kdg.processor.processor.dom.DoubleSetting;
 import be.kdg.processor.processor.dom.IntSetting;
 import be.kdg.processor.processor.services.SettingService;
+import be.kdg.sa.services.CameraNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -124,38 +125,38 @@ public class FineDetectionService {
      * @param emissionMessages is a list of all CameraMessages that are linked to emission cameras
      * @return a Map Entry with a list of Fines as key and a list of unprocessed CameraMessages as value
      */
-    public Map.Entry<List<Fine>, List<CameraMessage>> processEmissionFines(List<CameraMessage> emissionMessages) {
+    Map.Entry<List<Fine>, List<CameraMessage>> processEmissionFines(List<CameraMessage> emissionMessages) {
         // List of unprocessed messages to return
         List<CameraMessage> unprocessed = new ArrayList<>();
 
         // Process emissionMessages and get only 1 fine per licenseplate per day
         List<Fine> emissionFines = emissionMessages.stream()
                 .map(m -> {
-                    Optional<Licenseplate> optionalLicenseplate = Optional.empty();
-                    Optional<Camera> optionalCamera = cameraServiceAdapter.getCamera(m.getCameraId());
-                    if (optionalCamera.isPresent()) {
-                        Camera camera = optionalCamera.get();
 
-                        try {
+                    try {
+                        Optional<Licenseplate> optionalLicenseplate = Optional.empty();
+                        Optional<Camera> optionalCamera = cameraServiceAdapter.getCamera(m.getCameraId());
+                        if (optionalCamera.isPresent()) {
+                            Camera camera = optionalCamera.get();
                             if (m.getLicenseplate() != null) {
                                 optionalLicenseplate = licenseplateServiceAdapter.getLicensePlate(m.getLicenseplate());
                             } else if (m.getCameraImage() != null) {
                                 optionalLicenseplate = licenseplateServiceAdapter.getLicensePlate(m.getCameraImage());
                             }
-                        } catch (Exception | LicensePlateException e) {
-                            LOGGER.severe(e.getMessage());
-                        }
 
-                        if (optionalLicenseplate.isPresent()) {
-                            Licenseplate licenseplate = optionalLicenseplate.get();
-                            if (camera.getEuroNorm() > licenseplate.getEuroNumber()) {
-                                if (licenseplate.getFines().stream().noneMatch(f -> f.getTimestamp().isAfter(m.getTimestamp().minusDays(emissionTimeFrameDays)))) {
-                                    return fineCalculationService.calcEmissionFine(camera, licenseplate, emissionFineFactor, paymentDeadlineDays);
+                            if (optionalLicenseplate.isPresent()) {
+                                Licenseplate licenseplate = optionalLicenseplate.get();
+                                if (camera.getEuroNorm() > licenseplate.getEuroNumber()) {
+                                    if (licenseplate.getFines().stream().noneMatch(f -> f.getTimestamp().isAfter(m.getTimestamp().minusDays(emissionTimeFrameDays)))) {
+                                        return fineCalculationService.calcEmissionFine(camera, licenseplate, emissionFineFactor, paymentDeadlineDays);
+                                    }
+                                } else {
+                                    return Optional.empty();
                                 }
-                            } else {
-                                return Optional.empty();
                             }
                         }
+                    } catch (Exception | LicensePlateException e) {
+                        LOGGER.severe(e.getMessage());
                     }
 
                     unprocessed.add(m);
@@ -177,7 +178,7 @@ public class FineDetectionService {
      * @param speedMessages is a list of all CameraMessages that are linked to speed cameras
      * @return a Map Entry with a list of Fines as key and a list of unprocessed CameraMessages as value
      */
-    public Map.Entry<List<Fine>, List<CameraMessage>> processSpeedingFines(List<CameraMessage> speedMessages) {
+    Map.Entry<List<Fine>, List<CameraMessage>> processSpeedingFines(List<CameraMessage> speedMessages) {
         // Link messages
         Map.Entry<Map<CameraMessage, CameraMessage>, List<CameraMessage>> speedPair = linkMessages(speedMessages);
 
@@ -187,20 +188,20 @@ public class FineDetectionService {
         // Detect speedfines
         List<Fine> speedFines = speedPair.getKey().entrySet().stream()
                 .map(pair -> {
-                    Optional<Camera> optionalCamera = cameraServiceAdapter.getCamera(pair.getKey().getCameraId());
-                    if (optionalCamera.isPresent()) {
-                        Camera camera = optionalCamera.get();
+                    try {
+                        Optional<Camera> optionalCamera = cameraServiceAdapter.getCamera(pair.getKey().getCameraId());
+                        if (optionalCamera.isPresent()) {
+                            Camera camera = optionalCamera.get();
 
-                        Optional<Licenseplate> optionalLicenseplate = Optional.empty();
-                        try {
+                            Optional<Licenseplate> optionalLicenseplate = Optional.empty();
                             optionalLicenseplate = licenseplateServiceAdapter.getLicensePlate(pair.getKey().getLicenseplate());
-                        } catch (LicensePlateException e) {
-                            LOGGER.severe(e.getMessage());
+                            if (optionalLicenseplate.isPresent()) {
+                                Licenseplate licenseplate = optionalLicenseplate.get();
+                                return fineCalculationService.calcSpeedFine(pair, camera, licenseplate, speedFineFactorSlow, speedFineFactorFast, paymentDeadlineDays);
+                            }
                         }
-                        if (optionalLicenseplate.isPresent()) {
-                            Licenseplate licenseplate = optionalLicenseplate.get();
-                            return fineCalculationService.calcSpeedFine(pair, camera, licenseplate, speedFineFactorSlow, speedFineFactorFast, paymentDeadlineDays);
-                        }
+                    } catch (LicensePlateException | CameraNotFoundException e) {
+                        LOGGER.severe(e.getMessage());
                     }
                     unprocessed.add(pair.getKey());
                     unprocessed.add(pair.getValue());
@@ -229,13 +230,13 @@ public class FineDetectionService {
 
         for (CameraMessage message : messages) {
             if (!linkedMessages.containsKey(message) || !linkedMessages.containsValue(message)) {
-                Optional<Camera> optionalCamera = cameraServiceAdapter.getCamera(message.getCameraId());
-                if (optionalCamera.isPresent()) {
-                    Camera camera = optionalCamera.get();
+                try {
+                    Optional<Camera> optionalCamera = cameraServiceAdapter.getCamera(message.getCameraId());
+                    if (optionalCamera.isPresent()) {
+                        Camera camera = optionalCamera.get();
 
-                    if (camera.getSegment() != null) {
-                        Optional<CameraMessage> optionalLinkedMessage = Optional.empty();
-                        try {
+                        if (camera.getSegment() != null) {
+                            Optional<CameraMessage> optionalLinkedMessage = Optional.empty();
                             optionalLinkedMessage = unprocessedMessages.stream()
                                     .filter(m ->
                                     {
@@ -262,20 +263,22 @@ public class FineDetectionService {
                                         return linked;
                                     })
                                     .findFirst();
-                        } catch (Exception e) {
-                            LOGGER.severe(String.format("Could not link message %s", message));
-                        }
 
-                        optionalLinkedMessage.ifPresent(m -> {
-                            if (camera.getSegment() != null) {
-                                linkedMessages.put(message, m);
-                            } else {
-                                linkedMessages.put(m, message);
-                            }
-                            unprocessedMessages.remove(message);
-                            unprocessedMessages.remove(m);
-                        });
+                            optionalLinkedMessage.ifPresent(m -> {
+                                if (camera.getSegment() != null) {
+                                    linkedMessages.put(message, m);
+                                } else {
+                                    linkedMessages.put(m, message);
+                                }
+                                unprocessedMessages.remove(message);
+                                unprocessedMessages.remove(m);
+                            });
+                        }
                     }
+                } catch (CameraNotFoundException cnfe) {
+                    LOGGER.severe(cnfe.getMessage());
+                } catch (Exception e) {
+                    LOGGER.severe(String.format("Could not link message %s", message));
                 }
             }
         }

@@ -112,7 +112,7 @@ public class Processor {
                 }
             }
         });
-        if (amountLogged > 0) LOGGER.info(String.format("Logged %d messages", amountLogged));
+        if (amountLogged > 0) LOGGER.info(String.format("Written %d messages to log file in '" + logPath + "'", amountLogged));
     }
 
     /**

@@ -1,7 +1,9 @@
 package be.kdg.processor.fine.controllers.web;
 
+import be.kdg.processor.processor.dom.FineSettings;
 import be.kdg.processor.fine.dto.fineSettings.FineSettingsDTO;
 import be.kdg.processor.processor.services.SettingService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,15 +21,18 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/fine")
 public class FineWebController {
     private final SettingService settingService;
+    private final ModelMapper modelMapper;
 
     /**
      * FineWebController constructor. Autowired via Spring.
      *
      * @param settingService is the service for the processor package. Can be used to access current processor settings
+     * @param modelMapper
      */
     @Autowired
-    public FineWebController(SettingService settingService) {
+    public FineWebController(SettingService settingService, ModelMapper modelMapper) {
         this.settingService = settingService;
+        this.modelMapper = modelMapper;
     }
 
     /**
@@ -37,7 +42,8 @@ public class FineWebController {
      */
     @GetMapping("/settings")
     public ModelAndView getFineFactors() {
-        return new ModelAndView("finesettings", "fineSettingsDTO", settingService.getFineSettingsDTO());
+        FineSettingsDTO fineSettingsDTO = modelMapper.map(settingService.getFineSettings(), FineSettingsDTO.class);
+        return new ModelAndView("finesettings", "fineSettingsDTO", fineSettingsDTO);
     }
 
     /**
@@ -47,8 +53,10 @@ public class FineWebController {
      * @return the model containing the FineSettingsDTO
      */
     @PostMapping("/settings")
-    public ModelAndView getFineFactors(@ModelAttribute FineSettingsDTO fineSettingsDTO) {
-        fineSettingsDTO = settingService.saveFineSettingsDTO(fineSettingsDTO);
-        return new ModelAndView("finesettings", "fineSettingsDTO", fineSettingsDTO);
+    public ModelAndView postFineFactors(@ModelAttribute FineSettingsDTO fineSettingsDTO) {
+        FineSettings fineSettings = modelMapper.map(fineSettingsDTO, FineSettings.class);
+        fineSettings = settingService.saveFineSettings(fineSettings);
+        fineSettingsDTO = modelMapper.map(fineSettings, FineSettingsDTO.class);
+        return new ModelAndView("redirect:/fine/settings?saved", "fineSettingsDTO", fineSettingsDTO);
     }
 }

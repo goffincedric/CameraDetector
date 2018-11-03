@@ -1,4 +1,4 @@
-package be.kdg.simulator.generators;
+package be.kdg.simulator.generator;
 
 import be.kdg.simulator.camera.CameraMessage;
 import be.kdg.simulator.utils.CSVUtils;

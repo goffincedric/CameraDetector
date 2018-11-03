@@ -1,14 +1,16 @@
 package be.kdg.simulator.simulation;
 
 import be.kdg.simulator.camera.CameraMessage;
-import be.kdg.simulator.generators.MessageGenerator;
+import be.kdg.simulator.generator.MessageGenerator;
 import be.kdg.simulator.messenger.Messenger;
 import be.kdg.simulator.utils.CSVUtils;
+import org.springframework.amqp.AmqpException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
+import java.util.logging.Logger;
 
 /**
  * Class that holds the configured messenger and generator to simulate a camera network.
@@ -17,6 +19,7 @@ import java.util.Optional;
  */
 @Component
 public class Simulator {
+    private static final Logger LOGGER = Logger.getLogger(Simulator.class.getName());
     private final Messenger messenger;
     private final MessageGenerator messageGenerator;
 
@@ -46,7 +49,11 @@ public class Simulator {
 
         optionalMessage.ifPresent(message -> {
             // Send message
-            messenger.sendMessage(message);
+            try {
+                messenger.sendMessage(message);
+            } catch (AmqpException ae) {
+                LOGGER.severe("Error ocurred when sending message: " + ae.getMessage());
+            }
 
             // Log message to file
             if (logMessages) CSVUtils.writeMessage(message, logger_path);

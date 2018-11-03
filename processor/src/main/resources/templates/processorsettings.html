@@ -12,6 +12,9 @@
             <div class="title">Processor options</div>
             <div class="desc">
                 The following settings will be used for the processor.
+                <div th:if="${param.saved}">
+                    <h5>Processor settings have been saved.</h5>
+                </div>
             </div>
         </div>
         <div class="right">

@@ -43,8 +43,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/", "/home", "/api/**", "/css/**", "/js/**").permitAll()
-                .antMatchers("/h2-console/**").hasAuthority("dbadmin")
-                .antMatchers("/**").hasAuthority("webadmin")
+                .antMatchers("/**").hasAuthority("WEBADMIN")
+                .antMatchers("/h2-console/**").hasAuthority("DBADMIN")
                 .and()
                 .formLogin().loginPage("/login").defaultSuccessUrl("/admin").permitAll()
                 .and()
@@ -65,6 +65,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configureGlobal(AuthenticationManagerBuilder auth, UserService userService) throws Exception, UserException {
         auth.userDetailsService(userService);
 
-        userService.save(new User("admin", "admin", List.of(new Role("webadmin"), new Role("dbadmin"))));
+        userService.save(new User("admin", "admin", List.of(new Role("WEBADMIN"), new Role("DBADMIN"))));
     }
 }

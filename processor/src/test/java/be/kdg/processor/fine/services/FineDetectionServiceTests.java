@@ -1,10 +1,9 @@
-package be.kdg.processor.fine;
+package be.kdg.processor.fine.services;
 
 import be.kdg.processor.camera.dom.CameraMessage;
 import be.kdg.processor.fine.dom.EmissionFine;
 import be.kdg.processor.fine.dom.Fine;
 import be.kdg.processor.fine.dom.SpeedingFine;
-import be.kdg.processor.fine.services.FineDetectionService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;

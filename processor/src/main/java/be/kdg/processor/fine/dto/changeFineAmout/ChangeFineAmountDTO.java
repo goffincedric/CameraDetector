@@ -1,4 +1,4 @@
-package be.kdg.processor.fine.dto.changeFineAmoutDTO;
+package be.kdg.processor.fine.dto.changeFineAmout;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

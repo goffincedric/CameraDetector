@@ -1,7 +1,7 @@
 package be.kdg.simulator.messenger;
 
 import be.kdg.simulator.camera.CameraMessage;
-import be.kdg.simulator.generators.MessageGenerator;
+import be.kdg.simulator.generator.MessageGenerator;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,11 +13,14 @@ import java.util.Optional;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class CommandlineMessengerTest {
+public class MessengerTest {
+    @Autowired
+    private Messenger messenger;
+    @Autowired
+    private MessageGenerator generator;
 
     @Test
-    @Autowired
-    public void sendMessage(Messenger messenger, MessageGenerator generator) {
+    public void sendMessage() {
         Optional<CameraMessage> optionalMessage = generator.generate();
         Assert.assertTrue(optionalMessage.isPresent());
         messenger.sendMessage(optionalMessage.get());

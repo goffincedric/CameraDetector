@@ -15,9 +15,9 @@ import java.time.format.DateTimeFormatter;
  * @author C&eacute;dric Goffin
  * @see be.kdg.simulator.messenger.QueueMessenger
  * @see be.kdg.simulator.messenger.CommandlineMessenger
- * @see be.kdg.simulator.generators.FileGenerator
- * @see be.kdg.simulator.generators.RandomGenerator
- * @see be.kdg.simulator.generators.ImageGenerator
+ * @see be.kdg.simulator.generator.FileGenerator
+ * @see be.kdg.simulator.generator.RandomGenerator
+ * @see be.kdg.simulator.generator.ImageGenerator
  */
 @Data
 @NoArgsConstructor
