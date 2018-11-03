@@ -1,6 +1,6 @@
 var current = null;
 console.log(document.querySelector("#username"));
-document.querySelector("#username").addEventListener("focus", function(e) {
+document.querySelector("#username").addEventListener("focus", function() {
     if (current) current.pause();
     current = anime({
         targets: 'path',
@@ -17,7 +17,7 @@ document.querySelector("#username").addEventListener("focus", function(e) {
     });
 });
 
-document.querySelector("#password").addEventListener("focus", function(e) {
+document.querySelector("#password").addEventListener("focus", function() {
     if (current) current.pause();
     current = anime({
         targets: 'path',
@@ -33,7 +33,7 @@ document.querySelector("#password").addEventListener("focus", function(e) {
         }
     });
 });
-document.querySelector("#submit").addEventListener("focus", function(e) {
+document.querySelector("#submit").addEventListener("focus", function() {
     if (current) current.pause();
     current = anime({
         targets: 'path',

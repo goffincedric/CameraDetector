@@ -56,6 +56,13 @@ public class UserRestControllerTest {
     }
 
     @Test
+    public void getNonExistantUser() throws Exception {
+        mockMvc.perform(get("/api/user?username=NonExistantUser"))
+                .andDo(print())
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
+    }
+
+    @Test
     public void addUser() throws Exception {
         UserDTO userDTO = new UserDTO("testUser", "testUser", List.of("test"));
 

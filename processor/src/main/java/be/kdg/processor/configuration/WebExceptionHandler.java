@@ -1,5 +1,7 @@
-package be.kdg.processor.fine.exceptions;
+package be.kdg.processor.configuration;
 
+import be.kdg.processor.fine.exceptions.FineException;
+import be.kdg.processor.user.exceptions.UserException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,11 +14,19 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
  * @author C&eacute;dric Goffin
  */
 @ControllerAdvice
-public class FineExceptionHandler extends ResponseEntityExceptionHandler {
+public class WebExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = {FineException.class})
     protected ResponseEntity<?> handleFinesNotFound(RuntimeException ex, WebRequest request) {
         return handleExceptionInternal(ex, "Fine(s) not found!",
+                new HttpHeaders(),
+                HttpStatus.BAD_REQUEST,
+                request);
+    }
+
+    @ExceptionHandler(value = {UserException.class})
+    protected ResponseEntity<?> handleUserExeption(RuntimeException ex, WebRequest request) {
+        return handleExceptionInternal(ex, null,
                 new HttpHeaders(),
                 HttpStatus.BAD_REQUEST,
                 request);

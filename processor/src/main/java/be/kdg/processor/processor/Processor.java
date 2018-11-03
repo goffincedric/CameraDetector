@@ -43,6 +43,7 @@ public class Processor {
     private String logPath;
     private boolean isRunning = true;
     private int amountLogged;
+    private String logFilePath;
 
     /**
      * Constructor used by Spring framework to initialize this class as a bean
@@ -102,16 +103,18 @@ public class Processor {
             int times = buffer.get(m);
             if (times < retries) messageMap.put(m, buffer.get(m) + 1);
             else {
-                LOGGER.warning(String.format("Logging message '%s' to csv log in directory ('%s') because it failed to process more than %d times!", m, logPath, retries));
-
                 // Log failed messages to file
                 if (logFailed) {
-                    logPath = CSVUtils.writeMessage(m, logPath);
+                    LOGGER.warning(String.format("Logging message '%s' to csv log in directory ('%s') because it failed to process more than %d times!", m, logPath, retries));
+                    logFilePath = CSVUtils.writeMessage(m, logPath);
                     amountLogged++;
+                } else {
+                    LOGGER.warning(String.format("Logging message '%s' to console because it failed to process more than %d times!", m, retries));
                 }
             }
         });
-        if (amountLogged > 0) LOGGER.info(String.format("Written %d messages to log file: '%s'", amountLogged, logPath));
+        if (amountLogged > 0)
+            LOGGER.info(String.format("Written %d messages to log file: '%s'", amountLogged, logFilePath));
     }
 
     /**
