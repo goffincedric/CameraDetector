@@ -18,7 +18,7 @@ public class FineExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<?> handleFinesNotFound(RuntimeException ex, WebRequest request) {
         return handleExceptionInternal(ex, "Fine(s) not found!",
                 new HttpHeaders(),
-                HttpStatus.NOT_FOUND,
+                HttpStatus.BAD_REQUEST,
                 request);
     }
 }

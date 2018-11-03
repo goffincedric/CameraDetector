@@ -17,7 +17,6 @@ import java.util.logging.Logger;
  */
 @UtilityClass
 public class XMLUtils {
-    private final Logger LOGGER = Logger.getLogger(XMLUtils.class.getName());
     private final XmlMapper mapper = new XmlMapper();
     private final JavaTimeModule timeModule = new JavaTimeModule();
 
@@ -29,16 +28,22 @@ public class XMLUtils {
      * @param <T>         is the generic type used for deserialization
      * @return an Optional of type T containing the deserialized object. Can be empty when deserialization failed.
      */
-    public <T> Optional<T> convertXMLToObject(String string, Class<T> objectClass) {
+    public <T> Optional<T> convertXMLToObject(String string, Class<T> objectClass) throws IOException {
         mapper.registerModule(timeModule);
 
-        Optional<T> object;
-        try {
-            object = Optional.of(mapper.readValue(string, objectClass));
-        } catch (IOException e) {
-            LOGGER.severe(String.format("Message: '%s' could not be deserialized!", string));
-            object = Optional.empty();
-        }
-        return object;
+        return Optional.of(mapper.readValue(string, objectClass));
+    }
+
+    /**
+     * Generic method used to convert an object to an XML string.
+     *
+     * @param object object to serialize to XML string
+     * @return an Optional string containing the serialized object. Can be empty when serialization failed.
+     */
+    public Optional<String> convertObjectToXML(Object object) throws JsonProcessingException {
+        XmlMapper mapper = new XmlMapper();
+        mapper.registerModule(new JavaTimeModule());
+        mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        return Optional.of(mapper.writeValueAsString(object));
     }
 }

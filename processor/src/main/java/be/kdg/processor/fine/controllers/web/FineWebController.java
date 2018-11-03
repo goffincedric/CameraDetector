@@ -27,7 +27,7 @@ public class FineWebController {
      * FineWebController constructor. Autowired via Spring.
      *
      * @param settingService is the service for the processor package. Can be used to access current processor settings
-     * @param modelMapper
+     * @param modelMapper is an autowired ModelMapper object
      */
     @Autowired
     public FineWebController(SettingService settingService, ModelMapper modelMapper) {

@@ -6,7 +6,6 @@ import be.kdg.processor.camera.dom.CameraType;
 import be.kdg.processor.camera.services.CameraServiceAdapter;
 import be.kdg.processor.fine.dom.Fine;
 import be.kdg.processor.licenseplate.dom.Licenseplate;
-import be.kdg.processor.licenseplate.exception.LicensePlateException;
 import be.kdg.processor.licenseplate.services.LicenseplateServiceAdapter;
 import be.kdg.processor.processor.dom.DoubleSetting;
 import be.kdg.processor.processor.dom.IntSetting;
@@ -155,7 +154,7 @@ public class FineDetectionService {
                                 }
                             }
                         }
-                    } catch (Exception | LicensePlateException e) {
+                    } catch (Exception e) {
                         LOGGER.severe(e.getMessage());
                     }
 
@@ -193,14 +192,13 @@ public class FineDetectionService {
                         if (optionalCamera.isPresent()) {
                             Camera camera = optionalCamera.get();
 
-                            Optional<Licenseplate> optionalLicenseplate = Optional.empty();
-                            optionalLicenseplate = licenseplateServiceAdapter.getLicensePlate(pair.getKey().getLicenseplate());
+                            Optional<Licenseplate> optionalLicenseplate = licenseplateServiceAdapter.getLicensePlate(pair.getKey().getLicenseplate());
                             if (optionalLicenseplate.isPresent()) {
                                 Licenseplate licenseplate = optionalLicenseplate.get();
                                 return fineCalculationService.calcSpeedFine(pair, camera, licenseplate, speedFineFactorSlow, speedFineFactorFast, paymentDeadlineDays);
                             }
                         }
-                    } catch (LicensePlateException | CameraNotFoundException e) {
+                    } catch (Exception e) {
                         LOGGER.severe(e.getMessage());
                     }
                     unprocessed.add(pair.getKey());
@@ -255,7 +253,7 @@ public class FineDetectionService {
                                             } else {
                                                 linked &= m.getLicenseplate().equalsIgnoreCase(message.getLicenseplate());
                                             }
-                                        } catch (LicensePlateException | Exception e) {
+                                        } catch (Exception e) {
                                             LOGGER.severe(e.getMessage());
                                             linked = false;
                                         }

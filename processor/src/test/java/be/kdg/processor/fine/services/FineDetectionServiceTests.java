@@ -10,6 +10,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +26,8 @@ import java.util.Map;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Transactional
+
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class FineDetectionServiceTests {
     @Autowired
     private FineDetectionService fineDetectionService;
@@ -42,9 +45,13 @@ public class FineDetectionServiceTests {
 
     @Test
     public void processSpeedingFines() {
+        String speedingLicensePlate = "4-ABC-123";
+        String nonSpeedingLicensePlate = "5-ABC-123";
         List<CameraMessage> messages = new ArrayList<>() {{
-            add(new CameraMessage(1, null, "4-ABC-123", LocalDateTime.now().withNano(0), 0));
-            add(new CameraMessage(2, null, "4-ABC-123", LocalDateTime.now().withNano(0).plusSeconds(120), 120000));
+            add(new CameraMessage(1, null, speedingLicensePlate, LocalDateTime.now().withNano(0), 0));
+            add(new CameraMessage(2, null, speedingLicensePlate, LocalDateTime.now().withNano(0).plusSeconds(120), 120000));
+            add(new CameraMessage(1, null, nonSpeedingLicensePlate, LocalDateTime.now().withNano(0), 0));
+            add(new CameraMessage(2, null, nonSpeedingLicensePlate, LocalDateTime.now().withNano(0).plusSeconds(240), 240000));
         }};
 
         Map.Entry<List<Fine>, List<CameraMessage>> fineResult = fineDetectionService.processSpeedingFines(messages);
@@ -52,12 +59,13 @@ public class FineDetectionServiceTests {
         Assert.assertEquals(1, fineResult.getKey().size());
         Assert.assertEquals(0, fineResult.getValue().size());
 
-        fineResult.getKey().forEach(fine -> Assert.assertTrue(fine instanceof SpeedingFine));
+        fineResult.getKey().forEach(fine -> Assert.assertTrue(fine instanceof SpeedingFine && fine.getLicenseplateId().equals(speedingLicensePlate)));
     }
 
     @Test
     public void processEmissionFines() {
         List<CameraMessage> messages = new ArrayList<>() {{
+            add(new CameraMessage(3, null, "1-ABC-123", LocalDateTime.now(), 100));
             add(new CameraMessage(3, null, "1-ABC-123", LocalDateTime.now(), 100));
         }};
 

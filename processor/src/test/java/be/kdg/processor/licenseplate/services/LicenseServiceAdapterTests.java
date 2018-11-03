@@ -1,8 +1,6 @@
-package be.kdg.processor.licenseplate;
+package be.kdg.processor.licenseplate.services;
 
 import be.kdg.processor.licenseplate.dom.Licenseplate;
-import be.kdg.processor.licenseplate.exception.LicensePlateException;
-import be.kdg.processor.licenseplate.services.LicenseplateServiceAdapter;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Assert;
 import org.junit.Test;
@@ -25,7 +23,7 @@ public class LicenseServiceAdapterTests {
     private LicenseplateServiceAdapter licenseplateServiceAdapter;
 
     @Test
-    public void testLicenseplateService() throws LicensePlateException {
+    public void testLicenseplateService() throws Exception {
         String licenseplateId = String.format("%s-%S-%s", RandomStringUtils.random(1, "12345678"), RandomStringUtils.random(3, true, false), RandomStringUtils.random(3, false, true));
         Optional<Licenseplate> optionalLicenseplate = licenseplateServiceAdapter.getLicensePlate(licenseplateId);
         Assert.assertTrue(optionalLicenseplate.isPresent());

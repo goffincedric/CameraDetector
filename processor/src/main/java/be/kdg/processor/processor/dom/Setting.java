@@ -17,7 +17,6 @@ import javax.persistence.*;
  */
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "tblSettings")
 public abstract class Setting {
@@ -30,14 +29,6 @@ public abstract class Setting {
     public Setting(String settingName, String value) {
         this.settingName = settingName;
         this.value = value;
-    }
-
-    protected String getSettingName() {
-        return settingName;
-    }
-
-    protected void setSettingName(String settingName) {
-        this.settingName = settingName;
     }
 
     protected String getValue() {

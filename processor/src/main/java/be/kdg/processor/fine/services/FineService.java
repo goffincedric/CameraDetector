@@ -51,6 +51,16 @@ public class FineService {
     }
 
     /**
+     * Gets all Fines from the repository that are linked to the supplied Licenseplate id.
+     *
+     * @param licenseplateId is the identifier of a Licenseplate
+     * @return a list of Fines that are linked to the supplied Licenseplate id
+     */
+    public List<Fine> getFinesByLicenseplate(String licenseplateId) {
+        return fineRepository.findAllByLicenseplateId(licenseplateId);
+    }
+
+    /**
      * Gets all Fines from the repository that where made between the 'from' and 'to' timestamps.
      *
      * @param from is the starting time for fines to be returned
@@ -58,9 +68,11 @@ public class FineService {
      * @return a list of Fines that where made between the 'from' and 'to' timestamps
      * @throws FineException when the given timestamps aren't in the right order
      */
-    public List<Fine> getFinesBetween(LocalDateTime from, LocalDateTime to) throws FineException {
-        if (from.isAfter(to)) throw new FineException("From date (" + from + ") is after to date (" + to + ")");
-        return fineRepository.findAllByTimestampBetween(from, to);
+    public List<Fine> getFinesBetween(String from, String to) throws FineException {
+        LocalDateTime fromDate = LocalDateTime.parse(from);
+        LocalDateTime toDate = LocalDateTime.parse(to);
+        if (fromDate.isAfter(toDate)) throw new FineException("From date (" + fromDate + ") is after to date (" + toDate + ")");
+        return fineRepository.findAllByTimestampBetween(fromDate, toDate);
     }
 
     /**

@@ -16,4 +16,5 @@ import java.util.List;
 @Repository
 public interface FineRepository extends JpaRepository<Fine, Integer> {
     List<Fine> findAllByTimestampBetween(LocalDateTime from, LocalDateTime to);
+    List<Fine> findAllByLicenseplateId(String licenseplateId);
 }

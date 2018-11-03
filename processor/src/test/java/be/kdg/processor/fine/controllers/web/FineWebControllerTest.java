@@ -39,7 +39,7 @@ public class FineWebControllerTest {
     private SettingService settingService;
 
     @Test
-    @WithMockUser(roles = {"webadmin"})
+    @WithMockUser(authorities = {"WEBADMIN"})
     public void getFineFactors() throws Exception {
         FineSettingsDTO fineSettingsDTO = modelMapper.map(settingService.getFineSettings(), FineSettingsDTO.class);
 
@@ -56,7 +56,7 @@ public class FineWebControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = {"webadmin"})
+    @WithMockUser(authorities = {"WEBADMIN"})
     public void postFineFactors() throws Exception {
         String url = "/processor/settings";
         FineSettingsDTO fineSettingsDTO = modelMapper.map(settingService.getFineSettings(), FineSettingsDTO.class);

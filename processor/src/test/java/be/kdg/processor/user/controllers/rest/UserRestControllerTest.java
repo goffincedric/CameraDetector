@@ -62,13 +62,13 @@ public class UserRestControllerTest {
         mockMvc.perform(post("/api/user")
                 .contentType(APPLICATION_JSON_UTF8)
                 .content(objectMapper.writeValueAsString(userDTO)))
+                .andDo(print())
                 .andExpect(result -> {
                     SafeUserDTO safeUserDTO = objectMapper.readValue(result.getResponse().getContentAsString(), SafeUserDTO.class);
                     Assert.assertEquals("testUser", safeUserDTO.getUsername());
                     Assert.assertTrue(safeUserDTO.getRoles().contains("test"));
                 })
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andDo(print());
+                .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     @Test
@@ -79,13 +79,13 @@ public class UserRestControllerTest {
         mockMvc.perform(put("/api/user", userDTO)
                 .contentType(APPLICATION_JSON_UTF8)
                 .content(objectMapper.writeValueAsString(userDTO)))
+                .andDo(print())
                 .andExpect(result -> {
                     SafeUserDTO safeUserDTO = objectMapper.readValue(result.getResponse().getContentAsString(), SafeUserDTO.class);
                     Assert.assertEquals("testUser", safeUserDTO.getUsername());
                     Assert.assertTrue(safeUserDTO.getRoles().contains("test") && userDTO.getRoles().contains("test2"));
                 })
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andDo(print());
+                .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     @Test
@@ -94,8 +94,8 @@ public class UserRestControllerTest {
         userService.save(new User(username, "testUser", List.of(new Role("test"))));
 
         mockMvc.perform(delete("/api/user?username=" + username))
+                .andDo(print())
                 .andExpect(content().string("deleted " + username))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andDo(print());
+                .andExpect(MockMvcResultMatchers.status().isOk());
     }
 }

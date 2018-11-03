@@ -1,7 +1,6 @@
 package be.kdg.processor.licenseplate.services;
 
 import be.kdg.processor.licenseplate.dom.Licenseplate;
-import be.kdg.processor.licenseplate.exception.LicensePlateException;
 import be.kdg.processor.licenseplate.repository.LicenseplateRepository;
 import be.kdg.processor.utils.JSONUtils;
 import be.kdg.sa.services.InvalidLicensePlateException;
@@ -53,10 +52,10 @@ public class LicenseplateServiceAdapter {
      *
      * @param licensePlateId a string containing the license plate id
      * @return an Optional Licenseplate. Is empty when no Licenseplate could be found or when an error occurred.
-     * @throws LicensePlateException when a problem occurred during deserialization, when an invalid license plate id was supplied or when no license plate could be find
+     * @throws Exception when a problem occurred during deserialization, when an invalid license plate id was supplied or when no license plate could be find
      */
     @Cacheable("licenseplate")
-    public Optional<Licenseplate> getLicensePlate(String licensePlateId) throws LicensePlateException {
+    public Optional<Licenseplate> getLicensePlate(String licensePlateId) throws Exception {
         Optional<Licenseplate> optionalLicenseplate = licenseplateRepository.findById(licensePlateId);
         if (!optionalLicenseplate.isPresent()) {
             try {
@@ -65,7 +64,7 @@ public class LicenseplateServiceAdapter {
                     optionalLicenseplate = Optional.of(saveLicenseplate(optionalLicenseplate.get()));
                 }
             } catch (IOException | LicensePlateNotFoundException | InvalidLicensePlateException e) {
-                throw new LicensePlateException(e.getMessage(), e);
+                throw new Exception(e.getMessage(), e);
             }
         }
 
@@ -77,10 +76,10 @@ public class LicenseplateServiceAdapter {
      *
      * @param data is an array of bytes that represents the image to be analysed
      * @return an Optional Licenseplate. Is empty when no Licenseplate could be found or when an error occurred.
-     * @throws LicensePlateException when no license plate could be recognised from image
+     * @throws Exception when no license plate could be recognised from image
      */
     @Cacheable("licenseplate")
-    public Optional<Licenseplate> getLicensePlate(byte[] data) throws LicensePlateException, Exception {
+    public Optional<Licenseplate> getLicensePlate(byte[] data) throws Exception {
         String licenseplate = cloudALPRService.getLicenseplate(data);
         return getLicensePlate(licenseplate);
     }

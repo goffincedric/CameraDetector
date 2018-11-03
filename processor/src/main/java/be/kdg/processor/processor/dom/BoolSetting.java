@@ -16,7 +16,6 @@ import javax.persistence.*;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 public class BoolSetting extends Setting {
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

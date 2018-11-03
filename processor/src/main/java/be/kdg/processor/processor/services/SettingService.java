@@ -174,31 +174,11 @@ public class SettingService {
     }
 
     /**
-     * Gets all Settings from the repository.
-     *
-     * @return a List of Setting objects
-     */
-    public List<Setting> getSettings() {
-        return settingRepository.findAll();
-    }
-
-    /**
-     * Persists or updates a Setting the to repository.
-     *
-     * @param setting setting that needs to be persisted or updated
-     * @return a Setting object from the repository
-     */
-    public Setting save(Setting setting) {
-        return settingRepository.save(setting);
-    }
-
-    /**
      * Persists or updates a List of Setting the to repository.
      *
      * @param settings list of settings that need to be persisted or updated
-     * @return a List of Setting objects from the repository
      */
-    public List<Setting> saveSettings(List<Setting> settings) {
-        return settingRepository.saveAll(settings);
+    public void saveSettings(List<Setting> settings) {
+        settingRepository.saveAll(settings);
     }
 }

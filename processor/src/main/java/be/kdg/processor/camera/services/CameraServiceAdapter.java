@@ -123,18 +123,6 @@ public class CameraServiceAdapter {
     }
 
     /**
-     * Updates a Camera from the repository
-     *
-     * @param camera   is the updated Camera
-     * @param cameraId is the id of the Camera that needs to be updated
-     * @return the updated camera from the repository
-     */
-    public Camera updateCamera(Camera camera, int cameraId) {
-        if (!cameraRepository.existsByCameraId(cameraId)) throw new CameraNotFoundException(cameraId);
-        return cameraRepository.save(camera);
-    }
-
-    /**
      * Creates a new camera in the repository
      *
      * @param camera is the camera to persist to the database

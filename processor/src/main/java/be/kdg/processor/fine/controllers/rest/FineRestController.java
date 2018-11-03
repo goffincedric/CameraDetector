@@ -56,15 +56,16 @@ public class FineRestController {
      */
     //http://localhost:8080/api/fine/get?from=16-10-2018_00:00:00&to=16-10-2018_00:00:00
     @GetMapping("/get")
-    public ResponseEntity<List<FineDTO>> getFinesBetween(@RequestParam(value = "from") @DateTimeFormat(pattern = "dd-MM-yyyy_HH:mm:ss") LocalDateTime from, @RequestParam(value = "to") @DateTimeFormat(pattern = "dd-MM-yyyy_HH:mm:ss") LocalDateTime to) throws FineException {
+    public ResponseEntity<List<FineDTO>> getFinesBetween(@RequestParam(value = "from") String from, @RequestParam(value = "to") String to) throws FineException {
         List<Fine> fines = fineService.getFinesBetween(from, to);
         return new ResponseEntity<>(fines.stream()
                 .map(f -> {
-                    if (f instanceof EmissionFine) return modelMapper.map(f, EmissionFineDTO.class);
-                    else if (f instanceof SpeedingFine) return modelMapper.map(f, SpeedingFineDTO.class);
-                    return null;
+                    if (f instanceof EmissionFine) return Optional.of(modelMapper.map(f, EmissionFineDTO.class));
+                    else if (f instanceof SpeedingFine) return Optional.of(modelMapper.map(f, SpeedingFineDTO.class));
+                    return Optional.empty();
                 })
-                .filter(Objects::nonNull)
+                .filter(Optional::isPresent)
+                .map(optional -> (FineDTO) optional.get())
                 .collect(Collectors.toList()),
                 HttpStatus.OK);
     }

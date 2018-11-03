@@ -29,12 +29,11 @@ public class JSONUtils {
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
 
-        Optional<T> object;
+        Optional<T> object = Optional.empty();
         try {
             object = Optional.of(mapper.readValue(string, objectClass));
         } catch (IOException e) {
             LOGGER.severe(String.format("Object: '%s' could not be deserialized!", string));
-            object = Optional.empty();
         }
         return object;
     }

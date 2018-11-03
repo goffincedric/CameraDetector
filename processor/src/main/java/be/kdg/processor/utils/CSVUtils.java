@@ -30,7 +30,7 @@ public class CSVUtils {
      * @param message     is a CameraMessage that failed to process # times (configurable via application.properties)
      * @param logger_path is the path where the CSV file should be written (configurable via application.properties)
      */
-    public void writeMessage(CameraMessage message, String logger_path) {
+    public String writeMessage(CameraMessage message, String logger_path) {
         if (logger_path == null) throw new IllegalArgumentException("No path to logfile was given!");
         File directory = new File(logger_path);
 
@@ -68,5 +68,7 @@ public class CSVUtils {
         } catch (IOException e) {
             LOGGER.severe("Target CSV file could not be found!");
         }
+
+        return fileName;
     }
 }

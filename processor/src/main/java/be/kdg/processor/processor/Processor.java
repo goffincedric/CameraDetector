@@ -66,7 +66,6 @@ public class Processor {
     @Scheduled(fixedDelayString = "${processor.processDelay_millis}")
     public void CheckMessages() {
         if (!isRunning) return;
-
         Map<CameraMessage, Integer> buffer;
 
         // Synchronize messageMap so no new items get added while messages get copied to buffer
@@ -103,16 +102,16 @@ public class Processor {
             int times = buffer.get(m);
             if (times < retries) messageMap.put(m, buffer.get(m) + 1);
             else {
-                LOGGER.warning(String.format("Logging message '%s'" + m + "' to csv log in directory ('%s') because it failed to process more than %d times!", m, logPath, retries));
+                LOGGER.warning(String.format("Logging message '%s' to csv log in directory ('%s') because it failed to process more than %d times!", m, logPath, retries));
 
                 // Log failed messages to file
                 if (logFailed) {
-                    CSVUtils.writeMessage(m, logPath);
+                    logPath = CSVUtils.writeMessage(m, logPath);
                     amountLogged++;
                 }
             }
         });
-        if (amountLogged > 0) LOGGER.info(String.format("Written %d messages to log file in '" + logPath + "'", amountLogged));
+        if (amountLogged > 0) LOGGER.info(String.format("Written %d messages to log file: '%s'", amountLogged, logPath));
     }
 
     /**
