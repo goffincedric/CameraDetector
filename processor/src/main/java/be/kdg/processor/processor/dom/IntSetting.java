@@ -1,8 +1,5 @@
 package be.kdg.processor.processor.dom;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -13,8 +10,6 @@ import javax.persistence.*;
  * @author C&eacute;dric Goffin
  * @see be.kdg.processor.processor.dom.Setting
  */
-@Data
-@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @Entity
 public class IntSetting extends Setting {

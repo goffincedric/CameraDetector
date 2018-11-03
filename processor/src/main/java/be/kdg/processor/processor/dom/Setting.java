@@ -1,7 +1,5 @@
 package be.kdg.processor.processor.dom;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -15,7 +13,6 @@ import javax.persistence.*;
  * @see IntSetting
  * @see StringSetting
  */
-@Data
 @NoArgsConstructor
 @Entity
 @Table(name = "tblSettings")

@@ -11,11 +11,13 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 /**
+ * ControllerAdvice class for web controllers to handle exceptions
+ *
  * @author C&eacute;dric Goffin
  */
 @ControllerAdvice
 public class WebExceptionHandler extends ResponseEntityExceptionHandler {
-
+    //TODO: Redirect to error page?
     @ExceptionHandler(value = {FineException.class})
     protected ResponseEntity<?> handleFinesNotFound(RuntimeException ex, WebRequest request) {
         return handleExceptionInternal(ex, "Fine(s) not found!",
