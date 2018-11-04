@@ -27,8 +27,6 @@ import java.util.logging.Logger;
 @Transactional
 @EnableCaching
 public class LicenseplateServiceAdapter {
-    private static final Logger LOGGER = Logger.getLogger(LicenseplateServiceAdapter.class.getName());
-
     private final CloudALPRService cloudALPRService;
     private final LicensePlateServiceProxy licensePlateServiceProxy;
     private final LicenseplateRepository licenseplateRepository;
@@ -80,8 +78,7 @@ public class LicenseplateServiceAdapter {
      */
     @Cacheable("licenseplate")
     public Optional<Licenseplate> getLicensePlate(byte[] data) throws Exception {
-        String licenseplate = cloudALPRService.getLicenseplate(data);
-        return getLicensePlate(licenseplate);
+        return getLicensePlate(cloudALPRService.getLicenseplate(data));
     }
 
     /**

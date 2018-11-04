@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
  * @author C&eacute;dric Goffin
  */
 @Configuration
-public class WebConfiguration {
+public class GlobalControllerConfiguration {
     /**
      * Enables ModelMapper to be used by spring as a bean.
      *

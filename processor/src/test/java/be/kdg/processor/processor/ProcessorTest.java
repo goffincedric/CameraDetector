@@ -44,10 +44,12 @@ public class ProcessorTest {
     public void checkMessages() {
         String speedingLicensePlate = "4-ABC-123";
         String emissionLicensePlate = "1-ABC-123";
+        String badLicensePlate = "1-ERR-123";
         List<CameraMessage> messages = new ArrayList<>() {{
             add(new CameraMessage(1, null, speedingLicensePlate, LocalDateTime.now().withNano(0), 0));
             add(new CameraMessage(2, null, speedingLicensePlate, LocalDateTime.now().withNano(0).plusSeconds(120), 120000));
             add(new CameraMessage(3, null, emissionLicensePlate, LocalDateTime.now(), 100));
+            add(new CameraMessage(3, null, badLicensePlate, LocalDateTime.now(), 100));
         }};
         messages.forEach(m -> {
             try {

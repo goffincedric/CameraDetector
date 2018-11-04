@@ -47,11 +47,8 @@ public class SettingService {
      */
     public Optional<BoolSetting> getBoolSetting(String settingName) {
         Optional<Setting> optionalSetting = getSetting(settingName);
-        if (optionalSetting.isPresent()) {
-            if (optionalSetting.get() instanceof BoolSetting) {
-                return Optional.of((BoolSetting) optionalSetting.get());
-            }
-        }
+        if (optionalSetting.isPresent() && optionalSetting.get() instanceof BoolSetting)
+            return Optional.of((BoolSetting) optionalSetting.get());
         return Optional.empty();
     }
 
@@ -63,11 +60,8 @@ public class SettingService {
      */
     public Optional<DoubleSetting> getDoubleSetting(String settingName) {
         Optional<Setting> optionalSetting = getSetting(settingName);
-        if (optionalSetting.isPresent()) {
-            if (optionalSetting.get() instanceof DoubleSetting) {
-                return Optional.of((DoubleSetting) optionalSetting.get());
-            }
-        }
+        if (optionalSetting.isPresent() && optionalSetting.get() instanceof DoubleSetting)
+            return Optional.of((DoubleSetting) optionalSetting.get());
         return Optional.empty();
     }
 
@@ -79,11 +73,8 @@ public class SettingService {
      */
     public Optional<IntSetting> getIntSetting(String settingName) {
         Optional<Setting> optionalSetting = getSetting(settingName);
-        if (optionalSetting.isPresent()) {
-            if (optionalSetting.get() instanceof IntSetting) {
-                return Optional.of((IntSetting) optionalSetting.get());
-            }
-        }
+        if (optionalSetting.isPresent() && optionalSetting.get() instanceof IntSetting)
+            return Optional.of((IntSetting) optionalSetting.get());
         return Optional.empty();
     }
 
@@ -95,11 +86,8 @@ public class SettingService {
      */
     public Optional<StringSetting> getStringSetting(String settingName) {
         Optional<Setting> optionalSetting = getSetting(settingName);
-        if (optionalSetting.isPresent()) {
-            if (optionalSetting.get() instanceof StringSetting) {
-                return Optional.of((StringSetting) optionalSetting.get());
-            }
-        }
+        if (optionalSetting.isPresent() && optionalSetting.get() instanceof StringSetting)
+            return Optional.of((StringSetting) optionalSetting.get());
         return Optional.empty();
     }
 

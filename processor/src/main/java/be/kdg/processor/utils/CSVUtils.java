@@ -49,7 +49,6 @@ public class CSVUtils {
 
         try (
                 FileWriter writer = new FileWriter(fileName, true);
-
                 CSVWriter csvWriter = new CSVWriter(writer,
                         CSVWriter.DEFAULT_SEPARATOR,
                         CSVWriter.NO_QUOTE_CHARACTER,

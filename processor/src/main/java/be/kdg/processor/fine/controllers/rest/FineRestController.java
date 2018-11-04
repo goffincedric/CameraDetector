@@ -54,7 +54,6 @@ public class FineRestController {
      * @return a list of FineDTOs which contain information about fines that where made between the 'from' and 'to' timestamps
      * @throws FineException when the given timestamps aren't in the right order
      */
-    //http://localhost:8080/api/fine/get?from=16-10-2018_00:00:00&to=16-10-2018_00:00:00
     @GetMapping("/get")
     public ResponseEntity<List<FineDTO>> getFinesBetween(@RequestParam(value = "from") String from, @RequestParam(value = "to") String to) throws FineException {
         List<Fine> fines = fineService.getFinesBetween(from, to);

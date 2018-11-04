@@ -2,7 +2,6 @@ package be.kdg.processor.openalpr;
 
 import be.kdg.processor.camera.dom.CameraMessage;
 import be.kdg.processor.licenseplate.services.CloudALPRService;
-import be.kdg.sa.services.LicensePlateNotFoundException;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,9 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.io.*;
-import java.net.URISyntaxException;
-import java.nio.file.*;
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.util.Base64;
 

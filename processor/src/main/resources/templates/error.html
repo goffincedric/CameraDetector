@@ -1,0 +1,28 @@
+<html xmlns:th="http://www.w3.org/1999/xhtml"
+      xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <link rel="stylesheet" href="/css/style.css">
+
+    <title>Error</title>
+</head>
+<body>
+<div class="page">
+    <div class="container">
+        <div class="left">
+            <div class="title">Error <div th:text="${status}"></div></div>
+            <div class="desc">Please contact your system administrator to resolve this issue.</div>
+        </div>
+        <div class="right">
+            <div class="info">
+                <div class="desc"th:text="${error}"></div>
+                <div class="desc">Problem in url: <br><div th:text="${path}"></div></div>
+                <div class="desc">Error message:<br><div th:text="${message}"></div></div>
+                <br>
+                <a th:href="@{/}" class="link">Go to homepage</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

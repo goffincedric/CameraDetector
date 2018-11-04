@@ -102,15 +102,13 @@ public class Processor {
         processingResult.getValue().forEach(m -> {
             int times = buffer.get(m);
             if (times < retries) messageMap.put(m, buffer.get(m) + 1);
-            else {
+            else if (logFailed) {
                 // Log failed messages to file
-                if (logFailed) {
-                    LOGGER.warning(String.format("Logging message '%s' to csv log in directory ('%s') because it failed to process more than %d times!", m, logPath, retries));
-                    logFilePath = CSVUtils.writeMessage(m, logPath);
-                    amountLogged++;
-                } else {
-                    LOGGER.warning(String.format("Logging message '%s' to console because it failed to process more than %d times!", m, retries));
-                }
+                LOGGER.warning(String.format("Logging message '%s' to csv log in directory ('%s') because it failed to process more than %d times!", m, logPath, retries));
+                logFilePath = CSVUtils.writeMessage(m, logPath);
+                amountLogged++;
+            } else {
+                LOGGER.warning(String.format("Logging message '%s' to console because it failed to process more than %d times!", m, retries));
             }
         });
         if (amountLogged > 0)
@@ -137,11 +135,8 @@ public class Processor {
 
     /**
      * Toggles the isRunning boolean
-     *
-     * @return the new value of isPaused
      */
-    public boolean toggleProcessor() {
+    public void toggleProcessor() {
         isRunning = !isRunning;
-        return isRunning;
     }
 }

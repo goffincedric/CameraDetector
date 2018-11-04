@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -68,7 +69,8 @@ public class UserRestControllerTest {
 
         mockMvc.perform(post("/api/user")
                 .contentType(APPLICATION_JSON_UTF8)
-                .content(objectMapper.writeValueAsString(userDTO)))
+                .content(objectMapper.writeValueAsString(userDTO))
+                .with(csrf()))
                 .andDo(print())
                 .andExpect(result -> {
                     SafeUserDTO safeUserDTO = objectMapper.readValue(result.getResponse().getContentAsString(), SafeUserDTO.class);
@@ -85,7 +87,8 @@ public class UserRestControllerTest {
 
         mockMvc.perform(put("/api/user", userDTO)
                 .contentType(APPLICATION_JSON_UTF8)
-                .content(objectMapper.writeValueAsString(userDTO)))
+                .content(objectMapper.writeValueAsString(userDTO))
+                .with(csrf()))
                 .andDo(print())
                 .andExpect(result -> {
                     SafeUserDTO safeUserDTO = objectMapper.readValue(result.getResponse().getContentAsString(), SafeUserDTO.class);
@@ -100,7 +103,8 @@ public class UserRestControllerTest {
         String username = "testUser";
         userService.save(new User(username, "testUser", List.of(new Role("test"))));
 
-        mockMvc.perform(delete("/api/user?username=" + username))
+        mockMvc.perform(delete("/api/user?username=" + username)
+                .with(csrf()))
                 .andDo(print())
                 .andExpect(content().string("deleted " + username))
                 .andExpect(MockMvcResultMatchers.status().isOk());

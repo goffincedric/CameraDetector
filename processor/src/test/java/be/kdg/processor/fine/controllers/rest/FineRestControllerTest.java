@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
@@ -106,7 +107,7 @@ public class FineRestControllerTest {
                 1,
                 3));
 
-        mockMvc.perform(put("/api/fine/acceptFine/" + fine.getFineId()))
+        mockMvc.perform(put("/api/fine/acceptFine/" + fine.getFineId()).with(csrf()))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andDo(print());
     }
@@ -133,7 +134,8 @@ public class FineRestControllerTest {
         String patchJSON = objectMapper.writeValueAsString(finePatch);
         mockMvc.perform(patch("/api/fine/changeFineAmount/" + fine.getFineId())
                 .contentType(APPLICATION_JSON_UTF8)
-                .content(patchJSON))
+                .content(patchJSON)
+                .with(csrf()))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andDo(print());
     }

@@ -131,27 +131,20 @@ public class FineDetectionService {
         // Process emissionMessages and get only 1 fine per licenseplate per day
         List<Fine> emissionFines = emissionMessages.stream()
                 .map(m -> {
-
                     try {
-                        Optional<Licenseplate> optionalLicenseplate = Optional.empty();
                         Optional<Camera> optionalCamera = cameraServiceAdapter.getCamera(m.getCameraId());
+                        Optional<Licenseplate> optionalLicenseplate = Optional.empty();
                         if (optionalCamera.isPresent()) {
-                            Camera camera = optionalCamera.get();
-                            if (m.getLicenseplate() != null) {
+                            if (m.getLicenseplate() != null)
                                 optionalLicenseplate = licenseplateServiceAdapter.getLicensePlate(m.getLicenseplate());
-                            } else if (m.getCameraImage() != null) {
+                            else if (m.getCameraImage() != null)
                                 optionalLicenseplate = licenseplateServiceAdapter.getLicensePlate(m.getCameraImage());
-                            }
 
                             if (optionalLicenseplate.isPresent()) {
-                                Licenseplate licenseplate = optionalLicenseplate.get();
-                                if (camera.getEuroNorm() > licenseplate.getEuroNumber()) {
-                                    if (licenseplate.getFines().stream().noneMatch(f -> f.getTimestamp().isAfter(m.getTimestamp().minusDays(emissionTimeFrameDays)))) {
-                                        return fineCalculationService.calcEmissionFine(camera, licenseplate, emissionFineFactor, paymentDeadlineDays);
-                                    }
-                                } else {
-                                    return Optional.empty();
-                                }
+                                if (optionalCamera.get().getEuroNorm() > optionalLicenseplate.get().getEuroNumber() &&
+                                        optionalLicenseplate.get().getFines().stream().noneMatch(f -> f.getTimestamp().isAfter(m.getTimestamp().minusDays(emissionTimeFrameDays))))
+                                    return fineCalculationService.calcEmissionFine(optionalCamera.get(), optionalLicenseplate.get(), emissionFineFactor, paymentDeadlineDays);
+                                else return Optional.empty();
                             }
                         }
                     } catch (Exception e) {
@@ -162,8 +155,7 @@ public class FineDetectionService {
                     return Optional.empty();
                 })
                 .filter(Optional::isPresent)
-                .map(Optional::get)
-                .map(f -> (Fine) f)
+                .map(optional -> (Fine) optional.get())
                 .distinct()
                 .collect(Collectors.toList());
 
@@ -206,8 +198,7 @@ public class FineDetectionService {
                     return Optional.empty();
                 })
                 .filter(Optional::isPresent)
-                .map(Optional::get)
-                .map(f -> (Fine) f)
+                .map(optional -> (Fine) optional.get())
                 .collect(Collectors.toList());
 
         // Return fines and unprocessed messages
@@ -231,15 +222,11 @@ public class FineDetectionService {
                 try {
                     Optional<Camera> optionalCamera = cameraServiceAdapter.getCamera(message.getCameraId());
                     if (optionalCamera.isPresent()) {
-                        Camera camera = optionalCamera.get();
-
-                        if (camera.getSegment() != null) {
-                            Optional<CameraMessage> optionalLinkedMessage = Optional.empty();
-                            optionalLinkedMessage = unprocessedMessages.stream()
-                                    .filter(m ->
-                                    {
+                        if (optionalCamera.get().getSegment() != null) {
+                            unprocessedMessages.stream()
+                                    .filter(m -> {
                                         boolean linked =
-                                                m.getCameraId() == camera.getSegment().getConnectedCameraId() &&
+                                                m.getCameraId() == optionalCamera.get().getSegment().getConnectedCameraId() &&
                                                         m.getTimestamp().isAfter(message.getTimestamp());
 
                                         try {
@@ -260,17 +247,16 @@ public class FineDetectionService {
 
                                         return linked;
                                     })
-                                    .findFirst();
-
-                            optionalLinkedMessage.ifPresent(m -> {
-                                if (camera.getSegment() != null) {
-                                    linkedMessages.put(message, m);
-                                } else {
-                                    linkedMessages.put(m, message);
-                                }
-                                unprocessedMessages.remove(message);
-                                unprocessedMessages.remove(m);
-                            });
+                                    .findFirst()
+                                    .ifPresent(m -> {
+                                        if (optionalCamera.get().getSegment() != null) {
+                                            linkedMessages.put(message, m);
+                                        } else {
+                                            linkedMessages.put(m, message);
+                                        }
+                                        unprocessedMessages.remove(message);
+                                        unprocessedMessages.remove(m);
+                                    });
                         }
                     }
                 } catch (CameraNotFoundException cnfe) {

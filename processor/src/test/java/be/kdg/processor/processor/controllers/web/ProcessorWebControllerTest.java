@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -47,7 +48,8 @@ public class ProcessorWebControllerTest {
     public void testSuccessLogin() throws Exception {
         RequestBuilder requestBuilder = post("/login")
                 .param("username", "admin")
-                .param("password", "admin");
+                .param("password", "admin")
+                .with(csrf());
         mockMvc.perform(requestBuilder)
                 .andDo(print())
                 .andExpect(status().is3xxRedirection())
@@ -58,7 +60,8 @@ public class ProcessorWebControllerTest {
     public void testBadLogin() throws Exception {
         RequestBuilder requestBuilder = post("/login")
                 .param("username", "admin")
-                .param("password", "notAnAdmin");
+                .param("password", "notAnAdmin")
+                .with(csrf());
         mockMvc.perform(requestBuilder)
                 .andDo(print())
                 .andExpect(status().is3xxRedirection())
@@ -66,11 +69,22 @@ public class ProcessorWebControllerTest {
     }
 
     @Test
+    public void testLoginNoCsrf() throws Exception {
+        RequestBuilder requestBuilder = post("/login")
+                .param("username", "admin")
+                .param("password", "admin");
+        mockMvc.perform(requestBuilder)
+                .andDo(print())
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
     @WithMockUser(authorities = {"WEBADMIN"})
     public void toggleProcessor() throws Exception {
         boolean originalState = processor.isRunning();
 
-        RequestBuilder requestBuilder = post("/toggleProcessor");
+        RequestBuilder requestBuilder = post("/toggleProcessor")
+                .with(csrf());
         mockMvc.perform(requestBuilder)
                 .andDo(print())
                 .andExpect(status().is3xxRedirection())
@@ -108,7 +122,8 @@ public class ProcessorWebControllerTest {
 
         mockMvc.perform(post(url)
                 .contentType(APPLICATION_JSON_UTF8)
-                .content(objectMapper.writeValueAsString(updatedProcessorSettingsDTO)))
+                .content(objectMapper.writeValueAsString(updatedProcessorSettingsDTO))
+                .with(csrf()))
                 .andDo(print())
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl(url + "?saved"))

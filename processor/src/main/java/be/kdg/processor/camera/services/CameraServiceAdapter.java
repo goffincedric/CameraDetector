@@ -65,7 +65,7 @@ public class CameraServiceAdapter {
                 if (optionalCamera.isPresent()) {
                     List<Camera> cameras = getAllCameras();
                     Camera camera = optionalCamera.get();
-                    optionalCamera = cameras.stream().filter(c -> c.getCameraId() == camera.getCameraId()).findFirst();
+                    return cameras.stream().filter(c -> c.getCameraId() == camera.getCameraId()).findFirst();
                 }
             } catch (IOException e) {
                 LOGGER.severe(String.format("Unable to deserialize camera with id: %d", cameraId));
@@ -96,8 +96,7 @@ public class CameraServiceAdapter {
             }
         } while (next);
 
-        return
-                proxyCameras.stream()
+        return proxyCameras.stream()
                         .map(c -> {
                             if (repoCameras.contains(c))
                                 return repoCameras.get(repoCameras.indexOf(c));
@@ -110,16 +109,6 @@ public class CameraServiceAdapter {
                             }
                             return createCamera(c);
                         }).collect(Collectors.toList());
-    }
-
-    /**
-     * Gets a list of all Cameras that have a certain euronorm
-     *
-     * @param euronorm is the minimum euronorm of a camera
-     * @return a list of all known Cameras with a certain euronorm
-     */
-    public List<Camera> getAllCamerasByEuronorm(int euronorm) {
-        return cameraRepository.findAllByEuroNorm(euronorm);
     }
 
     /**

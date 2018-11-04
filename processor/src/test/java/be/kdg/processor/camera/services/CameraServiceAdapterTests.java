@@ -28,9 +28,7 @@ public class CameraServiceAdapterTests {
     @Test
     public void testCameraService() throws CameraNotFoundException {
         int cameraId = new Random().nextInt(5) + 1;
-        System.out.println(cameraId);
         Optional<Camera> optionalCamera = cameraServiceAdapter.getCamera(cameraId);
-        System.out.println(optionalCamera);
         Assert.assertTrue(optionalCamera.isPresent());
         optionalCamera.ifPresent(camera -> {
             switch (camera.getCameraType()) {
