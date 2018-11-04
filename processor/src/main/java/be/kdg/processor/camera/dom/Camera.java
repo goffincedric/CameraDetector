@@ -2,6 +2,7 @@ package be.kdg.processor.camera.dom;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -16,7 +17,7 @@ import javax.persistence.*;
  * @see CameraType
  */
 
-@Data
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -55,16 +56,5 @@ public class Camera {
     @Override
     public int hashCode() {
         return cameraId;
-    }
-
-    @Override
-    public String toString() {
-        return "Camera{" +
-                "cameraId=" + cameraId +
-                ", location=" + location +
-                ", segment=" + segment +
-                ", euroNorm=" + euroNorm +
-                ", cameraType=" + cameraType +
-                '}';
     }
 }

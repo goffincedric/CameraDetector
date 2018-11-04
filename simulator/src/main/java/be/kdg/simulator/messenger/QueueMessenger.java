@@ -2,6 +2,7 @@ package be.kdg.simulator.messenger;
 
 import be.kdg.simulator.camera.CameraMessage;
 import be.kdg.simulator.utils.XMLUtils;
+import org.springframework.amqp.AmqpException;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +46,7 @@ public class QueueMessenger implements Messenger {
      * @param message a CameraMessage to send to the MQTT queue
      */
     @Override
-    public void sendMessage(CameraMessage message) {
+    public void sendMessage(CameraMessage message) throws AmqpException {
         Optional<String> optionalMessageString = XMLUtils.convertObjectToXML(message);
         if (optionalMessageString.isPresent()) {
             rabbitTemplate.convertAndSend(queue.getName(), optionalMessageString.get());

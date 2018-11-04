@@ -1,8 +1,6 @@
 package be.kdg.processor.processor.services;
 
-import be.kdg.processor.fine.dto.fineSettings.FineSettingsDTO;
 import be.kdg.processor.processor.dom.*;
-import be.kdg.processor.processor.dto.ProcessorSettingsDTO;
 import be.kdg.processor.processor.repository.SettingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -49,11 +47,8 @@ public class SettingService {
      */
     public Optional<BoolSetting> getBoolSetting(String settingName) {
         Optional<Setting> optionalSetting = getSetting(settingName);
-        if (optionalSetting.isPresent()) {
-            if (optionalSetting.get() instanceof BoolSetting) {
-                return Optional.of((BoolSetting) optionalSetting.get());
-            }
-        }
+        if (optionalSetting.isPresent() && optionalSetting.get() instanceof BoolSetting)
+            return Optional.of((BoolSetting) optionalSetting.get());
         return Optional.empty();
     }
 
@@ -65,11 +60,8 @@ public class SettingService {
      */
     public Optional<DoubleSetting> getDoubleSetting(String settingName) {
         Optional<Setting> optionalSetting = getSetting(settingName);
-        if (optionalSetting.isPresent()) {
-            if (optionalSetting.get() instanceof DoubleSetting) {
-                return Optional.of((DoubleSetting) optionalSetting.get());
-            }
-        }
+        if (optionalSetting.isPresent() && optionalSetting.get() instanceof DoubleSetting)
+            return Optional.of((DoubleSetting) optionalSetting.get());
         return Optional.empty();
     }
 
@@ -81,11 +73,8 @@ public class SettingService {
      */
     public Optional<IntSetting> getIntSetting(String settingName) {
         Optional<Setting> optionalSetting = getSetting(settingName);
-        if (optionalSetting.isPresent()) {
-            if (optionalSetting.get() instanceof IntSetting) {
-                return Optional.of((IntSetting) optionalSetting.get());
-            }
-        }
+        if (optionalSetting.isPresent() && optionalSetting.get() instanceof IntSetting)
+            return Optional.of((IntSetting) optionalSetting.get());
         return Optional.empty();
     }
 
@@ -97,34 +86,18 @@ public class SettingService {
      */
     public Optional<StringSetting> getStringSetting(String settingName) {
         Optional<Setting> optionalSetting = getSetting(settingName);
-        if (optionalSetting.isPresent()) {
-            if (optionalSetting.get() instanceof StringSetting) {
-                return Optional.of((StringSetting) optionalSetting.get());
-            }
-        }
+        if (optionalSetting.isPresent() && optionalSetting.get() instanceof StringSetting)
+            return Optional.of((StringSetting) optionalSetting.get());
         return Optional.empty();
     }
 
     /**
-     * Gets a ProcessorSettingsDTO with the current settings for the processor from the repository.
+     * Gets a FineSettings object with the current settings for Fine calculation from the repository.
      *
-     * @return a ProcessorSettingsDTO with the current settings from the repository
+     * @return a FineSettings object with the current settings from the repository
      */
-    public ProcessorSettingsDTO getProcessorSettingsDTO() {
-        return new ProcessorSettingsDTO(
-                getIntSetting("retries").get().getIntValue(),
-                getBoolSetting("logFailed").get().getBoolValue(),
-                getStringSetting("logPath").get().getStringValue()
-        );
-    }
-
-    /**
-     * Gets a FineSettingsDTO with the current settings for Fine calculation from the repository.
-     *
-     * @return a FineSettingsDTO with the current settings from the repository
-     */
-    public FineSettingsDTO getFineSettingsDTO() {
-        return new FineSettingsDTO(
+    public FineSettings getFineSettings() {
+        return new FineSettings(
                 getIntSetting("emissionTimeFrameDays").get().getIntValue(),
                 getDoubleSetting("emissionFineFactor").get().getDoubleValue(),
                 getDoubleSetting("speedFineFactorSlow").get().getDoubleValue(),
@@ -136,71 +109,64 @@ public class SettingService {
     /**
      * Saves an updated FineSettingsDTO to the repository
      *
-     * @param fineSettingsDTO DTO with updated settings for Fine calculation
-     * @return an updated FineSettingsDTO object
+     * @param fineSettings object with updated settings for Fine calculation
+     * @return an updated FineSettings object
      */
-    public FineSettingsDTO saveFineSettingsDTO(FineSettingsDTO fineSettingsDTO) {
+    public FineSettings saveFineSettings(FineSettings fineSettings) {
         IntSetting emissionTimeFrameDaysSetting = getIntSetting("emissionTimeFrameDays").get();
         DoubleSetting emissionFineFactorSetting = getDoubleSetting("emissionFineFactor").get();
         DoubleSetting speedFineFactorSlowSetting = getDoubleSetting("speedFineFactorSlow").get();
         DoubleSetting speedFineFactorFastSetting = getDoubleSetting("speedFineFactorFast").get();
         IntSetting paymentDeadlineDaysSetting = getIntSetting("paymentDeadlineDays").get();
 
-        emissionTimeFrameDaysSetting.setIntValue(fineSettingsDTO.getEmissionTimeframeDays());
-        emissionFineFactorSetting.setDoubleValue(fineSettingsDTO.getEmissionFineFactor());
-        speedFineFactorSlowSetting.setDoubleValue(fineSettingsDTO.getSpeedFineFactorSlow());
-        speedFineFactorFastSetting.setDoubleValue(fineSettingsDTO.getSpeedFineFactorFast());
-        paymentDeadlineDaysSetting.setIntValue(fineSettingsDTO.getPaymentDeadlingDays());
+        emissionTimeFrameDaysSetting.setIntValue(fineSettings.getEmissionTimeframeDays());
+        emissionFineFactorSetting.setDoubleValue(fineSettings.getEmissionFineFactor());
+        speedFineFactorSlowSetting.setDoubleValue(fineSettings.getSpeedFineFactorSlow());
+        speedFineFactorFastSetting.setDoubleValue(fineSettings.getSpeedFineFactorFast());
+        paymentDeadlineDaysSetting.setIntValue(fineSettings.getPaymentDeadlingDays());
 
         settingRepository.saveAll(List.of(emissionTimeFrameDaysSetting, emissionFineFactorSetting, speedFineFactorSlowSetting, speedFineFactorFastSetting, paymentDeadlineDaysSetting));
-        return getFineSettingsDTO();
+        return getFineSettings();
+    }
+
+    /**
+     * Gets a ProcessorSettings object with the current settings for the processor from the repository.
+     *
+     * @return a ProcessorSettings object with the current settings from the repository
+     */
+    public ProcessorSettings getProcessorSettings() {
+        return new ProcessorSettings(
+                getIntSetting("retries").get().getIntValue(),
+                getBoolSetting("logFailed").get().getBoolValue(),
+                getStringSetting("logPath").get().getStringValue()
+        );
     }
 
     /**
      * Saves an updated ProcessorSettingsDTO to the repository
      *
-     * @param processorSettingsDTO DTO with updated settings for the Processor
-     * @return an updated ProcessorSettingsDTO object
+     * @param processorSettings object with updated settings for the Processor
+     * @return an updated ProcessorSettings object
      */
-    public ProcessorSettingsDTO saveProcessorSettingsDTO(ProcessorSettingsDTO processorSettingsDTO) {
+    public ProcessorSettings saveProcessorSettings(ProcessorSettings processorSettings) {
         IntSetting retriesSetting = getIntSetting("retries").get();
         BoolSetting loggingEnabledSetting = getBoolSetting("logFailed").get();
         StringSetting logPathSetting = getStringSetting("logPath").get();
 
-        retriesSetting.setIntValue(processorSettingsDTO.getRetries());
-        loggingEnabledSetting.setBoolValue(processorSettingsDTO.isLogFailed());
-        logPathSetting.setStringValue(processorSettingsDTO.getLogPath());
+        retriesSetting.setIntValue(processorSettings.getRetries());
+        loggingEnabledSetting.setBoolValue(processorSettings.isLogFailed());
+        logPathSetting.setStringValue(processorSettings.getLogPath());
 
         settingRepository.saveAll(List.of(retriesSetting, loggingEnabledSetting, logPathSetting));
-        return getProcessorSettingsDTO();
-    }
-
-    /**
-     * Gets all Settings from the repository.
-     *
-     * @return a List of Setting objects
-     */
-    public List<Setting> getSettings() {
-        return settingRepository.findAll();
-    }
-
-    /**
-     * Persists or updates a Setting the to repository.
-     *
-     * @param setting setting that needs to be persisted or updated
-     * @return a Setting object from the repository
-     */
-    public Setting save(Setting setting) {
-        return settingRepository.save(setting);
+        return getProcessorSettings();
     }
 
     /**
      * Persists or updates a List of Setting the to repository.
      *
      * @param settings list of settings that need to be persisted or updated
-     * @return a List of Setting objects from the repository
      */
-    public List<Setting> saveSettings(List<Setting> settings) {
-        return settingRepository.saveAll(settings);
+    public void saveSettings(List<Setting> settings) {
+        settingRepository.saveAll(settings);
     }
 }

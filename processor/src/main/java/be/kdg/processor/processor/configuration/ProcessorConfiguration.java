@@ -60,7 +60,6 @@ public class ProcessorConfiguration {
                 new DoubleSetting("speedFineFactorFast", speedFineFactorFast),
                 new IntSetting("paymentDeadlineDays", paymentDeadlineDays)
         );
-        settings = settingService.saveSettings(settings);
-        System.out.println(settings);
+        settingService.saveSettings(settings);
     }
 }

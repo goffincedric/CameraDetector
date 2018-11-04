@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -49,10 +50,17 @@ public class UserRestControllerTest {
         mockMvc.perform(get("/api/user?username=testUser"))
                 .andExpect(result -> {
                     SafeUserDTO safeUserDTO = objectMapper.readValue(result.getResponse().getContentAsString(), SafeUserDTO.class);
-                    Assert.assertEquals("admin", safeUserDTO.getUsername());
+                    Assert.assertEquals("testUser", safeUserDTO.getUsername());
                 })
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andDo(print());
+    }
+
+    @Test
+    public void getNonExistantUser() throws Exception {
+        mockMvc.perform(get("/api/user?username=NonExistantUser"))
+                .andDo(print())
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
     @Test
@@ -61,14 +69,15 @@ public class UserRestControllerTest {
 
         mockMvc.perform(post("/api/user")
                 .contentType(APPLICATION_JSON_UTF8)
-                .content(objectMapper.writeValueAsString(userDTO)))
+                .content(objectMapper.writeValueAsString(userDTO))
+                .with(csrf()))
+                .andDo(print())
                 .andExpect(result -> {
                     SafeUserDTO safeUserDTO = objectMapper.readValue(result.getResponse().getContentAsString(), SafeUserDTO.class);
                     Assert.assertEquals("testUser", safeUserDTO.getUsername());
                     Assert.assertTrue(safeUserDTO.getRoles().contains("test"));
                 })
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andDo(print());
+                .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     @Test
@@ -78,14 +87,15 @@ public class UserRestControllerTest {
 
         mockMvc.perform(put("/api/user", userDTO)
                 .contentType(APPLICATION_JSON_UTF8)
-                .content(objectMapper.writeValueAsString(userDTO)))
+                .content(objectMapper.writeValueAsString(userDTO))
+                .with(csrf()))
+                .andDo(print())
                 .andExpect(result -> {
                     SafeUserDTO safeUserDTO = objectMapper.readValue(result.getResponse().getContentAsString(), SafeUserDTO.class);
                     Assert.assertEquals("testUser", safeUserDTO.getUsername());
                     Assert.assertTrue(safeUserDTO.getRoles().contains("test") && userDTO.getRoles().contains("test2"));
                 })
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andDo(print());
+                .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     @Test
@@ -93,9 +103,10 @@ public class UserRestControllerTest {
         String username = "testUser";
         userService.save(new User(username, "testUser", List.of(new Role("test"))));
 
-        mockMvc.perform(delete("/api/user?username=" + username))
+        mockMvc.perform(delete("/api/user?username=" + username)
+                .with(csrf()))
+                .andDo(print())
                 .andExpect(content().string("deleted " + username))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andDo(print());
+                .andExpect(MockMvcResultMatchers.status().isOk());
     }
 }

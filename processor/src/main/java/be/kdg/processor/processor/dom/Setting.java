@@ -1,7 +1,5 @@
 package be.kdg.processor.processor.dom;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -15,9 +13,7 @@ import javax.persistence.*;
  * @see IntSetting
  * @see StringSetting
  */
-@Data
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "tblSettings")
 public abstract class Setting {
@@ -30,14 +26,6 @@ public abstract class Setting {
     public Setting(String settingName, String value) {
         this.settingName = settingName;
         this.value = value;
-    }
-
-    protected String getSettingName() {
-        return settingName;
-    }
-
-    protected void setSettingName(String settingName) {
-        this.settingName = settingName;
     }
 
     protected String getValue() {

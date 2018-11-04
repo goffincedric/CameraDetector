@@ -5,6 +5,7 @@ import be.kdg.processor.user.dom.User;
 import be.kdg.processor.user.exceptions.UserException;
 import be.kdg.processor.user.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -22,6 +23,8 @@ import java.util.List;
  */
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    @Value("${spring.h2.console.path}")
+    private String h2ConsolePath;
 
     /**
      * Enables BCryptPasswordEncoder to be used by spring as a bean.
@@ -42,14 +45,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/", "/home", "/api/**", "/css/**", "/js/**").permitAll()
-                .antMatchers("/h2-console/**").hasAuthority("dbadmin")
-                .antMatchers("/**").hasAuthority("webadmin")
+                .antMatchers("/", "/home", "/error", "/api/**", "/css/**", "/js/**").permitAll()
+                .antMatchers("/**").hasAuthority("WEBADMIN")
+                .antMatchers(h2ConsolePath + "/**").hasAuthority("DBADMIN")
                 .and()
                 .formLogin().loginPage("/login").defaultSuccessUrl("/admin").permitAll()
                 .and()
                 .logout().permitAll();
-        http.csrf().disable();
+
+        // H2 Console security config
+        http.csrf().ignoringAntMatchers(h2ConsolePath + "/**");
         http.headers().frameOptions().disable();
     }
 
@@ -65,6 +70,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configureGlobal(AuthenticationManagerBuilder auth, UserService userService) throws Exception, UserException {
         auth.userDetailsService(userService);
 
-        userService.save(new User("admin", "admin", List.of(new Role("webadmin"), new Role("dbadmin"))));
+        userService.save(new User("admin", "admin", List.of(new Role("WEBADMIN"), new Role("DBADMIN"))));
     }
 }

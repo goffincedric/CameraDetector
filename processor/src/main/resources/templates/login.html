@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.w3.org/1999/xhtml"
+xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <link rel="stylesheet" href="/css/style.css">
     <script src="/js/style.js" defer></script>
@@ -42,6 +43,7 @@
             <form class="form" method="post">
                 <label for="username">Username</label><input type="text" name="username" id="username">
                 <label for="password">Password</label><input type="password" name="password" id="password">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
                 <input type="submit" id="submit" value="Submit">
             </form>
         </div>

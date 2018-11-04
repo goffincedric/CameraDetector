@@ -12,6 +12,9 @@
             <div class="title">Processor options</div>
             <div class="desc">
                 The following settings will be used for the processor.
+                <div th:if="${param.saved}">
+                    <h5>Processor settings have been saved.</h5>
+                </div>
             </div>
         </div>
         <div class="right">
@@ -23,10 +26,12 @@
                     <input id="emissionFineFactor" type="checkbox" class="input divider" th:field="*{logFailed}">
                     <label for="speedFineFactorSlow">Path to save logs</label>
                     <input id="speedFineFactorSlow" class="input divider" th:field="*{logPath}">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
                     <input type="submit" value="Update settings"/>
                 </form>
                 <a th:href="@{/admin}" class="link">Go to admin page</a>
                 <form th:action="@{/logout}" method="post">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
                     <input type="submit" value="Sign Out"/>
                 </form>
             </div>

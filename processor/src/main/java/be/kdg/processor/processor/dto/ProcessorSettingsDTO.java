@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
  *A DTO for the Setting class, used to manipulate settings for the processor.
  *
  * @author C&eacute;dric Goffin
- * @see be.kdg.processor.processor.dom.Setting
+ * @see be.kdg.processor.processor.dom.ProcessorSettings
  */
 @Data
 @NoArgsConstructor

@@ -40,6 +40,7 @@ public class CameraMessage {
      * @param timestamp   is the timestamp of when the CameraMessage got created
      * @param delay       is a custom delay given to a CameraMessage, to simulate network delay
      */
+    //Todo: delete?
     public CameraMessage(int cameraId, byte[] cameraImage, LocalDateTime timestamp, long delay) {
         this.cameraId = cameraId;
         this.cameraImage = cameraImage;

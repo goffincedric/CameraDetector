@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
  * A DTO containing the current factors used in the fine amount calculation.
  *
  * @author C&eacute;dric Goffin
- * @see be.kdg.processor.fine.controllers.web.FineWebController
+ * @see be.kdg.processor.processor.dom.FineSettings
  */
 @Data
 @NoArgsConstructor

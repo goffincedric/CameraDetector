@@ -124,3 +124,7 @@ gradle-app.setting
 
 # End of https://www.gitignore.io/api/java,gradle,intellij
 .idea/workspace.xml
+
+
+# LOGGING
+processor/src/main/resources/logger/

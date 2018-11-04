@@ -53,9 +53,10 @@ public class CameraServiceAdapter {
      *
      * @param cameraId is the camera id
      * @return an Optional Camera. Is empty when no Camera could be found or when an error occurred.
+     * @throws CameraNotFoundException when no Camera could be found with the supplied id
      */
     @Cacheable("camera")
-    public Optional<Camera> getCamera(int cameraId) {
+    public Optional<Camera> getCamera(int cameraId) throws CameraNotFoundException {
         Optional<Camera> optionalCamera = cameraRepository.findByCameraId(cameraId);
 
         if (!optionalCamera.isPresent()) {
@@ -64,13 +65,10 @@ public class CameraServiceAdapter {
                 if (optionalCamera.isPresent()) {
                     List<Camera> cameras = getAllCameras();
                     Camera camera = optionalCamera.get();
-                    optionalCamera = cameras.stream().filter(c -> c.getCameraId() == camera.getCameraId()).findFirst();
+                    return cameras.stream().filter(c -> c.getCameraId() == camera.getCameraId()).findFirst();
                 }
             } catch (IOException e) {
                 LOGGER.severe(String.format("Unable to deserialize camera with id: %d", cameraId));
-                optionalCamera = Optional.empty();
-            } catch (CameraNotFoundException cnfe) {
-                LOGGER.severe(String.format("Could not find camera with id: %d", cameraId));
                 optionalCamera = Optional.empty();
             }
         }
@@ -98,8 +96,7 @@ public class CameraServiceAdapter {
             }
         } while (next);
 
-        return
-                proxyCameras.stream()
+        return proxyCameras.stream()
                         .map(c -> {
                             if (repoCameras.contains(c))
                                 return repoCameras.get(repoCameras.indexOf(c));
@@ -112,28 +109,6 @@ public class CameraServiceAdapter {
                             }
                             return createCamera(c);
                         }).collect(Collectors.toList());
-    }
-
-    /**
-     * Gets a list of all Cameras that have a certain euronorm
-     *
-     * @param euronorm is the minimum euronorm of a camera
-     * @return a list of all known Cameras with a certain euronorm
-     */
-    public List<Camera> getAllCamerasByEuronorm(int euronorm) {
-        return cameraRepository.findAllByEuroNorm(euronorm);
-    }
-
-    /**
-     * Updates a Camera from the repository
-     *
-     * @param camera   is the updated Camera
-     * @param cameraId is the id of the Camera that needs to be updated
-     * @return the updated camera from the repository
-     */
-    public Camera updateCamera(Camera camera, int cameraId) {
-        if (!cameraRepository.existsByCameraId(cameraId)) throw new CameraNotFoundException(cameraId);
-        return cameraRepository.save(camera);
     }
 
     /**
@@ -156,10 +131,14 @@ public class CameraServiceAdapter {
     public List<CameraMessage> getMessagesFromTypes(List<CameraMessage> messages, List<CameraType> cameraTypes) {
         return messages.stream()
                 .filter(m -> {
-                    Optional<Camera> optionalCamera = getCamera(m.getCameraId());
-                    if (optionalCamera.isPresent()) {
-                        Camera camera = optionalCamera.get();
-                        return cameraTypes.contains(camera.getCameraType());
+                    try {
+                        Optional<Camera> optionalCamera = getCamera(m.getCameraId());
+                        if (optionalCamera.isPresent()) {
+                            Camera camera = optionalCamera.get();
+                            return cameraTypes.contains(camera.getCameraType());
+                        }
+                    } catch (CameraNotFoundException cnfe) {
+                        LOGGER.severe(cnfe.getMessage());
                     }
                     return false;
                 })

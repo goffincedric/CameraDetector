@@ -1,7 +1,6 @@
 package be.kdg.processor.licenseplate.services;
 
 import be.kdg.processor.licenseplate.dom.Licenseplate;
-import be.kdg.processor.licenseplate.exception.LicensePlateException;
 import be.kdg.processor.licenseplate.repository.LicenseplateRepository;
 import be.kdg.processor.utils.JSONUtils;
 import be.kdg.sa.services.InvalidLicensePlateException;
@@ -28,8 +27,6 @@ import java.util.logging.Logger;
 @Transactional
 @EnableCaching
 public class LicenseplateServiceAdapter {
-    private static final Logger LOGGER = Logger.getLogger(LicenseplateServiceAdapter.class.getName());
-
     private final CloudALPRService cloudALPRService;
     private final LicensePlateServiceProxy licensePlateServiceProxy;
     private final LicenseplateRepository licenseplateRepository;
@@ -53,23 +50,23 @@ public class LicenseplateServiceAdapter {
      *
      * @param licensePlateId a string containing the license plate id
      * @return an Optional Licenseplate. Is empty when no Licenseplate could be found or when an error occurred.
-     * @throws LicensePlateException when a problem occurred during deserialization, when an invalid license plate id was supplied or when no license plate could be find
+     * @throws Exception when a problem occurred during deserialization, when an invalid license plate id was supplied or when no license plate could be find
      */
     @Cacheable("licenseplate")
-    public Optional<Licenseplate> getLicensePlate(String licensePlateId) throws LicensePlateException {
-        Optional<Licenseplate> licenseplate = licenseplateRepository.findById(licensePlateId);
-        if (!licenseplate.isPresent()) {
+    public Optional<Licenseplate> getLicensePlate(String licensePlateId) throws Exception {
+        Optional<Licenseplate> optionalLicenseplate = licenseplateRepository.findById(licensePlateId);
+        if (!optionalLicenseplate.isPresent()) {
             try {
-                licenseplate = JSONUtils.convertJSONToObject(licensePlateServiceProxy.get(licensePlateId), Licenseplate.class);
-                if (licenseplate.isPresent()) {
-                    licenseplate = Optional.of(saveLicenseplate(licenseplate.get()));
+                optionalLicenseplate = JSONUtils.convertJSONToObject(licensePlateServiceProxy.get(licensePlateId), Licenseplate.class);
+                if (optionalLicenseplate.isPresent()) {
+                    optionalLicenseplate = Optional.of(saveLicenseplate(optionalLicenseplate.get()));
                 }
             } catch (IOException | LicensePlateNotFoundException | InvalidLicensePlateException e) {
-                throw new LicensePlateException(e.getMessage(), e);
+                throw new Exception(e.getMessage(), e);
             }
         }
 
-        return licenseplate;
+        return optionalLicenseplate;
     }
 
     /**
@@ -77,16 +74,11 @@ public class LicenseplateServiceAdapter {
      *
      * @param data is an array of bytes that represents the image to be analysed
      * @return an Optional Licenseplate. Is empty when no Licenseplate could be found or when an error occurred.
-     * @throws LicensePlateException when no license plate could be recognised from image
+     * @throws Exception when no license plate could be recognised from image
      */
     @Cacheable("licenseplate")
-    public Optional<Licenseplate> getLicensePlate(byte[] data) throws LicensePlateException {
-        try {
-            String licenseplate = cloudALPRService.getLicenseplate(data);
-            return getLicensePlate(licenseplate);
-        } catch (Exception e) {
-            throw new LicensePlateException("Problem occurred getting licenseplate from image", e);
-        }
+    public Optional<Licenseplate> getLicensePlate(byte[] data) throws Exception {
+        return getLicensePlate(cloudALPRService.getLicenseplate(data));
     }
 
     /**

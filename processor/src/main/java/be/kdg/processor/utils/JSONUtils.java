@@ -16,6 +16,8 @@ import java.util.logging.Logger;
 @UtilityClass
 public class JSONUtils {
     private final Logger LOGGER = Logger.getLogger(JSONUtils.class.getName());
+    private final ObjectMapper mapper = new ObjectMapper();
+    private final JavaTimeModule timeModule = new JavaTimeModule();
 
     /**
      * Generic method used to convert a JSON string to an object of type T.
@@ -26,15 +28,12 @@ public class JSONUtils {
      * @return an Optional of type T containing the deserialized object. Can be empty when deserialization failed.
      */
     public <T> Optional<T> convertJSONToObject(String string, Class<T> objectClass) {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.registerModule(new JavaTimeModule());
-
-        Optional<T> object;
+        mapper.registerModule(timeModule);
+        Optional<T> object = Optional.empty();
         try {
             object = Optional.of(mapper.readValue(string, objectClass));
         } catch (IOException e) {
             LOGGER.severe(String.format("Object: '%s' could not be deserialized!", string));
-            object = Optional.empty();
         }
         return object;
     }

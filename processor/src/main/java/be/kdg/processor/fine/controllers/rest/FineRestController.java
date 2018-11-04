@@ -3,10 +3,10 @@ package be.kdg.processor.fine.controllers.rest;
 import be.kdg.processor.fine.dom.EmissionFine;
 import be.kdg.processor.fine.dom.Fine;
 import be.kdg.processor.fine.dom.SpeedingFine;
-import be.kdg.processor.fine.dto.changeFineAmoutDTO.ChangeFineAmountDTO;
-import be.kdg.processor.fine.dto.fineDTO.EmissionFineDTO;
-import be.kdg.processor.fine.dto.fineDTO.FineDTO;
-import be.kdg.processor.fine.dto.fineDTO.SpeedingFineDTO;
+import be.kdg.processor.fine.dto.changeFineAmout.ChangeFineAmountDTO;
+import be.kdg.processor.fine.dto.fine.EmissionFineDTO;
+import be.kdg.processor.fine.dto.fine.FineDTO;
+import be.kdg.processor.fine.dto.fine.SpeedingFineDTO;
 import be.kdg.processor.fine.exceptions.FineException;
 import be.kdg.processor.fine.services.FineService;
 import org.modelmapper.ModelMapper;
@@ -54,17 +54,17 @@ public class FineRestController {
      * @return a list of FineDTOs which contain information about fines that where made between the 'from' and 'to' timestamps
      * @throws FineException when the given timestamps aren't in the right order
      */
-    //http://localhost:8080/api/fine/get?from=16-10-2018_00:00:00&to=16-10-2018_00:00:00
     @GetMapping("/get")
-    public ResponseEntity<List<FineDTO>> getFinesBetween(@RequestParam(value = "from") @DateTimeFormat(pattern = "dd-MM-yyyy_HH:mm:ss") LocalDateTime from, @RequestParam(value = "to") @DateTimeFormat(pattern = "dd-MM-yyyy_HH:mm:ss") LocalDateTime to) throws FineException {
+    public ResponseEntity<List<FineDTO>> getFinesBetween(@RequestParam(value = "from") String from, @RequestParam(value = "to") String to) throws FineException {
         List<Fine> fines = fineService.getFinesBetween(from, to);
         return new ResponseEntity<>(fines.stream()
                 .map(f -> {
-                    if (f instanceof EmissionFine) return modelMapper.map(f, EmissionFineDTO.class);
-                    else if (f instanceof SpeedingFine) return modelMapper.map(f, SpeedingFineDTO.class);
-                    return null;
+                    if (f instanceof EmissionFine) return Optional.of(modelMapper.map(f, EmissionFineDTO.class));
+                    else if (f instanceof SpeedingFine) return Optional.of(modelMapper.map(f, SpeedingFineDTO.class));
+                    return Optional.empty();
                 })
-                .filter(Objects::nonNull)
+                .filter(Optional::isPresent)
+                .map(optional -> (FineDTO) optional.get())
                 .collect(Collectors.toList()),
                 HttpStatus.OK);
     }
