@@ -114,40 +114,6 @@ public class CameraServiceAdapter {
     }
 
     /**
-     * Method that returns the amount of fines for each CameraLocation
-     *
-     * @return a map with the amount of fines per CameraLocation
-     */
-    public Map<CameraLocation, Integer> getFineCountByCameraLocation() {
-        return getAllCameras().stream()
-                .collect(Collectors.toMap(Camera::getLocation, camera -> camera.getFines().size()));
-    }
-
-    /**
-     * Method that calculates the center coordinates of all current cameras
-     *
-     * @return a Map entry with the center latitude as key and center longitude as value
-     */
-    public Map.Entry<Double, Double> getCenterCoordsOfAllCameras() {
-        List<CameraLocation> cameraLocations = getAllCameras().stream()
-                .map(Camera::getLocation)
-                .collect(Collectors.toList());
-
-        double lat = 0D;
-        double lon = 0D;
-        int coordsCount = cameraLocations.size();
-        for (CameraLocation cameraLocation : cameraLocations) {
-            lat += cameraLocation.getLatitude();
-            lon += cameraLocation.getLongitude();
-        }
-
-        lat = lat / coordsCount;
-        lon = lon / coordsCount;
-
-        return Map.entry(lat, lon);
-    }
-
-    /**
      * Creates a new camera in the repository
      *
      * @param camera is the camera to persist to the database
