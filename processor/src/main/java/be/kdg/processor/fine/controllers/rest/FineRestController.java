@@ -106,7 +106,7 @@ public class FineRestController {
             Fine fine = optionalFine.get();
 
             modelMapper.map(patch, fine);
-            fineService.save(fine);
+            fine = fineService.save(fine);
 
             return new ResponseEntity<>(modelMapper.map(fine, ChangeFineAmountDTO.class),
                     HttpStatus.OK);

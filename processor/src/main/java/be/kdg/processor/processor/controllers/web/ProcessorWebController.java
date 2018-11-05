@@ -8,15 +8,11 @@ import org.modelmapper.ModelMapper;
 import org.springframework.amqp.rabbit.listener.RabbitListenerEndpointRegistry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
-
-import javax.servlet.RequestDispatcher;
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * A web controller that handles general requests.
@@ -49,6 +45,16 @@ public class ProcessorWebController {
     }
 
     /**
+     * Listens to requests made on the /login url
+     *
+     * @return a string with the name of the html page
+     */
+    @RequestMapping(value = {"/login"})
+    public String login() {
+        return "login";
+    }
+
+    /**
      * Listens to requests made on the /admin url
      *
      * @return a ModelAndView with the current status of the processor
@@ -58,16 +64,6 @@ public class ProcessorWebController {
         boolean isRunning = rabbitListenerEndpointRegistry.isRunning() && processor.isRunning();
 
         return new ModelAndView("admin", "processorstatus", isRunning);
-    }
-
-    /**
-     * Listens to requests made on the /login url
-     *
-     * @return a string with the name of the html page
-     */
-    @RequestMapping(value = {"/login"})
-    public String login() {
-        return "login";
     }
 
     /**
