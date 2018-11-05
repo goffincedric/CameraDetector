@@ -1,5 +1,4 @@
 var current = null;
-console.log(document.querySelector("#username"));
 document.querySelector("#username").addEventListener("focus", function() {
     if (current) current.pause();
     current = anime({

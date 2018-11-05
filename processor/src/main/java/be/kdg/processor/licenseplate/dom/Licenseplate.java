@@ -25,7 +25,7 @@ public class Licenseplate {
     private String plateId;
     private String nationalNumber;
     private int euroNumber;
-    @OneToMany(mappedBy = "licenseplate")
+    @OneToMany(mappedBy = "licenseplate", cascade = CascadeType.ALL)
     private List<Fine> fines = new ArrayList<>();
 
     @Override

@@ -15,10 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -111,6 +108,55 @@ public class CameraServiceAdapter {
                     }
                     return createCamera(c);
                 }).collect(Collectors.toList());
+    }
+
+    /**
+     * Method that calculates the center coordinates of all current cameras
+     *
+     * @return a Map entry with the center latitude as key and center longitude as value
+     */
+    public Map.Entry<Double, Double> getCenterCoordsOfAllCameras() {
+        List<CameraLocation> cameraLocations = getAllCameras().stream()
+                .map(Camera::getLocation)
+                .collect(Collectors.toList());
+
+        double lat = 0D;
+        double lon = 0D;
+        int coordsCount = cameraLocations.size();
+        for (CameraLocation cameraLocation : cameraLocations) {
+            lat += cameraLocation.getLatitude();
+            lon += cameraLocation.getLongitude();
+        }
+
+        lat = lat / coordsCount;
+        lon = lon / coordsCount;
+
+        return Map.entry(lat, lon);
+    }
+
+    /**
+     * Method that returns a list with all CameraLocations for each Fine in the database
+     *
+     * @return a list of CameraLocation objects
+     */
+    public Map<CameraLocation, Integer> getFineCountByCameraLocation() {
+        return getAllCameras().stream()
+                .collect(Collectors.toMap(Camera::getLocation, camera -> camera.getFines().size()));
+    }
+
+    /**
+     * @return a geojson formatted string with all CameraLocations for each Fine in the database
+     */
+    public String getAllFineCameraLocationsGeoJson() {
+        Map<CameraLocation, Integer> dataSet = getFineCountByCameraLocation();
+
+        StringBuilder geoJsonBuilder = new StringBuilder("{\"features\": [");
+        dataSet.forEach((loc, count) -> {
+            geoJsonBuilder.append("{\"type\": \"Feature\",\"properties\": {");
+            geoJsonBuilder.append(String.format(Locale.US, "\"count\": %d},\"geometry\": {\"type\": \"Point\",\"coordinates\": [%f, %f]}},", count, loc.getLongitude(), loc.getLatitude()));
+        });
+        geoJsonBuilder.deleteCharAt(geoJsonBuilder.length() - 1).append("],\"type\": \"FeatureCollection\"}");
+        return geoJsonBuilder.toString();
     }
 
     /**

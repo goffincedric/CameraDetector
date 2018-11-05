@@ -5,12 +5,11 @@ import be.kdg.processor.fine.exceptions.FineException;
 import be.kdg.processor.fine.repository.FineRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.logging.Logger;
 
 /**
  * Service used to manipulate Fine information from the H2 in-memory database.
@@ -22,14 +21,12 @@ import java.util.logging.Logger;
 @Service
 @Transactional
 public class FineService {
-
-
     private final FineRepository fineRepository;
 
     /**
      * Constructor used by Spring framework to initialize the service as a bean
      *
-     * @param fineRepository       the repository that has access to the H2 in-memory database
+     * @param fineRepository the repository that has access to the H2 in-memory database
      */
     @Autowired
     public FineService(FineRepository fineRepository) {
@@ -67,7 +64,8 @@ public class FineService {
     public List<Fine> getFinesBetween(String from, String to) throws FineException {
         LocalDateTime fromDate = LocalDateTime.parse(from);
         LocalDateTime toDate = LocalDateTime.parse(to);
-        if (fromDate.isAfter(toDate)) throw new FineException("From date (" + fromDate + ") is after to date (" + toDate + ")");
+        if (fromDate.isAfter(toDate))
+            throw new FineException("From date (" + fromDate + ") is after to date (" + toDate + ")");
         return fineRepository.findAllByTimestampBetween(fromDate, toDate);
     }
 
