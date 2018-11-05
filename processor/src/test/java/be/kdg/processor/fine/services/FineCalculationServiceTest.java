@@ -18,6 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -70,17 +72,17 @@ public class FineCalculationServiceTest {
                 new CameraMessage(2, null, "4-ABC-123", LocalDateTime.now().withNano(0).plusSeconds(120), 120000)
         );
 
-        Camera camera = cameraServiceAdapter.getCamera(speedpair.getKey().getCameraId()).get();
-
         Optional<Fine> optionalFine = fineCalculationService.calcSpeedFine(
                 speedpair,
-                camera,
+                new LinkedList() {{addFirst(cameraServiceAdapter.getCamera(speedpair.getKey().getCameraId()).get()); addLast(cameraServiceAdapter.getCamera(speedpair.getValue().getCameraId()).get());}},
                 licenseplateServiceAdapter.getLicensePlate(speedpair.getKey().getLicenseplate()).get(),
                 speedFineFactorSlow,
                 speedFineFactorFast,
                 paymentDeadlineDays
         );
 
+
+        Camera camera = cameraServiceAdapter.getCamera(speedpair.getKey().getCameraId()).get();
         Assert.assertTrue(optionalFine.isPresent());
         Fine fine = optionalFine.get();
         Assert.assertTrue(fine instanceof SpeedingFine);

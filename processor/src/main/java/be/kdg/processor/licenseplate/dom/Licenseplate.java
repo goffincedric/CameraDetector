@@ -25,7 +25,7 @@ public class Licenseplate {
     private String plateId;
     private String nationalNumber;
     private int euroNumber;
-    @OneToMany(targetEntity = Fine.class, fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @OneToMany(mappedBy = "licenseplate")
     private List<Fine> fines = new ArrayList<>();
 
     @Override

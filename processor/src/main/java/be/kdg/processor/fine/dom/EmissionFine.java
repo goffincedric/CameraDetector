@@ -1,5 +1,6 @@
 package be.kdg.processor.fine.dom;
 
+import be.kdg.processor.camera.dom.Camera;
 import be.kdg.processor.licenseplate.dom.Licenseplate;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,7 +22,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Entity
 public class EmissionFine extends Fine {
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "fineId")
     public Fine fine;
     private int actualEmission;
@@ -30,15 +31,16 @@ public class EmissionFine extends Fine {
     /**
      * EmissionFine constructor
      *
-     * @param amount          is amount of the fine
-     * @param timestamp       is the timestamp the fine was made
-     * @param paymentDeadline is the deadline for when the fine must be paid
-     * @param licenseplate    is the licenseplate of the owner that got fined
-     * @param actualEmission  is the actual emission of the car of the license plate
-     * @param allowedEmission is the minumum emission euronorm of the camera that measured the actual emission
+     * @param amount          amount of the fine
+     * @param timestamp       the timestamp the fine was made
+     * @param paymentDeadline the deadline for when the fine must be paid
+     * @param licenseplate    the licenseplate of the owner that got fined
+     * @param actualEmission  the actual emission of the car of the license plate
+     * @param allowedEmission the minumum emission euronorm of the camera that measured the actual emission
+     * @param camera          the camera that recorded the cameramessage for this Fine
      */
-    public EmissionFine(double amount, LocalDateTime timestamp, LocalDateTime paymentDeadline, Licenseplate licenseplate, int actualEmission, int allowedEmission) {
-        super(amount, timestamp, paymentDeadline, licenseplate);
+    public EmissionFine(double amount, LocalDateTime timestamp, LocalDateTime paymentDeadline, Licenseplate licenseplate, int actualEmission, int allowedEmission, Camera camera) {
+        super(amount, timestamp, paymentDeadline, licenseplate, camera);
         this.actualEmission = actualEmission;
         this.allowedEmission = allowedEmission;
     }

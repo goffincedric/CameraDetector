@@ -22,22 +22,18 @@ import java.util.logging.Logger;
 @Service
 @Transactional
 public class FineService {
-    private static final Logger LOGGER = Logger.getLogger(FineService.class.getName());
 
 
     private final FineRepository fineRepository;
-    private final FineDetectionService fineDetectionService;
 
     /**
      * Constructor used by Spring framework to initialize the service as a bean
      *
      * @param fineRepository       the repository that has access to the H2 in-memory database
-     * @param fineDetectionService a helper service that detects future fines from cameramessages
      */
     @Autowired
-    public FineService(FineRepository fineRepository, FineDetectionService fineDetectionService) {
+    public FineService(FineRepository fineRepository) {
         this.fineRepository = fineRepository;
-        this.fineDetectionService = fineDetectionService;
     }
 
     /**
@@ -109,7 +105,6 @@ public class FineService {
      * @return a list of Fines from the repository that were persisted to the database
      */
     public List<Fine> saveFines(List<Fine> fines) {
-        fines = fineRepository.saveAll(fines);
-        return fines;
+        return fineRepository.saveAll(fines);
     }
 }

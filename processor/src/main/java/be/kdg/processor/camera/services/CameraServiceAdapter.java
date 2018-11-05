@@ -1,6 +1,7 @@
 package be.kdg.processor.camera.services;
 
 import be.kdg.processor.camera.dom.Camera;
+import be.kdg.processor.camera.dom.CameraLocation;
 import be.kdg.processor.camera.dom.CameraMessage;
 import be.kdg.processor.camera.dom.CameraType;
 import be.kdg.processor.camera.repository.CameraRepository;
@@ -16,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -97,18 +99,18 @@ public class CameraServiceAdapter {
         } while (next);
 
         return proxyCameras.stream()
-                        .map(c -> {
-                            if (repoCameras.contains(c))
-                                return repoCameras.get(repoCameras.indexOf(c));
-                            else if (c.getSegment() == null && proxyCameras.stream().noneMatch(ca -> ca.getSegment() != null && ca.getSegment().getConnectedCameraId() == c.getCameraId())) {
-                                c.setCameraType(CameraType.EMISSION);
-                            } else if (c.getEuroNorm() == 0) {
-                                c.setCameraType(CameraType.SPEED);
-                            } else {
-                                c.setCameraType(CameraType.SPEED_EMISSION);
-                            }
-                            return createCamera(c);
-                        }).collect(Collectors.toList());
+                .map(c -> {
+                    if (repoCameras.contains(c))
+                        return repoCameras.get(repoCameras.indexOf(c));
+                    else if (c.getSegment() == null && proxyCameras.stream().noneMatch(ca -> ca.getSegment() != null && ca.getSegment().getConnectedCameraId() == c.getCameraId())) {
+                        c.setCameraType(CameraType.EMISSION);
+                    } else if (c.getEuroNorm() == 0) {
+                        c.setCameraType(CameraType.SPEED);
+                    } else {
+                        c.setCameraType(CameraType.SPEED_EMISSION);
+                    }
+                    return createCamera(c);
+                }).collect(Collectors.toList());
     }
 
     /**
@@ -118,7 +120,7 @@ public class CameraServiceAdapter {
      * @return the persisted camera from the repository
      */
     public Camera createCamera(Camera camera) {
-        return cameraRepository.saveAndFlush(camera);
+        return cameraRepository.save(camera);
     }
 
     /**

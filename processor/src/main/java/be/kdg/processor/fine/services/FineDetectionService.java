@@ -111,9 +111,6 @@ public class FineDetectionService {
             addAll(speedPair.getKey());
         }};
 
-        // Link fines to licenseplates
-        fines.forEach(f -> f.getLicenseplate().getFines().add(f));
-
         // Return fines + unprocessed
         return Map.entry(fines, unprocessed);
     }
@@ -180,14 +177,18 @@ public class FineDetectionService {
         List<Fine> speedFines = speedPair.getKey().entrySet().stream()
                 .map(pair -> {
                     try {
-                        Optional<Camera> optionalCamera = cameraServiceAdapter.getCamera(pair.getKey().getCameraId());
-                        if (optionalCamera.isPresent()) {
-                            Camera camera = optionalCamera.get();
+                        Optional<Camera> optionalFirstCamera = cameraServiceAdapter.getCamera(pair.getKey().getCameraId());
+                        Optional<Camera> optionalSecondCamera = cameraServiceAdapter.getCamera(pair.getValue().getCameraId());
+                        if (optionalFirstCamera.isPresent() && optionalSecondCamera.isPresent()) {
+                            LinkedList<Camera> cameras = new LinkedList<>() {{
+                                offerFirst(optionalFirstCamera.get());
+                                offerLast(optionalSecondCamera.get());
+                            }};
 
                             Optional<Licenseplate> optionalLicenseplate = licenseplateServiceAdapter.getLicensePlate(pair.getKey().getLicenseplate());
                             if (optionalLicenseplate.isPresent()) {
                                 Licenseplate licenseplate = optionalLicenseplate.get();
-                                return fineCalculationService.calcSpeedFine(pair, camera, licenseplate, speedFineFactorSlow, speedFineFactorFast, paymentDeadlineDays);
+                                return fineCalculationService.calcSpeedFine(pair, cameras, licenseplate, speedFineFactorSlow, speedFineFactorFast, paymentDeadlineDays);
                             }
                         }
                     } catch (Exception e) {

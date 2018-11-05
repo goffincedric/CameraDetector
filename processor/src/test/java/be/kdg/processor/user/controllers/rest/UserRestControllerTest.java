@@ -57,8 +57,8 @@ public class UserRestControllerTest {
     }
 
     @Test
-    public void getNonExistantUser() throws Exception {
-        mockMvc.perform(get("/api/user?username=NonExistantUser"))
+    public void getNonExistentUser() throws Exception {
+        mockMvc.perform(get("/api/user?username=NonExistentUser"))
                 .andDo(print())
                 .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }

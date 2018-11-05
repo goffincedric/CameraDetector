@@ -71,12 +71,10 @@ public class CloudALPRService {
                 licensePlate = (String) ((LinkedHashMap) ((ArrayList) jsonMap.get("results")).get(0)).get("plate");
             } catch (Exception ignored) {
                 // Last-ditch effort to find license plate via regex
-                Pattern pattern = Pattern.compile(".*\\{\"plate\": \"([1-9][a-zA-Z]{3}[0-9]{3})\".*");
-                Matcher matcher = pattern.matcher(json_content.toString());
+                Matcher matcher = Pattern.compile(".*\\{\"plate\": \"([1-9][a-zA-Z]{3}[0-9]{3})\".*").matcher(json_content.toString());
                 if (matcher.matches())
                     licensePlate = matcher.group(1);
                 else {
-                    LOGGER.severe(String.format("License plate not recognised: %s", json_content));
                     throw new LicensePlateNotFoundException("License plate id could not be recognised from supplied image!");
                 }
             }

@@ -1,11 +1,13 @@
 package be.kdg.processor.camera.dom;
 
+import be.kdg.processor.fine.dom.Fine;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Model class that holds information about a Camera. Gets stored in an H2 in-memory database in a table named 'tblCamera'.
@@ -17,14 +19,13 @@ import javax.persistence.*;
  * @see CameraType
  */
 
-@Getter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "tblCamera")
 public class Camera {
     @Id
-    @Column(name = "id")
     private int cameraId;
     @OneToOne(targetEntity = CameraLocation.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private CameraLocation location;
@@ -32,6 +33,8 @@ public class Camera {
     private Segment segment;
     private int euroNorm;
     private CameraType cameraType;
+    @ManyToMany(targetEntity = Fine.class, mappedBy = "cameras", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<Fine> fines = new ArrayList<>();
 
     /**
      * Setter for the property cameraType
