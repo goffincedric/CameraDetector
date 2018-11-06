@@ -6,6 +6,7 @@ import be.kdg.processor.fine.dom.EmissionFine;
 import be.kdg.processor.fine.dom.Fine;
 import be.kdg.processor.fine.services.FineService;
 import be.kdg.processor.licenseplate.dom.Licenseplate;
+import be.kdg.processor.licenseplate.services.LicenseplateServiceAdapter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Assert;
 import org.junit.Test;
@@ -45,26 +46,27 @@ public class CameraWebControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
     @Autowired
-    private ModelMapper modelMapper;
-    @Autowired
     private FineService fineService;
     @Autowired
     private CameraServiceAdapter cameraServiceAdapter;
+    @Autowired
+    private LicenseplateServiceAdapter licenseplateServiceAdapter;
 
     @Test
     @WithMockUser(authorities = {"WEBADMIN"})
     public void heatmap() throws Exception {
         Camera camera = cameraServiceAdapter.getCamera(3).get();
+        Licenseplate licenseplate = licenseplateServiceAdapter.saveLicenseplate(new Licenseplate(
+                "1-ABC-123",
+                "123456789",
+                1,
+                new ArrayList<>()));
         LocalDateTime now = LocalDateTime.now();
-        Fine fine = fineService.save(new EmissionFine(
+        fineService.save(new EmissionFine(
                 100,
                 now,
                 now.plusDays(31),
-                new Licenseplate(
-                        "1-ABC-123",
-                        "123456789",
-                        1,
-                        new ArrayList<>()),
+                licenseplate,
                 1,
                 4,
                 camera

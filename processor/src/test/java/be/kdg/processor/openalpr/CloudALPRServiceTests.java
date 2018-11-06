@@ -29,19 +29,19 @@ public class CloudALPRServiceTests {
     @Test
     public void testConnection() throws Exception {
         // Read image file to byte array
-//        ClassLoader classLoader = getClass().getClassLoader();
-//        Path path = new File(classLoader.getResource("images/1.jpg").toURI().getPath()).toPath();
-//        byte[] image = Files.readAllBytes(path);
-//
-//        // Encode file bytes to base64 and put in new message
-//        CameraMessage message = new CameraMessage(
-//                1,
-//                Base64.getEncoder().encode(image),
-//                LocalDateTime.now(),
-//                0
-//        );
-//
-//        String licenseplate = cloudALPRService.getLicenseplate(message.getCameraImage());
-//        Assert.assertEquals("1-EAF-955", licenseplate);
+        ClassLoader classLoader = getClass().getClassLoader();
+        Path path = new File(classLoader.getResource("images/1.jpg").toURI().getPath()).toPath();
+        byte[] image = Files.readAllBytes(path);
+
+        // Encode file bytes to base64 and put in new message
+        CameraMessage message = new CameraMessage(
+                1,
+                Base64.getEncoder().encode(image),
+                LocalDateTime.now(),
+                0
+        );
+
+        String licenseplate = cloudALPRService.getLicenseplate(message.getCameraImage());
+        Assert.assertEquals("1-EAF-955", licenseplate);
     }
 }
