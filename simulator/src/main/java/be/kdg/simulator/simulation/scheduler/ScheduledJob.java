@@ -18,8 +18,6 @@ import java.util.logging.Logger;
 @Component
 @DisallowConcurrentExecution
 public class ScheduledJob implements Job {
-    private static final Logger LOGGER = Logger.getLogger(ScheduledJob.class.getName());
-
     /**
      * Job to execute.
      *

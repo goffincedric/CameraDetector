@@ -17,10 +17,6 @@ import java.util.Optional;
 public interface CameraRepository extends JpaRepository<Camera, Integer> {
     Optional<Camera> findByCameraId(int cameraId);
 
-    boolean existsByCameraId(int cameraId);
-
-    List<Camera> findAllByEuroNorm(int euronorm);
-
     @Override
     <S extends Camera> S save(S entity);
 }

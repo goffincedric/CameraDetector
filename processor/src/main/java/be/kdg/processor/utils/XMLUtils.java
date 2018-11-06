@@ -8,7 +8,6 @@ import lombok.experimental.UtilityClass;
 
 import java.io.IOException;
 import java.util.Optional;
-import java.util.logging.Logger;
 
 /**
  * Utility class for XML deserialization.
@@ -23,10 +22,11 @@ public class XMLUtils {
     /**
      * Generic method used to convert an XML string to an object of type T.
      *
-     * @param string      is an XML string that needs to be deserialized
-     * @param objectClass is the class the XML string needs to be serialized to
-     * @param <T>         is the generic type used for deserialization
+     * @param string      an XML string that needs to be deserialized
+     * @param objectClass the class the XML string needs to be serialized to
+     * @param <T>         the generic type used for deserialization
      * @return an Optional of type T containing the deserialized object. Can be empty when deserialization failed.
+     * @throws IOException when Object could not be deserialized from supplied XML string
      */
     public <T> Optional<T> convertXMLToObject(String string, Class<T> objectClass) throws IOException {
         mapper.registerModule(timeModule);
@@ -38,6 +38,7 @@ public class XMLUtils {
      *
      * @param object object to serialize to XML string
      * @return an Optional string containing the serialized object. Can be empty when serialization failed.
+     * @throws JsonProcessingException when the supplied Object could not be serialized to an XML string
      */
     public Optional<String> convertObjectToXML(Object object) throws JsonProcessingException {
         mapper.registerModule(timeModule);

@@ -27,8 +27,9 @@ public class CSVUtils {
     /**
      * Logs failed messages to a CSV file.
      *
-     * @param message     is a CameraMessage that failed to process # times (configurable via application.properties)
-     * @param logger_path is the path where the CSV file should be written (configurable via application.properties)
+     * @param message     a CameraMessage that failed to process # times (configurable via application.properties)
+     * @param logger_path the path where the CSV file should be written (configurable via application.properties)
+     * @return a string with the path to the log file
      */
     public String writeMessage(CameraMessage message, String logger_path) {
         if (logger_path == null) throw new IllegalArgumentException("No path to logfile was given!");

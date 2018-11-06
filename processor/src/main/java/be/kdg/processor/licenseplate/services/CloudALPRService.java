@@ -29,14 +29,14 @@ public class CloudALPRService {
 
     @Value("${openalpr.secret_key}")
     private String secret_key;
-    private ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     /**
      * Method that contacts the OpenALPR API to recognise a license plate id from an image.
      *
      * @param image is an array of bytes that represents the image to be analysed
      * @return a license plate id
-     * @throws LicensePlateNotFoundException when no (valid) license plate could be recognised from the supplied image
+     * @throws Exception when no (valid) license plate could be recognised from the supplied image
      */
     public String getLicenseplate(byte[] image) throws Exception {
         String licensePlate = null;

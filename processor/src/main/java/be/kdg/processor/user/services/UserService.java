@@ -14,6 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -84,6 +85,16 @@ public class UserService implements UserDetailsService {
         // User does not exist, create new user
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
+    }
+
+    /**
+     * Creates multiple Roles in the repository.
+     *
+     * @param roles a list of Roles that will be persisted to the database
+     * @return a list of Roles from the repository that were persisted to the database
+     */
+    public List<Role> saveRoles(List<Role> roles) {
+        return roleRepository.saveAll(roles);
     }
 
     /**

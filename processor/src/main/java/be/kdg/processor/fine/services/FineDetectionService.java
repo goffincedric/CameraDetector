@@ -64,7 +64,7 @@ public class FineDetectionService {
     /**
      * Gets and updates current processor settings from settingsrepository;
      */
-    public void updateProcessorSettings() {
+    private void updateProcessorSettings() {
         Optional<IntSetting> optionalEmissionTimeFrameDays = settingService.getIntSetting("emissionTimeFrameDays");
         optionalEmissionTimeFrameDays.ifPresent(s -> emissionTimeFrameDays = s.getIntValue());
         Optional<DoubleSetting> optionalEmissionFineFactor = settingService.getDoubleSetting("emissionFineFactor");

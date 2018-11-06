@@ -58,19 +58,6 @@ body {
     }
 }
 
-.center {
-    background: white;
-    top: 20px;
-    position: relative;
-    width: 100%;
-}
-
-@media (max-width: 767px) {
-    .center {
-        height: 100%;
-        left: 20px;
-    }
-}
 .title {
     font-size: 50px;
     font-weight: 900;

@@ -99,7 +99,7 @@ public class FineService {
     /**
      * Creates multiple Fines in the repository
      *
-     * @param fines is a list of Fines that will be persisted to the database.
+     * @param fines a list of Fines that will be persisted to the database.
      * @return a list of Fines from the repository that were persisted to the database
      */
     public List<Fine> saveFines(List<Fine> fines) {
