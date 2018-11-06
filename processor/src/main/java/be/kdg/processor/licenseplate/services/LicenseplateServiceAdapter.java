@@ -10,11 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.Optional;
-import java.util.logging.Logger;
 
 /**
  * Service used to manipulate Camera information from the H2 in-memory database or from an external CameraServiceProxy.
@@ -78,7 +77,8 @@ public class LicenseplateServiceAdapter {
      */
     @Cacheable("licenseplate")
     public Optional<Licenseplate> getLicensePlate(byte[] data) throws Exception {
-        return getLicensePlate(cloudALPRService.getLicenseplate(data));
+        String licenceplateId = cloudALPRService.getLicenseplate(data);
+        return getLicensePlate(licenceplateId);
     }
 
     /**

@@ -8,6 +8,7 @@ import be.kdg.processor.fine.dto.fine.EmissionFineDTO;
 import be.kdg.processor.fine.dto.fine.FineDTO;
 import be.kdg.processor.fine.services.FineService;
 import be.kdg.processor.licenseplate.dom.Licenseplate;
+import be.kdg.processor.licenseplate.services.LicenseplateServiceAdapter;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Assert;
@@ -27,7 +28,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.*;
 
-import static junit.framework.TestCase.fail;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -53,21 +53,22 @@ public class FineRestControllerTest {
     private FineService fineService;
     @Autowired
     private CameraServiceAdapter cameraServiceAdapter;
+    @Autowired
+    private LicenseplateServiceAdapter licenseplateServiceAdapter;
+
 
     private Licenseplate licenseplate;
     private LocalDateTime now;
 
     @Before
     public void prepareFines() {
-        licenseplate = new Licenseplate(
+        licenseplate = licenseplateServiceAdapter.saveLicenseplate(new Licenseplate(
                 "1-ABC-123",
                 "123456789",
                 1,
                 new ArrayList<>()
-        );
+        ));
         now = LocalDateTime.now();
-
-
     }
 
     @Test

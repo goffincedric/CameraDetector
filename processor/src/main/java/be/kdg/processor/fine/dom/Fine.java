@@ -32,7 +32,7 @@ public abstract class Fine {
     private LocalDateTime timestamp;
     private LocalDateTime paymentDeadline;
     private String licenseplateId;
-    @ManyToOne(targetEntity = Licenseplate.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(targetEntity = Licenseplate.class, fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     private Licenseplate licenseplate;
     @ManyToMany(targetEntity = Camera.class, fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinTable(name = "tbl_fine_camera", joinColumns = @JoinColumn(name = "fineId"), inverseJoinColumns = @JoinColumn(name = "cameraId"))
