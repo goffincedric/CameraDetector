@@ -8,6 +8,8 @@ import javax.persistence.*;
  * Model class that holds information about processor statistics.
  *
  * @author Cédric Goffin
+ * @see IntStatistic
+ * @see DateTimeStatistic
  */
 @NoArgsConstructor
 @Entity

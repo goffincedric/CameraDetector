@@ -12,14 +12,22 @@ import org.springframework.web.servlet.ModelAndView;
 import java.time.format.DateTimeFormatter;
 
 /**
+ * A web controller for Statistic package.
+ *
  * @author Cédric Goffin
- * 06/11/2018 19:27
  */
 @Controller
 public class StatisticWebController {
     private final StatisticService statisticService;
     private final ModelMapper modelMapper;
 
+
+    /**
+     * StatisticWebController constructor. Autowired via Spring.
+     *
+     * @param statisticService the service Service for the statistic package. Manages Statistics for the Processor
+     * @param modelMapper      is an autowired ModelMapper object
+     */
     @Autowired
     public StatisticWebController(StatisticService statisticService, ModelMapper modelMapper) {
         this.statisticService = statisticService;

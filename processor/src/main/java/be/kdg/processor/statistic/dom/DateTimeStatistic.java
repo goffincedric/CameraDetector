@@ -10,10 +10,11 @@ import java.time.LocalDateTime;
  * Statistic class that contains a LocalDateTime value
  *
  * @author Cédric Goffin
+ * @see Statistic
  */
 @NoArgsConstructor
 @Entity
-public class DateTimeStatistic extends Statistic{
+public class DateTimeStatistic extends Statistic {
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "statisticId")
     private Statistic statistic;

@@ -8,6 +8,7 @@ import javax.persistence.*;
  * Statistic class that contains an Integer value
  *
  * @author Cédric Goffin
+ * @see Statistic
  */
 @NoArgsConstructor
 @Entity
