@@ -13,10 +13,16 @@ import java.util.List;
 
 /**
  * Abstract model class that holds information about a Fine. Gets stored in an H2 in-memory database in a table named 'tblFine'.
+ * Can be expanded in the future by creating a class that extends Fine. A new Fine calculation method can be made in the FineCalculationService,
+ * along with a method in the FineDetectionService on how to detect the new fine type from a list of CameraMessages. This new method can then be placed
+ * in the processMessages method (FineDetectionService) under the part "Process different Fine types". If only messages from a certain CameraType need to be processed,
+ * the new CameraType can be added to the enum. You can now filter out messages from the cameras having the new CameraType using the getMessagesFromTypes from the CameraServiceAdapter.
  *
  * @author C&eacute;dric Goffin
  * @see EmissionFine
  * @see SpeedingFine
+ * @see be.kdg.processor.fine.services.FineCalculationService
+ * @see be.kdg.processor.fine.services.FineDetectionService
  */
 
 @Data
@@ -68,7 +74,7 @@ public abstract class Fine {
      * @param timestamp       the timestamp the fine was made
      * @param paymentDeadline the deadline for when the fine must be paid
      * @param licenseplate    the licenseplate of the owner that got fined
-     * @param camera         a Camera object that hold information about the fine
+     * @param camera          a Camera object that hold information about the fine
      */
     public Fine(double amount, LocalDateTime timestamp, LocalDateTime paymentDeadline, Licenseplate licenseplate, Camera camera) {
         this.amount = amount;

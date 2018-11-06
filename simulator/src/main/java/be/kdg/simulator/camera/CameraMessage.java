@@ -36,17 +36,6 @@ public class CameraMessage {
     /**
      * @param cameraId     a camera id
      * @param licenseplate a string containing a valid license plate id
-     * @param timestamp    a timestamp from when the message was generated
-     */
-    public CameraMessage(int cameraId, String licenseplate, LocalDateTime timestamp) {
-        this.cameraId = cameraId;
-        this.setLicenseplate(licenseplate);
-        this.timestamp = timestamp;
-    }
-
-    /**
-     * @param cameraId     a camera id
-     * @param licenseplate a string containing a valid license plate id
      * @param delay        a delay in milliseconds to artificially create delay
      */
     public CameraMessage(int cameraId, String licenseplate, long delay) {

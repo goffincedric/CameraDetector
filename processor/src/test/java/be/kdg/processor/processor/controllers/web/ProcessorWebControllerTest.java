@@ -3,8 +3,13 @@ package be.kdg.processor.processor.controllers.web;
 import be.kdg.processor.processor.Processor;
 import be.kdg.processor.processor.dto.ProcessorSettingsDTO;
 import be.kdg.processor.processor.services.SettingService;
+import be.kdg.processor.user.dom.Role;
+import be.kdg.processor.user.dom.User;
+import be.kdg.processor.user.exceptions.UserException;
+import be.kdg.processor.user.services.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.modelmapper.ModelMapper;
@@ -16,6 +21,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -43,26 +50,50 @@ public class ProcessorWebControllerTest {
     private ModelMapper modelMapper;
     @Autowired
     private SettingService settingService;
+    @Autowired
+    private UserService userService;
+
+    private String testUserUserName = "testUser";
+    private String testUserPass = "testUser";
+
+    private String testSuperAdminUserName = "testSuperAdmin";
+    private String testSuperAdminPass = "testSuperAdmin";
+
+
+    @Before
+    public void setupUsers() throws UserException {
+        userService.save(new User(testUserUserName, testUserPass, List.of()));
+        userService.save(new User(testSuperAdminUserName, testSuperAdminPass, List.of(new Role("DBADMIN"), new Role("WEBADMIN"))));
+    }
 
     @Test
     public void testSuccessLogin() throws Exception {
-        RequestBuilder requestBuilder = post("/login")
-                .param("username", "admin")
-                .param("password", "admin")
-                .with(csrf());
-        mockMvc.perform(requestBuilder)
+        mockMvc.perform(post("/login")
+                .param("username", testSuperAdminUserName)
+                .param("password", testSuperAdminPass)
+                .with(csrf()))
                 .andDo(print())
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/admin"));
     }
 
     @Test
-    public void testBadLogin() throws Exception {
-        RequestBuilder requestBuilder = post("/login")
-                .param("username", "admin")
-                .param("password", "notAnAdmin")
-                .with(csrf());
-        mockMvc.perform(requestBuilder)
+    public void testUnauthorizedLogin() throws Exception {
+        mockMvc.perform(post("/login")
+                .param("username", testUserUserName)
+                .param("password", testUserPass)
+                .with(csrf()))
+                .andDo(print())
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/"));
+    }
+
+    @Test
+    public void testBadCredentialsLogin() throws Exception {
+        mockMvc.perform(post("/login")
+                .param("username", testSuperAdminUserName)
+                .param("password", "testSuperAdminBadCredentials")
+                .with(csrf()))
                 .andDo(print())
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/login?error"));
@@ -70,10 +101,27 @@ public class ProcessorWebControllerTest {
 
     @Test
     public void testLoginNoCsrf() throws Exception {
-        RequestBuilder requestBuilder = post("/login")
-                .param("username", "admin")
-                .param("password", "admin");
-        mockMvc.perform(requestBuilder)
+        mockMvc.perform(post("/login")
+                .param("username", testSuperAdminUserName)
+                .param("password", testSuperAdminPass))
+                .andDo(print())
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithMockUser(authorities = {"DBADMIN"})
+    public void testUnauthorizedPageAccessDBAdmin() throws Exception {
+        mockMvc.perform(get("/fine/settings")
+                .with(csrf()))
+                .andDo(print())
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithMockUser(authorities = {"WEBADMIN"})
+    public void testUnauthorizedPageAccessWebAdmin() throws Exception {
+        mockMvc.perform(get("/h2-console")
+                .with(csrf()))
                 .andDo(print())
                 .andExpect(status().isForbidden());
     }
@@ -85,6 +133,7 @@ public class ProcessorWebControllerTest {
 
         RequestBuilder requestBuilder = post("/toggleProcessor")
                 .with(csrf());
+
         mockMvc.perform(requestBuilder)
                 .andDo(print())
                 .andExpect(status().is3xxRedirection())

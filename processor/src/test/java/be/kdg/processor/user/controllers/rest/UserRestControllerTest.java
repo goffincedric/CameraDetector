@@ -81,6 +81,20 @@ public class UserRestControllerTest {
     }
 
     @Test
+    public void addUserExistent() throws Exception, UserException {
+        userService.save(new User("testUser", "testUser", List.of(new Role("test"))));
+        UserDTO userDTO = new UserDTO("testUser", "testUser", List.of("test"));
+
+        mockMvc.perform(post("/api/user")
+                .contentType(APPLICATION_JSON_UTF8)
+                .content(objectMapper.writeValueAsString(userDTO))
+                .with(csrf()))
+                .andDo(print())
+                .andExpect(result -> Assert.assertEquals(String.format("User with username %s already exists", userDTO.getUsername()), result.getResponse().getContentAsString()))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
+    }
+
+    @Test
     public void updateUser() throws Exception, UserException {
         userService.save(new User("testUser", "testUser", List.of(new Role("test"))));
         UserDTO userDTO = new UserDTO("testUser", "testUser", List.of("test", "test2"));

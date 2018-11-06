@@ -12,7 +12,9 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -36,6 +38,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
+    @Bean
+    public AuthenticationSuccessHandler successHandler() {
+        return new DefaultUrlAuthenticationSuccessHandler();
+    }
+
     /**
      * Method that configures the security (user/role access) for all urls.
      *
@@ -45,11 +52,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/", "/home", "/error", "/api/**", "/css/**", "/js/**").permitAll()
-                .antMatchers("/**").hasAuthority("WEBADMIN")
+                .antMatchers("/", "/home", "/error", "/api/**", "/css/**", "/img/**", "/js/**").permitAll()
+                .antMatchers("/admin").hasAnyAuthority("WEBADMIN", "DBADMIN")
                 .antMatchers(h2ConsolePath + "/**").hasAuthority("DBADMIN")
+                .antMatchers("/**").hasAuthority("WEBADMIN")
                 .and()
-                .formLogin().loginPage("/login").defaultSuccessUrl("/admin").permitAll()
+                .formLogin().loginPage("/login").permitAll().successHandler(successHandler())
                 .and()
                 .logout().permitAll();
 
@@ -70,6 +78,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configureGlobal(AuthenticationManagerBuilder auth, UserService userService) throws Exception, UserException {
         auth.userDetailsService(userService);
 
-        userService.save(new User("admin", "admin", List.of(new Role("WEBADMIN"), new Role("DBADMIN"))));
+        userService.save(new User("user", "user", new ArrayList<>()));
+        userService.save(new User("dbadmin", "dbadmin", List.of(new Role("DBADMIN"))));
+        userService.save(new User("webadmin", "webadmin", List.of(new Role("WEBADMIN"))));
+        userService.save(new User("admin", "admin", List.of(new Role("DBADMIN"), new Role("WEBADMIN"))));
     }
 }
