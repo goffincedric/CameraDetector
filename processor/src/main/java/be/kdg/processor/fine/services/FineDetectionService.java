@@ -87,31 +87,30 @@ public class FineDetectionService {
         // Update detection
         updateProcessorSettings();
 
+        /* Sort messages according to fine type */
         // Filter out speedmessages
         List<CameraMessage> speedMessages = cameraServiceAdapter.getMessagesFromTypes(messages, List.of(CameraType.SPEED, CameraType.SPEED_EMISSION));
         // Filter out emissionmessages
         List<CameraMessage> emissionMessages = cameraServiceAdapter.getMessagesFromTypes(messages, List.of(CameraType.EMISSION, CameraType.SPEED_EMISSION));
 
-        // Init unprocessed messages list with messages that where not speed/emissionmessages
-        List<CameraMessage> unprocessed = messages.stream().filter(m -> !speedMessages.contains(m) && !emissionMessages.contains(m)).collect(Collectors.toList());
-
-        // Process emissionmessages
+        /* Process different Fine types */
+        // Process speedmessages
         Map.Entry<List<Fine>, List<CameraMessage>> emissionPair = processEmissionFines(emissionMessages);
-
         // Process speedmessages
         Map.Entry<List<Fine>, List<CameraMessage>> speedPair = processSpeedingFines(speedMessages);
 
-        // List of unprocessed messages to return
+        /* Combine all unprocessed messages */
+        // Init List with CameraMessages that where not speed/emissionmessages or could not be processed
+        List<CameraMessage> unprocessed = messages.stream().filter(m -> !speedMessages.contains(m) && !emissionMessages.contains(m)).collect(Collectors.toList());
         unprocessed.addAll(emissionPair.getValue());
         unprocessed.addAll(speedPair.getValue());
 
+        // Return all fines + unprocessed messages
         // Merge emission and speed fine lists
         List<Fine> fines = new ArrayList<>() {{
             addAll(emissionPair.getKey());
             addAll(speedPair.getKey());
         }};
-
-        // Return fines + unprocessed
         return Map.entry(fines, unprocessed);
     }
 

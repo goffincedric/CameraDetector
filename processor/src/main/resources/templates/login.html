@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.w3.org/1999/xhtml"
-xmlns="http://www.w3.org/1999/xhtml">
+      xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <link rel="stylesheet" href="/css/style.css">
     <script src="/js/style.js" defer></script>
@@ -46,6 +46,10 @@ xmlns="http://www.w3.org/1999/xhtml">
                 <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
                 <input type="submit" id="submit" value="Submit">
             </form>
+
+            <div class="info">
+                <a th:href="@{/}" class="link">Back to homepage</a>
+            </div>
         </div>
     </div>
 </div>

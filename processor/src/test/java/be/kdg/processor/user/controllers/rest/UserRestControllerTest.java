@@ -13,6 +13,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -64,7 +65,6 @@ public class UserRestControllerTest {
     }
 
     @Test
-    // Todo: Dirties context?
     public void addUser() throws Exception {
         UserDTO userDTO = new UserDTO("testUser", "testUser", List.of("test"));
 
@@ -82,8 +82,8 @@ public class UserRestControllerTest {
     }
 
     @Test
-    public void addUserExistent() throws Exception {
-        //TODO: Checken op dubbele gebruiker toevoegen
+    public void addUserExistent() throws Exception, UserException {
+        userService.save(new User("testUser", "testUser", List.of(new Role("test"))));
         UserDTO userDTO = new UserDTO("testUser", "testUser", List.of("test"));
 
         mockMvc.perform(post("/api/user")
@@ -91,12 +91,8 @@ public class UserRestControllerTest {
                 .content(objectMapper.writeValueAsString(userDTO))
                 .with(csrf()))
                 .andDo(print())
-                .andExpect(result -> {
-                    SafeUserDTO safeUserDTO = objectMapper.readValue(result.getResponse().getContentAsString(), SafeUserDTO.class);
-                    Assert.assertEquals("testUser", safeUserDTO.getUsername());
-                    Assert.assertTrue(safeUserDTO.getRoles().contains("test"));
-                })
-                .andExpect(MockMvcResultMatchers.status().isOk());
+                .andExpect(result -> Assert.assertEquals(String.format("User with username %s already exists", userDTO.getUsername()), result.getResponse().getContentAsString()))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
     @Test

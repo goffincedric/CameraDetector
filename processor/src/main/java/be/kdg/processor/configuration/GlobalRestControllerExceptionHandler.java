@@ -20,8 +20,8 @@ import javax.servlet.http.HttpServletRequest;
 @RestControllerAdvice
 public class GlobalRestControllerExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(value = {FineException.class, UserException.class})
-    protected ResponseEntity<?> handleFinesNotFound(RuntimeException ex, WebRequest request) {
-        return handleExceptionInternal(ex, ex.getMessage(),
+    protected ResponseEntity<?> handleGeneralExceptions(RuntimeException ex, WebRequest request) {
+        return handleExceptionInternal(ex, ex.getCause().getMessage(),
                 new HttpHeaders(),
                 HttpStatus.BAD_REQUEST,
                 request);

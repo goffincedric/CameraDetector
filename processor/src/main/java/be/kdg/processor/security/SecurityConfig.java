@@ -11,9 +11,22 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.DefaultRedirectStrategy;
+import org.springframework.security.web.RedirectStrategy;
+import org.springframework.security.web.WebAttributes;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.util.Collection;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * Configuration class that sets the default security for all web and rest controllers
@@ -36,6 +49,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
+    @Bean
+    public AuthenticationSuccessHandler successHandler() {
+        return new DefaultUrlAuthenticationSuccessHandler();
+    }
+
     /**
      * Method that configures the security (user/role access) for all urls.
      *
@@ -46,10 +64,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/", "/home", "/error", "/api/**", "/css/**", "/js/**").permitAll()
-                .antMatchers("/**").hasAuthority("WEBADMIN")
+                .antMatchers("/admin").hasAnyAuthority("WEBADMIN", "DBADMIN")
                 .antMatchers(h2ConsolePath + "/**").hasAuthority("DBADMIN")
+                .antMatchers("/**").hasAuthority("WEBADMIN")
                 .and()
-                .formLogin().loginPage("/login").defaultSuccessUrl("/admin").permitAll()
+                .formLogin().loginPage("/login").permitAll().successHandler(successHandler())
                 .and()
                 .logout().permitAll();
 
@@ -70,8 +89,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configureGlobal(AuthenticationManagerBuilder auth, UserService userService) throws Exception, UserException {
         auth.userDetailsService(userService);
 
-        userService.save(new User("admin", "admin", List.of(new Role("WEBADMIN"), new Role("DBADMIN"))));
-        userService.save(new User("webadmin", "webadmin", List.of(new Role("WEBADMIN"))));
+        userService.save(new User("user", "user", List.of()));
         userService.save(new User("dbadmin", "dbadmin", List.of(new Role("DBADMIN"))));
+        userService.save(new User("webadmin", "webadmin", List.of(new Role("WEBADMIN"))));
+        userService.save(new User("admin", "admin", List.of(new Role("WEBADMIN"), new Role("DBADMIN"))));
     }
 }

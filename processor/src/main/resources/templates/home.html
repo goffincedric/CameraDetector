@@ -1,26 +1,33 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
- <head>
-     <link rel="stylesheet" href="/css/style.css">
- <title>Home</title>
- </head>
- <body>
- <div class="page">
-     <div class="container">
-         <div class="left">
-             <div class="title">Home page</div>
-             <div class="desc">
-                 Log in to go to admin page.
-             </div>
-         </div>
-         <div class="right">
-             <div class="title">Camera Controle</div>
-             <br>
-             <div class="info">
-                 <a th:href="@{/admin}" class="link" >Go to admin page</a>
-             </div>
-         </div>
-     </div>
- </div>
- </body>
+<html xmlns:th="http://www.w3.org/1999/xhtml"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
+<!--xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"-->
+<head>
+    <link rel="stylesheet" href="/css/style.css">
+    <title>Home</title>
+</head>
+<body>
+<div class="page">
+    <div class="container">
+        <div class="left">
+            <div class="title">Home page</div>
+            <div class="desc">
+                Log in to go to admin page.
+            </div>
+        </div>
+        <div class="right">
+            <div class="title">Camera Controle</div>
+            <br>
+            <div class="info">
+                <a th:href="@{/admin}" class="link">Go to admin page</a>
+                <form th:action="@{/logout}" sec:authorize="isAuthenticated()" method="post">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                    <input type="submit" value="Sign Out"/>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
 </html>

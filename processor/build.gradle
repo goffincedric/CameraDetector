@@ -40,10 +40,11 @@ dependencies {
 
     compile group: 'org.modelmapper', name: 'modelmapper', version: '2.3.0' // https://mvnrepository.com/artifact/org.modelmapper/modelmapper
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-thymeleaf', version: '2.0.5.RELEASE' // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-thymeleaf
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '2.0.5.RELEASE' // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-security
+    compile group: 'org.thymeleaf.extras', name: 'thymeleaf-extras-springsecurity4', version: '3.0.4.RELEASE' // https://mvnrepository.com/artifact/org.thymeleaf.extras/thymeleaf-extras-springsecurity4
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '2.0.5.RELEASE' // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: '2.0.5.RELEASE' // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-jpa
     runtime group: 'com.h2database', name: 'h2', version: '1.4.197' // https://mvnrepository.com/artifact/com.h2database/h2
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '2.0.5.RELEASE' // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-security
     testCompile("org.springframework.security:spring-security-test")
 
     compile group: 'org.glassfish.jaxb', name: 'jaxb-runtime', version: '2.4.0-b180830.0438' // https://mvnrepository.com/artifact/org.glassfish.jaxb/jaxb-runtime
