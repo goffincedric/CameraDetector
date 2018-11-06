@@ -71,5 +71,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(userService);
 
         userService.save(new User("admin", "admin", List.of(new Role("WEBADMIN"), new Role("DBADMIN"))));
+        userService.save(new User("webadmin", "webadmin", List.of(new Role("WEBADMIN"))));
+        userService.save(new User("dbadmin", "dbadmin", List.of(new Role("DBADMIN"))));
     }
 }

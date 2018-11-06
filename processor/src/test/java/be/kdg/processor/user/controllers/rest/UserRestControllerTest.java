@@ -64,7 +64,26 @@ public class UserRestControllerTest {
     }
 
     @Test
+    // Todo: Dirties context?
     public void addUser() throws Exception {
+        UserDTO userDTO = new UserDTO("testUser", "testUser", List.of("test"));
+
+        mockMvc.perform(post("/api/user")
+                .contentType(APPLICATION_JSON_UTF8)
+                .content(objectMapper.writeValueAsString(userDTO))
+                .with(csrf()))
+                .andDo(print())
+                .andExpect(result -> {
+                    SafeUserDTO safeUserDTO = objectMapper.readValue(result.getResponse().getContentAsString(), SafeUserDTO.class);
+                    Assert.assertEquals("testUser", safeUserDTO.getUsername());
+                    Assert.assertTrue(safeUserDTO.getRoles().contains("test"));
+                })
+                .andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+    @Test
+    public void addUserExistent() throws Exception {
+        //TODO: Checken op dubbele gebruiker toevoegen
         UserDTO userDTO = new UserDTO("testUser", "testUser", List.of("test"));
 
         mockMvc.perform(post("/api/user")

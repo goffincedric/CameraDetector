@@ -13,6 +13,7 @@ import java.util.List;
 
 /**
  * Abstract model class that holds information about a Fine. Gets stored in an H2 in-memory database in a table named 'tblFine'.
+ * //TODO: Uitleg over nieuwe fines toevoegen + waar calculatie zetten + ...: Je hebt (beknopte) documentatie die aangeeft hoe nieuwe types overtredingen aan je code kunnen toegevoegd worden (berekening, verwerking, opslag)
  *
  * @author C&eacute;dric Goffin
  * @see EmissionFine
