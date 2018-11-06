@@ -3,6 +3,7 @@ package be.kdg.processor.fine.controllers.web;
 import be.kdg.processor.fine.dto.fineSettings.FineSettingsDTO;
 import be.kdg.processor.processor.services.SettingService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.modelmapper.ModelMapper;
@@ -47,19 +48,13 @@ public class FineWebControllerTest {
         mockMvc.perform(get("/fine/settings"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(result -> {
-                    model().attribute("emissionTimeframeDays", fineSettingsDTO.getEmissionTimeframeDays());
-                    model().attribute("emissionFineFactor", fineSettingsDTO.getEmissionFineFactor());
-                    model().attribute("speedFineFactorSlow", fineSettingsDTO.getSpeedFineFactorSlow());
-                    model().attribute("speedFineFactorFast", fineSettingsDTO.getSpeedFineFactorFast());
-                    model().attribute("paymentDeadlingDays", fineSettingsDTO.getPaymentDeadlingDays());
-                });
+                .andExpect(result -> Assert.assertEquals(result.getModelAndView().getModelMap().get("fineSettingsDTO"), fineSettingsDTO));
     }
 
     @Test
     @WithMockUser(authorities = {"WEBADMIN"})
     public void postFineFactors() throws Exception {
-        String url = "/processor/settings";
+        String url = "/fine/settings";
         FineSettingsDTO fineSettingsDTO = modelMapper.map(settingService.getFineSettings(), FineSettingsDTO.class);
         FineSettingsDTO updatedFineSettingsDTO = new FineSettingsDTO(
                 fineSettingsDTO.getEmissionTimeframeDays() + 1,
@@ -70,18 +65,15 @@ public class FineWebControllerTest {
         );
 
         mockMvc.perform(post(url)
-                .contentType(APPLICATION_JSON_UTF8)
-                .content(objectMapper.writeValueAsString(updatedFineSettingsDTO))
+                .param("emissionTimeframeDays", String.valueOf(updatedFineSettingsDTO.getEmissionTimeframeDays()))
+                .param("emissionFineFactor", String.valueOf(updatedFineSettingsDTO.getEmissionFineFactor()))
+                .param("speedFineFactorSlow", String.valueOf(updatedFineSettingsDTO.getSpeedFineFactorSlow()))
+                .param("speedFineFactorFast", String.valueOf(updatedFineSettingsDTO.getSpeedFineFactorFast()))
+                .param("paymentDeadlingDays", String.valueOf(updatedFineSettingsDTO.getPaymentDeadlingDays()))
                 .with(csrf()))
                 .andDo(print())
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl(url + "?saved"))
-                .andExpect(result -> {
-                    model().attribute("emissionTimeframeDays", fineSettingsDTO.getEmissionTimeframeDays() + 1);
-                    model().attribute("emissionFineFactor", fineSettingsDTO.getEmissionFineFactor() + 100);
-                    model().attribute("speedFineFactorSlow", fineSettingsDTO.getSpeedFineFactorSlow() + 1);
-                    model().attribute("speedFineFactorFast", fineSettingsDTO.getSpeedFineFactorFast() + 1);
-                    model().attribute("paymentDeadlingDays", fineSettingsDTO.getPaymentDeadlingDays() - 1);
-                });
+                .andExpect(result -> Assert.assertEquals(result.getModelAndView().getModelMap().get("fineSettingsDTO"), updatedFineSettingsDTO));;
     }
 }

@@ -1,0 +1,40 @@
+<html xmlns:th="http://www.w3.org/1999/xhtml"
+      xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <link rel="icon" href="/img/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="/css/style.css">
+    <meta charset="UTF-8">
+    <title>Fine settings</title>
+</head>
+<body>
+<div class="page">
+    <div class="container">
+        <div class="left">
+            <div class="title">Current statistics</div>
+            <div class="desc">
+                The following statistics are the current processor statistics from when this page was loaded.
+            </div>
+        </div>
+        <div class="right">
+            <div class="info">
+                <form>
+                    <label for="successfulMessages"># succesfully processed messages:</label>
+                    <input id="successfulMessages" type="text" class="input divider" th:value="${processorStatisticsDTO.successfulMessages}" disabled>
+                    <label for="failedMessages"># messages that failed to process:</label>
+                    <input id="failedMessages" type="text" step="0.1" class="input divider" th:value="${processorStatisticsDTO.failedMessages}" disabled>
+                    <label for="totalMessages">Total amount of processed messages:</label>
+                    <input id="totalMessages" type="text" step="0.1" class="input divider" th:value="${processorStatisticsDTO.totalMessages}" disabled>
+                    <br>
+                    <label for="startupTimestamp">Running since: </label>
+                    <input id="startupTimestamp" type="text" step="0.1" class="input divider" th:value="${processorStatisticsDTO.startupTimestamp}" disabled>
+                </form>
+                <a th:href="@{/admin}" class="link">Go to admin page</a>
+                <form th:action="@{/logout}" method="post">
+                    <input type="submit" value="Sign Out"/>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

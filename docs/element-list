@@ -25,6 +25,11 @@ be.kdg.processor.processor.dto
 be.kdg.processor.processor.repository
 be.kdg.processor.processor.services
 be.kdg.processor.security
+be.kdg.processor.statistic.controllers.web
+be.kdg.processor.statistic.dom
+be.kdg.processor.statistic.dto
+be.kdg.processor.statistic.repository
+be.kdg.processor.statistic.services
 be.kdg.processor.user.controllers.rest
 be.kdg.processor.user.dom
 be.kdg.processor.user.dto

@@ -8,6 +8,8 @@ import be.kdg.processor.processor.dom.BoolSetting;
 import be.kdg.processor.processor.dom.IntSetting;
 import be.kdg.processor.processor.dom.StringSetting;
 import be.kdg.processor.processor.services.SettingService;
+import be.kdg.processor.statistic.dom.DateTimeStatistic;
+import be.kdg.processor.statistic.services.StatisticService;
 import be.kdg.processor.utils.CSVUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,6 +17,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.logging.Logger;
 
@@ -31,6 +34,7 @@ public class Processor {
     private static final Logger LOGGER = Logger.getLogger(Processor.class.getName());
     private final FineService fineService;
     private final FineDetectionService fineDetectionService;
+    private final StatisticService statisticService;
     private final SettingService settingService;
 
     private final Map<CameraMessage, Integer> messageMap;
@@ -50,14 +54,18 @@ public class Processor {
      *
      * @param fineService          the service for the Fine package
      * @param fineDetectionService the service that detects which messages should get fined
+     * @param statisticService     the service that manages statistics for the processor.
      * @param settingService       the service for the processor package. Manages all processor settings.
      */
     @Autowired
-    public Processor(FineService fineService, FineDetectionService fineDetectionService, SettingService settingService) {
+    public Processor(FineService fineService, FineDetectionService fineDetectionService, StatisticService statisticService, SettingService settingService) {
         this.fineService = fineService;
         this.fineDetectionService = fineDetectionService;
+        this.statisticService = statisticService;
         this.settingService = settingService;
         this.messageMap = Collections.synchronizedMap(new HashMap<>());
+
+        statisticService.saveStatistic(new DateTimeStatistic("startupTimestamp", LocalDateTime.now()));
     }
 
     /**
@@ -77,6 +85,8 @@ public class Processor {
             buffer = new HashMap<>(messageMap);
             messageMap.clear();
         }
+        // Set initial messageCount for statistics
+        int messageCount = buffer.size();
 
         // Get current settings
         Optional<IntSetting> optionalRetries = settingService.getIntSetting("retries");
@@ -111,8 +121,13 @@ public class Processor {
                 LOGGER.warning(String.format("Logging message '%s' to console because it failed to process more than %d times!", m, retries));
             }
         });
-        if (amountLogged > 0)
+        if (logFailed && amountLogged > 0)
             LOGGER.info(String.format("Written %d messages to log file: '%s'", amountLogged, logFilePath));
+
+        // Update statistics
+        statisticService.incrementIntStatistic("successfulMessages", messageCount - processingResult.getValue().size());
+        if (amountLogged > 0) statisticService.incrementIntStatistic("failedMessages", amountLogged);
+        statisticService.incrementIntStatistic("totalMessages", messageCount - processingResult.getValue().size() + amountLogged);
     }
 
     /**

@@ -155,11 +155,7 @@ public class ProcessorWebControllerTest {
         mockMvc.perform(get("/processor/settings"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(result -> {
-                    model().attribute("retries", processorSettingsDTO.getRetries());
-                    model().attribute("logPath", processorSettingsDTO.getLogPath());
-                    model().attribute("logFailed", processorSettingsDTO.isLogFailed());
-                });
+                .andExpect(result -> Assert.assertEquals(result.getModelAndView().getModelMap().get("processorSettingsDTO"), processorSettingsDTO));
     }
 
     @Test
@@ -170,16 +166,13 @@ public class ProcessorWebControllerTest {
         ProcessorSettingsDTO updatedProcessorSettingsDTO = new ProcessorSettingsDTO(processorSettingsDTO.getRetries() + 1, !processorSettingsDTO.isLogFailed(), processorSettingsDTO.getLogPath());
 
         mockMvc.perform(post(url)
-                .contentType(APPLICATION_JSON_UTF8)
-                .content(objectMapper.writeValueAsString(updatedProcessorSettingsDTO))
+                .param("retries", String.valueOf(updatedProcessorSettingsDTO.getRetries()))
+                .param("logFailed", String.valueOf(updatedProcessorSettingsDTO.isLogFailed()))
+                .param("logPath", String.valueOf(updatedProcessorSettingsDTO.getLogPath()))
                 .with(csrf()))
                 .andDo(print())
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl(url + "?saved"))
-                .andExpect(result -> {
-                    model().attribute("retries", processorSettingsDTO.getRetries() + 1);
-                    model().attribute("logPath", processorSettingsDTO.getLogPath());
-                    model().attribute("logFailed", !processorSettingsDTO.isLogFailed());
-                });
+                .andExpect(result -> Assert.assertEquals(result.getModelAndView().getModelMap().get("processorSettingsDTO"), updatedProcessorSettingsDTO));
     }
 }
