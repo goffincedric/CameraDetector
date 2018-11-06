@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- *A DTO for the Setting class, used to manipulate settings for the processor.
+ *A DTO for the ProcessorSettings class, used to manipulate settings for the processor.
  *
  * @author C&eacute;dric Goffin
  * @see be.kdg.processor.processor.dom.ProcessorSettings
